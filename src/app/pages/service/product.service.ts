@@ -26,10 +26,10 @@ export class ProductService {
             {
                 id: '1000',
                 code: 'f230fh0g3',
-                name: 'Bamboo Watch',
+                name: 'Fatima SOW',
                 description: 'Product Description',
                 image: 'bamboo-watch.jpg',
-                price: 65,
+                price: 165,
                 category: 'Accessories',
                 quantity: 24,
                 inventoryStatus: 'INSTOCK',
@@ -38,10 +38,10 @@ export class ProductService {
             {
                 id: '1001',
                 code: 'nvklal433',
-                name: 'Black Watch',
+                name: 'Amadou DIALLO',
                 description: 'Product Description',
                 image: 'black-watch.jpg',
-                price: 72,
+                price: 1200,
                 category: 'Accessories',
                 quantity: 61,
                 inventoryStatus: 'INSTOCK',
@@ -50,7 +50,7 @@ export class ProductService {
             {
                 id: '1002',
                 code: 'zz21cz3c1',
-                name: 'Blue Band',
+                name: 'Alpha Ousmane BARRY',
                 description: 'Product Description',
                 image: 'blue-band.jpg',
                 price: 79,
@@ -62,7 +62,7 @@ export class ProductService {
             {
                 id: '1003',
                 code: '244wgerg2',
-                name: 'Blue T-Shirt',
+                name: 'Alpha Mamadou Koben COULIBALY',
                 description: 'Product Description',
                 image: 'blue-t-shirt.jpg',
                 price: 29,
@@ -74,7 +74,7 @@ export class ProductService {
             {
                 id: '1004',
                 code: 'h456wer53',
-                name: 'Bracelet',
+                name: 'Aly CAMARA',
                 description: 'Product Description',
                 image: 'bracelet.jpg',
                 price: 15,
