@@ -8,6 +8,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { Location } from '@angular/common';
 
 export interface Beneficiary {
   id: number;
@@ -41,6 +42,7 @@ export class BeneficiaryList implements OnInit {
 
   constructor(
     private router: Router,
+      private location: Location,
     private confirmationService: ConfirmationService,
     private messageService: MessageService
   ) {}
@@ -182,5 +184,10 @@ export class BeneficiaryList implements OnInit {
   onBeneficiaryClick(id: number) {
     // Navigation au clic sur la carte (mobile)
     this.editBeneficiary(id);
+  }
+    goBack() {
+    this.location.back();
+    // Ou si vous voulez aller à une page spécifique :
+    // this.router.navigate(['/']);
   }
 }
