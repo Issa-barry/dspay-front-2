@@ -6,6 +6,12 @@
     <h2 class="title">Choisir un bénéficiaire</h2>
   </div>
 
+  <!-- Bouton pour ajouter un nouveau bénéficiaire -->
+  <button type="button" class="add-beneficiary-btn" (click)="addNewBeneficiary()">
+    <i class="pi pi-plus"></i>
+    <span>Ajouter un  bénéficiaire</span>
+  </button>
+
   <div class="beneficiary-list">
     <div 
       *ngFor="let beneficiary of beneficiaries" 
@@ -19,7 +25,8 @@
       
       <div class="beneficiary-info">
         <span class="beneficiary-name">{{ beneficiary.name }}</span>
-        <span class="beneficiary-phone mt-2">{{ beneficiary.phone }}</span>
+        <span class="beneficiary-relation" *ngIf="beneficiary.relation">{{ beneficiary.relation }}</span>
+        <span class="beneficiary-phone">{{ beneficiary.phone }}</span>
       </div>
       
       <i class="pi pi-chevron-right beneficiary-arrow"></i>

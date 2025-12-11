@@ -1,0 +1,93 @@
+<div class="beneficiary-list-page">
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">My Beneficiaries</h1>
+      <p class="page-subtitle">Manage your beneficiaries for your transfers</p>
+    </div>
+    <button 
+      pButton 
+      label="Add Beneficiary" 
+      icon="pi pi-plus"
+      class="add-btn"
+      (click)="addNew()">
+    </button>
+  </div>
+
+  <!-- Search bar -->
+  <div class="search-bar">
+    <span class="p-input-icon-left w-full">
+      <i class="pi pi-search"></i>
+      <input 
+        type="text" 
+        pInputText 
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="applyFilter()"
+        placeholder="Search by name or phone..."
+        class="w-full">
+    </span>
+  </div>
+
+  <!-- Beneficiaries list -->
+  <div class="beneficiaries-list" *ngIf="filteredBeneficiaries.length > 0">
+    <div 
+      *ngFor="let beneficiary of filteredBeneficiaries" 
+      class="beneficiary-item"
+      (click)="editBeneficiary(beneficiary.id)">
+      
+      <div class="beneficiary-avatar" [style.background-color]="beneficiary.color">
+        <span>{{ beneficiary.initials }}</span>
+      </div>
+
+      <div class="beneficiary-info">
+        <h3 class="beneficiary-name">{{ beneficiary.name }}</h3>
+        <p class="beneficiary-phone">
+          <i class="pi pi-phone"></i>
+          {{ beneficiary.phone }}
+        </p>
+      </div>
+
+      <!-- Desktop actions -->
+      <div class="beneficiary-actions desktop-only" (click)="$event.stopPropagation()">
+        <button 
+          pButton 
+          icon="pi pi-pencil" 
+          class="p-button-rounded p-button-text p-button-success"
+          (click)="editBeneficiary(beneficiary.id)"
+          pTooltip="Edit"
+          tooltipPosition="top">
+        </button>
+        <button 
+          pButton 
+          icon="pi pi-trash" 
+          class="p-button-rounded p-button-text p-button-danger"
+          (click)="deleteBeneficiary(beneficiary)"
+          pTooltip="Delete"
+          tooltipPosition="top">
+        </button>
+      </div>
+
+      <!-- Mobile chevron -->
+      <i class="pi pi-chevron-right mobile-chevron"></i>
+    </div>
+  </div>
+
+  <!-- Empty state -->
+  <div class="empty-state" *ngIf="filteredBeneficiaries.length === 0">
+    <i class="pi pi-users empty-icon"></i>
+    <h3>No beneficiaries found</h3>
+    <p *ngIf="searchQuery">No results for "{{ searchQuery }}"</p>
+    <p *ngIf="!searchQuery">Start by adding your first beneficiary</p>
+    <button 
+      pButton 
+      label="Add Beneficiary" 
+      icon="pi pi-plus"
+      (click)="addNew()">
+    </button>
+  </div>
+
+  <!-- Confirmation Dialog -->
+  <p-confirmDialog></p-confirmDialog>
+  
+  <!-- Toast messages -->
+  <p-toast></p-toast>
+</div>

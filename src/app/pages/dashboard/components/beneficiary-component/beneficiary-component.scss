@@ -49,6 +49,38 @@
   color: #111827;
 }
 
+.add-beneficiary-btn {
+  width: calc(100% - 4rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  margin: 1.5rem 2rem 0 2rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+}
+
+.add-beneficiary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.add-beneficiary-btn:active {
+  transform: translateY(0);
+}
+
+.add-beneficiary-btn i {
+  font-size: 1.125rem;
+}
+
 .beneficiary-list {
   display: flex;
   flex-direction: column;
@@ -175,6 +207,11 @@
     padding: 1.5rem 1.5rem 1rem 1.5rem;
   }
 
+  .add-beneficiary-btn {
+    width: calc(100% - 3rem);
+    margin: 1.25rem 1.5rem 0 1.5rem;
+  }
+
   .beneficiary-list {
     padding: 1.25rem 1.5rem 1.5rem 1.5rem;
   }
@@ -191,6 +228,13 @@
 
   .step-header {
     padding: 1.25rem 1.25rem 1rem 1.25rem;
+  }
+
+  .add-beneficiary-btn {
+    width: calc(100% - 2.5rem);
+    margin: 1rem 1.25rem 0 1.25rem;
+    font-size: 0.875rem;
+    padding: 0.875rem;
   }
 
   .beneficiary-list {
@@ -225,6 +269,11 @@
   
   .step-header {
     padding: 1rem 1rem 0.75rem 1rem;
+  }
+
+  .add-beneficiary-btn {
+    width: calc(100% - 2rem);
+    margin: 0.75rem 1rem 0 1rem;
   }
 
   .beneficiary-list {

@@ -26,7 +26,7 @@ export class AppMenu {
             {
                  items: [
                     // { label: 'Transfert', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
-                    { label: 'Bénéficiaires', icon: 'pi pi-fw pi-users', routerLink: ['/uikit/input'] },
+                    { label: 'Bénéficiaires', icon: 'pi pi-fw pi-users', routerLink: ['/beneficiary'] },
                     { label: 'Historique', icon: 'pi pi-fw pi-history', class: 'rotated-icon', routerLink: ['/uikit/button'] },
                  ]
             },

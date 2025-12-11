@@ -132,4 +132,14 @@ export class Dashboard {
     this.selectedWallet = null;
     this.selectedBeneficiary = null;
   }
+
+  // ... code existant ...
+
+onAddBeneficiary() {
+  console.log('Redirection vers la page de création de bénéficiaire');
+  // Vous pouvez naviguer vers une autre route ou afficher un modal
+  // this.router.navigate(['/beneficiaires/nouveau']);
+  // Ou afficher un nouveau step dans le dashboard pour créer un bénéficiaire
+  alert('Fonctionnalité de création de bénéficiaire - À implémenter');
+}
 }

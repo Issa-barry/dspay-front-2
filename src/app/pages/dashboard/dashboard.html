@@ -25,9 +25,11 @@
       </app-WalletComponent>
 
       <!-- Étape 3: Choix du bénéficiaire -->
+      <!-- Étape 3: Choix du bénéficiaire -->
       <app-beneficiary-component
         *ngIf="currentStep === 3"
         (beneficiarySelected)="onBeneficiarySelected($event)"
+        (addBeneficiary)="onAddBeneficiary()"
         (back)="onBackToWallet()">
       </app-beneficiary-component>
 
