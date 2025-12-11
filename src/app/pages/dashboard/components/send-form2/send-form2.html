@@ -1,0 +1,58 @@
+<!-- send-form2.component.html -->
+<div class="send-form-card">
+  <h2 class="title">Envoyer de l'argent</h2>
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label class="form-label">Montant à envoyer ?</label>
+      
+      <!-- Montant en EUR -->
+      <div class="currency-input">
+        <img [src]="euFlag" alt="EU" class="flag-icon" (error)="onImageError($event, 'eu')" />
+        <p-inputNumber 
+          [(ngModel)]="eurAmount"
+          name="eurAmount"
+          [minFractionDigits]="0"
+          [maxFractionDigits]="2"
+          (onInput)="calculateGNF()"
+          [useGrouping]="false"
+          placeholder="100">
+        </p-inputNumber>
+        <span class="currency-code">€</span>
+      </div>
+
+      <label class="form-label">Montant reçu</label>
+
+      <!-- Montant en GNF -->
+      <div class="currency-input">
+        <img [src]="gnFlag" alt="Guinea" class="flag-icon" (error)="onImageError($event, 'gn')" />
+        <p-inputNumber 
+          [(ngModel)]="gnfAmount"
+          name="gnfAmount"
+          [minFractionDigits]="0"
+          [maxFractionDigits]="0"
+          (onInput)="calculateEUR()"
+          [useGrouping]="true"
+          placeholder="950000">
+        </p-inputNumber>
+        <span class="currency-code">GNF</span>
+      </div>
+    </div>
+
+    <!-- Bouton Envoyer -->
+    <button 
+      type="submit" 
+      pButton 
+      label="Envoyer" 
+      icon="pi pi-arrow-right"
+      iconPos="right"
+      class="send-button">
+    </button>
+
+    <!-- Taux d'échange -->
+    <div class="exchange-rate">
+      <h3>Taux d'échange</h3>
+      <p>1 € = {{ exchangeRate | number:'1.0-0' }} GNF</p>
+    </div>
+  </form>
+</div>
