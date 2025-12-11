@@ -259,3 +259,36 @@
     margin-bottom: 1.5rem;
   }
 }
+
+
+.search-bar {
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+::ng-deep .search-bar .p-input-icon-left {
+  display: block;
+  width: 100%;
+}
+
+::ng-deep .search-bar .p-input-icon-left > i {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  z-index: 2;
+}
+
+::ng-deep .search-bar .p-inputtext {
+  width: 100%;
+  padding: 0.875rem 1rem 0.875rem 3rem;
+  border-radius: 12px;
+  border: 2px solid #e5e7eb;
+  font-size: 1rem;
+}
+
+::ng-deep .search-bar .p-inputtext:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}

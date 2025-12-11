@@ -1,12 +1,12 @@
 <div class="beneficiary-list-page">
   <div class="page-header">
     <div class="header-content">
-      <h1 class="page-title">My Beneficiaries</h1>
-      <p class="page-subtitle">Manage your beneficiaries for your transfers</p>
+      <h1 class="page-title">Liste bénéficiaires</h1>
+      <p class="page-subtitle">Gérez vos bénéficiaires pour vos transferts</p>
     </div>
     <button 
       pButton 
-      label="Add Beneficiary" 
+      label="Ajouter un bénéficiaire" 
       icon="pi pi-plus"
       class="add-btn"
       (click)="addNew()">
@@ -14,18 +14,19 @@
   </div>
 
   <!-- Search bar -->
-  <div class="search-bar">
-    <span class="p-input-icon-left w-full">
-      <i class="pi pi-search"></i>
-      <input 
-        type="text" 
-        pInputText 
-        [(ngModel)]="searchQuery"
-        (ngModelChange)="applyFilter()"
-        placeholder="Search by name or phone..."
-        class="w-full">
-    </span>
-  </div>
+<!-- Search bar -->
+<div class="search-bar">
+  <span class="p-input-icon-left">
+    <i class="pi pi-search"></i>
+    <input 
+      type="text" 
+      pInputText 
+      [(ngModel)]="searchQuery"
+      (ngModelChange)="applyFilter()"
+      placeholder="Search by name or phone..."
+      class="search-input">
+  </span>
+</div>
 
   <!-- Beneficiaries list -->
   <div class="beneficiaries-list" *ngIf="filteredBeneficiaries.length > 0">
