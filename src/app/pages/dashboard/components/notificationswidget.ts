@@ -21,10 +21,9 @@ import { MenuModule } from 'primeng/menu';
                 <div class="w-12 h-12 flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-full mr-4 shrink-0">
                     <i class="pi pi-dollar text-xl! text-blue-500"></i>
                 </div>
-                <span class="text-surface-900 dark:text-surface-0 leading-normal"
-                    >Richard Jones
-                    <span class="text-surface-700 dark:text-surface-100">has purchased a blue t-shirt for <span class="text-primary font-bold">$79.00</span></span>
-                </span>
+                <p class="text-surface-900 dark:text-surface-0 leading-normal">Fatoumata Diallo</p><br/>
+                <p class="text-surface-700 dark:text-surface-100">has purchased a blue t-shirt for</p>  <span class="text-primary font-bold">$79.00</span> 
+                
             </li>
             <li class="flex items-center py-2">
                 <div class="w-12 h-12 flex items-center justify-center bg-orange-100 dark:bg-orange-400/10 rounded-full mr-4 shrink-0">

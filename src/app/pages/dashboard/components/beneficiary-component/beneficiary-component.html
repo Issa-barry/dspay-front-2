@@ -1,0 +1,35 @@
+<div class="beneficiary-card">
+  <div class="step-header">
+    <button type="button" (click)="goBack()" class="back-button">
+      <i class="pi pi-arrow-left"></i>
+    </button>
+    <h2 class="title">Choisir un bénéficiaire</h2>
+  </div>
+
+  <!-- Bouton pour ajouter un nouveau bénéficiaire -->
+  <button type="button" class="add-beneficiary-btn" (click)="addNewBeneficiary()">
+    <i class="pi pi-plus"></i>
+    <span>Ajouter un  bénéficiaire</span>
+  </button>
+
+  <div class="beneficiary-list">
+    <div 
+      *ngFor="let beneficiary of beneficiaries" 
+      class="beneficiary-item"
+      (click)="selectBeneficiary(beneficiary)"
+      [class.selected]="selectedBeneficiary?.id === beneficiary.id">
+      
+      <div class="beneficiary-avatar" [style.background-color]="beneficiary.color">
+        <span>{{ beneficiary.initials }}</span>
+      </div>
+      
+      <div class="beneficiary-info">
+        <span class="beneficiary-name">{{ beneficiary.name }}</span>
+        <span class="beneficiary-relation" *ngIf="beneficiary.relation">{{ beneficiary.relation }}</span>
+        <span class="beneficiary-phone">{{ beneficiary.phone }}</span>
+      </div>
+      
+      <i class="pi pi-chevron-right beneficiary-arrow"></i>
+    </div>
+  </div>
+</div>

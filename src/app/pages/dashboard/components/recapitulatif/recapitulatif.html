@@ -1,0 +1,58 @@
+<div class="recap-card">
+  <div class="recap-header">
+    <h2 class="title">Récapitulatif</h2>
+    <button type="button" (click)="onModify()" class="modify-button">
+      Modifier
+    </button>
+  </div>
+
+  <div class="recap-content">
+    <div class="recap-row">
+      <span class="recap-label">Bénéficiaire</span>
+      <span class="recap-value">{{ beneficiaryName }}</span>
+    </div>
+
+    <div class="recap-row">
+      <span class="recap-label">Point de retrait</span>
+      <span class="recap-value">{{ withdrawalPoint }}</span>
+    </div>
+
+    <div class="recap-row">
+      <span class="recap-label">Montant en euro</span>
+      <span class="recap-value">€ {{ eurAmount }} EURO</span>
+    </div>
+
+    <div class="recap-row">
+      <span class="recap-label">Frais</span>
+      <span class="recap-value">{{ fees }} EURO</span>
+    </div>
+
+    <div class="recap-row">
+      <span class="recap-label">Montant à recuperer</span>
+      <span class="recap-value">{{ gnfAmount | number:'1.0-0' }} GNF</span>
+    </div>
+
+    <div class="recap-row total">
+      <span class="recap-label-total">TOTAL A PAYER</span>
+      <span class="recap-value-total">{{ totalAmount }} EURO</span>
+    </div>
+  </div>
+
+  <div class="recap-actions">
+    <button 
+      type="button" 
+      class="btn-confirm"
+      (click)="onConfirm()">
+      Confirmer et payer
+      <i class="pi pi-arrow-right"></i>
+    </button>
+
+    <button 
+      type="button" 
+      
+      class="btn-cancel"
+      (click)="onCancel()">
+      Annuler
+    </button>
+  </div>
+</div>

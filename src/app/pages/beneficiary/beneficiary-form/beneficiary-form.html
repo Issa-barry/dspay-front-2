@@ -1,0 +1,79 @@
+<div class="beneficiary-form-page">
+  <div class="page-header">
+    <button 
+      pButton 
+      icon="pi pi-arrow-left" 
+      class="p-button-text back-button"
+      (click)="cancel()">
+    </button>
+    <h1 class="page-title">{{ pageTitle }}</h1>
+  </div>
+
+  <div class="form-container">
+    <form (ngSubmit)="onSubmit()" class="beneficiary-form">
+
+      <!-- Téléphone EN PREMIER -->
+      <div class="form-field">
+        <label for="phone">Numéro de téléphone *</label>
+        <input 
+          id="phone"
+          type="tel" 
+          pInputText 
+          [(ngModel)]="phone"
+          name="phone"
+          placeholder="+224 XXX XX XX XX"
+          class="form-input"
+          autofocus>
+        <small class="field-hint">Format: +224 XXX XX XX XX</small>
+      </div>
+
+      <!-- Prénom -->
+      <div class="form-field">
+        <label for="firstName">Prénom *</label>
+        <input 
+          id="firstName"
+          type="text" 
+          pInputText 
+          [(ngModel)]="firstName"
+          name="firstName"
+          placeholder="Entrez le prénom"
+          class="form-input">
+      </div>
+
+      <!-- Nom -->
+      <div class="form-field">
+        <label for="lastName">Nom *</label>
+        <input 
+          id="lastName"
+          type="text" 
+          pInputText 
+          [(ngModel)]="lastName"
+          name="lastName"
+          placeholder="Entrez le nom"
+          class="form-input">
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button 
+          type="submit"
+          pButton 
+          [label]="isEditMode ? 'Modifier' : 'Ajouter'" 
+          icon="pi pi-check"
+          class="btn-submit">
+        </button>
+        <button 
+          type="button"
+          pButton 
+          label="Annuler" 
+          icon="pi pi-times"
+          class="p-button-secondary btn-cancel"
+          (click)="cancel()">
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Toast messages -->
+  <p-toast></p-toast>
+</div>

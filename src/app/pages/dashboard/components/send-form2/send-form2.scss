@@ -1,0 +1,156 @@
+/* send-form2.component.css */
+.send-form-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  height: 100%;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 1.5rem 0;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 0.75rem;
+  font-weight: 400;
+}
+
+.currency-input {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 1.25rem;
+  background: white;
+  transition: all 0.2s;
+}
+
+.currency-input:focus-within {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.flag-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  object-fit: cover;
+  flex-shrink: 0;
+  display: block;
+}
+
+.currency-input ::ng-deep .p-inputnumber {
+  flex: 1;
+}
+
+.currency-input ::ng-deep .p-inputnumber-input {
+  border: none;
+  padding: 0;
+  font-size: 1rem;
+  color: #111827;
+  width: 100%;
+  box-shadow: none !important;
+  background: transparent;
+  font-weight: 400;
+}
+
+.currency-input ::ng-deep .p-inputnumber-input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.currency-input ::ng-deep .p-inputnumber-input::placeholder {
+  color: #9ca3af;
+}
+
+.currency-code {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  font-weight: 400;
+  min-width: 40px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+::ng-deep .send-button {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+::ng-deep .send-button .p-button {
+  width: 100%;
+  padding: 1.125rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 8px;
+  height: auto;
+  min-height: 102px;
+}
+
+::ng-deep .send-button .p-button-label {
+  font-weight: 500;
+}
+
+::ng-deep .send-button .p-button-icon-right {
+  margin-left: 0.5rem;
+}
+
+.exchange-rate {
+  text-align: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.exchange-rate h3 {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0 0 0.5rem 0;
+  font-weight: 400;
+}
+
+.exchange-rate p {
+  font-size: 0.875rem;
+  color: #111827;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 1280px) {
+  .send-form-card {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .send-form-card {
+    padding: 1.25rem;
+  }
+
+  .title {
+    font-size: 1.125rem;
+  }
+  
+  .currency-input {
+    padding: 0.625rem 0.875rem;
+  }
+
+  ::ng-deep .send-button .p-button {
+    padding: 1rem 1.25rem;
+    min-height: 48px;
+  }
+}

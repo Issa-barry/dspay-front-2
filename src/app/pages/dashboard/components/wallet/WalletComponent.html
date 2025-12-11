@@ -1,0 +1,25 @@
+<!-- WalletComponent.html -->
+<div class="wallet-card">
+  <div class="step-header">
+    <button type="button" (click)="goBack()" class="back-button">
+      <i class="pi pi-arrow-left"></i>
+    </button>
+    <h2 class="title">Choisir un mode de paiement</h2>
+  </div>
+
+  <div class="wallet-list">
+    <div 
+      *ngFor="let wallet of wallets" 
+      class="wallet-item"
+      (click)="selectWallet(wallet)"
+      [class.selected]="selectedWallet?.code === wallet.code">
+      <div class="wallet-icon" [style.background-color]="wallet.color">
+        <i [class]="wallet.icon"></i>
+      </div>
+      <div class="wallet-info">
+        <span class="wallet-name">{{ wallet.name }}</span>
+      </div>
+      <i class="pi pi-chevron-right wallet-arrow"></i>
+    </div>
+  </div>
+</div>
