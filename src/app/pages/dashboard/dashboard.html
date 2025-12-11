@@ -42,6 +42,15 @@
         (cancel)="onCancelTransfer()"
         (modify)="onModifyTransfer()">
       </app-recapitulatif>
+
+      <!-- Étape 5: Paiement CB -->
+          <app-payment-cb
+            *ngIf="currentStep === 5"
+            [amount]="transferData ? (transferData.eurAmount + 2) : 0"
+            (paymentSuccess)="onPaymentSuccess($event)"
+            (paymentCancel)="onPaymentCancel()"
+            (back)="onBackToRecap()">
+          </app-payment-cb>
     </div>
   </ng-container>
 

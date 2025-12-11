@@ -21,13 +21,13 @@ export class AppMenu {
     ngOnInit() {
         this.model = [
             {
-                 items: [{ label: 'MENU', icon: 'pi pi-fw pi-home', routerLink: ['/'] }]
+                 items: [{ label: 'ACCEUIL', icon: 'pi pi-fw pi-home', routerLink: ['/'] }]
             },
             {
                  items: [
-                    { label: 'Transfert', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
-                    { label: 'Bénéficiaires', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
-                    { label: 'Historique', icon: 'pi pi-fw pi-mobile', class: 'rotated-icon', routerLink: ['/uikit/button'] },
+                    // { label: 'Transfert', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
+                    { label: 'Bénéficiaires', icon: 'pi pi-fw pi-users', routerLink: ['/uikit/input'] },
+                    { label: 'Historique', icon: 'pi pi-fw pi-history', class: 'rotated-icon', routerLink: ['/uikit/button'] },
                  ]
             },
             {

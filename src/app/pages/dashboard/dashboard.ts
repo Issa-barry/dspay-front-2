@@ -1,4 +1,6 @@
+// dashboard.ts
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { NotificationsWidget } from './components/notificationswidget';
 import { RecentSalesWidget } from './components/recentsaleswidget';
 import { RevenueStreamWidget } from './components/revenuestreamwidget';
@@ -7,8 +9,8 @@ import { HistoriqueWidget } from './components/historique/widgets/hisotiquewidge
 import { SendForm2 } from './components/send-form2/send-form2';
 import { WalletComponent } from './components/wallet/WalletComponent';
 import { BeneficiaryComponent } from './components/beneficiary-component/beneficiary-component';
- import { CommonModule } from '@angular/common';
 import { RecapitulatifComponent } from './components/recapitulatif/recapitulatif';
+import { PaymentCbComponent } from './components/payment-cb/payment-cb';
 
 @Component({
     selector: 'app-dashboard',
@@ -21,13 +23,14 @@ import { RecapitulatifComponent } from './components/recapitulatif/recapitulatif
       WalletComponent,
       BeneficiaryComponent,
       RecapitulatifComponent,
+      PaymentCbComponent,
       RevenueStreamWidget, 
       NotificationsWidget
     ],
     templateUrl: './dashboard.html',
 })
 export class Dashboard {
-  currentStep: number = 1; // 1 = formulaire, 2 = wallet, 3 = bénéficiaire, 4 = récapitulatif
+  currentStep: number = 1; // 1=montant, 2=wallet, 3=bénéficiaire, 4=récap, 5=paiement
   transferData: { eurAmount: number, gnfAmount: number } | null = null;
   selectedWallet: any = null;
   selectedBeneficiary: any = null;
@@ -58,18 +61,20 @@ export class Dashboard {
   }
 
   onConfirmTransfer() {
-    console.log('=== CONFIRMATION DU TRANSFERT ===');
+    console.log('=== PASSAGE AU PAIEMENT CB ===');
     console.log('Montant:', this.transferData);
     console.log('Mode de paiement:', this.selectedWallet?.name);
     console.log('Bénéficiaire:', this.selectedBeneficiary?.name);
     
-    // Ici vous pouvez appeler votre API pour effectuer le transfert
-    alert('Transfert confirmé !');
+    this.currentStep = 5; // Passer au paiement CB
+    console.log('currentStep changed to:', this.currentStep);
   }
 
   onCancelTransfer() {
     console.log('Transfert annulé - Terminer plus tard');
     // Réinitialiser ou sauvegarder le brouillon
+    this.currentStep = 1;
+    this.resetTransferData();
   }
 
   onModifyTransfer() {
@@ -77,11 +82,33 @@ export class Dashboard {
     this.currentStep = 1; // Retour au début
   }
 
+  onPaymentSuccess(paymentData: any) {
+    console.log('=== PAIEMENT RÉUSSI ===');
+    console.log('Données du paiement:', paymentData);
+    console.log('Résumé complet du transfert:');
+    console.log('- Montant EUR:', this.transferData?.eurAmount);
+    console.log('- Montant GNF:', this.transferData?.gnfAmount);
+    console.log('- Bénéficiaire:', this.selectedBeneficiary?.name);
+    console.log('- Wallet:', this.selectedWallet?.name);
+    console.log('- Carte:', paymentData.cardNumber);
+    console.log('- Date:', paymentData.timestamp);
+    
+    alert('✅ Transfert effectué avec succès !');
+    
+    // Réinitialiser le formulaire
+    this.currentStep = 1;
+    this.resetTransferData();
+  }
+
+  onPaymentCancel() {
+    console.log('=== PAIEMENT ANNULÉ ===');
+    this.currentStep = 4; // Retour au récapitulatif
+  }
+
   onBackToForm() {
     console.log('Going back to form');
     this.currentStep = 1;
-    this.selectedWallet = null;
-    this.selectedBeneficiary = null;
+    this.resetTransferData();
   }
 
   onBackToWallet() {
@@ -93,5 +120,16 @@ export class Dashboard {
   onBackToBeneficiary() {
     console.log('Going back to beneficiary selection');
     this.currentStep = 3;
+  }
+
+  onBackToRecap() {
+    console.log('Going back to recapitulatif');
+    this.currentStep = 4;
+  }
+
+  private resetTransferData() {
+    this.transferData = null;
+    this.selectedWallet = null;
+    this.selectedBeneficiary = null;
   }
 }

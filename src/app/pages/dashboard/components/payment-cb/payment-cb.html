@@ -1,0 +1,175 @@
+<div class="payment-card">
+  <div class="payment-header">
+    <button type="button" (click)="goBack()" class="back-button">
+      <i class="pi pi-arrow-left"></i>
+    </button>
+    <h2 class="title">Paiement</h2>
+  </div>
+
+  <div class="amount-display">
+    <span class="amount-label">Montant à payer</span>
+    <span class="amount-value">{{ amount }} €</span>
+  </div>
+
+  <!-- Sélection de la méthode de paiement -->
+  <div class="payment-methods">
+    <button
+      type="button"
+      class="payment-method-btn"
+      [class.active]="selectedMethod === 'card'"
+      (click)="selectPaymentMethod('card')"
+      [disabled]="isProcessing">
+      <i class="pi pi-credit-card"></i>
+      <span>Carte bancaire</span>
+    </button>
+
+    <button
+      type="button"
+      class="payment-method-btn"
+      [class.active]="selectedMethod === 'paypal'"
+      (click)="selectPaymentMethod('paypal')"
+      [disabled]="isProcessing">
+      <i class="pi pi-paypal"></i>
+      <span>PayPal</span>
+    </button>
+
+    <button
+      type="button"
+      class="payment-method-btn"
+      [class.active]="selectedMethod === 'applepay'"
+      (click)="selectPaymentMethod('applepay')"
+      [disabled]="isProcessing">
+      <i class="pi pi-apple"></i>
+      <span>Apple Pay</span>
+    </button>
+  </div>
+
+  <!-- Formulaire de carte bancaire -->
+  <form *ngIf="selectedMethod === 'card'" (ngSubmit)="onSubmit()" class="payment-form">
+    <!-- Numéro de carte -->
+    <div class="form-group">
+      <label class="form-label">Numéro de carte</label>
+      <p-inputMask
+        [(ngModel)]="cardNumber"
+        name="cardNumber"
+        mask="9999 9999 9999 9999"
+        placeholder="1234 5678 9012 3456"
+        styleClass="w-full"
+        [disabled]="isProcessing">
+      </p-inputMask>
+      <div class="card-brands">
+        <i class="pi pi-credit-card"></i>
+        <span>Visa, Mastercard, Amex</span>
+      </div>
+    </div>
+
+    <!-- Titulaire de la carte -->
+    <div class="form-group">
+      <label class="form-label">Nom du titulaire</label>
+      <input
+        type="text"
+        pInputText
+        [(ngModel)]="cardHolder"
+        name="cardHolder"
+        placeholder="JEAN DUPONT"
+        class="w-full"
+        [disabled]="isProcessing"
+        style="text-transform: uppercase;">
+    </div>
+
+    <!-- Date d'expiration et CVV -->
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Date d'expiration</label>
+        <p-inputMask
+          [(ngModel)]="expiryDate"
+          name="expiryDate"
+          mask="99/99"
+          placeholder="MM/AA"
+          styleClass="w-full"
+          [disabled]="isProcessing">
+        </p-inputMask>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">CVV</label>
+        <p-inputMask
+          [(ngModel)]="cvv"
+          name="cvv"
+          mask="999"
+          placeholder="123"
+          styleClass="w-full"
+          [disabled]="isProcessing">
+        </p-inputMask>
+      </div>
+    </div>
+
+    <!-- Informations de sécurité -->
+    <!-- <div class="security-info">
+      <i class="pi pi-lock"></i>
+      <span>Paiement 100% sécurisé par SSL</span>
+    </div> -->
+
+    <!-- Boutons -->
+    <div class="form-actions">
+      <button
+        type="submit"
+        pButton
+        label="Payer {{ amount }} €"
+        icon="pi pi-check"
+        [loading]="isProcessing"
+        [disabled]="isProcessing"
+        class="btn-pay">
+      </button>
+
+      <button
+        type="button"
+        pButton
+        label="Annuler"
+        class="btn-cancel"
+        severity="secondary" 
+        [disabled]="isProcessing"
+        (click)="onCancel()">
+      </button>
+    </div>
+  </form>
+
+  <!-- PayPal -->
+  <div *ngIf="selectedMethod === 'paypal'" class="alternative-payment">
+    <div class="payment-info">
+      <i class="pi pi-paypal payment-icon paypal-icon"></i>
+      <h3>Payer avec PayPal</h3>
+      <p>Vous serez redirigé vers PayPal pour finaliser votre paiement de manière sécurisée.</p>
+    </div>
+
+    <div class="form-actions">
+      <button
+        type="button"
+        pButton
+        label="Continuer avec PayPal"
+        icon="pi pi-paypal"
+        [loading]="isProcessing"
+        [disabled]="isProcessing"
+        class="btn-paypal"
+        (click)="onSubmit()">
+      </button>
+
+      <button
+        type="button"
+        pButton
+        label="Annuler"
+        class="btn-cancel"
+        severity="secondary" 
+        [disabled]="isProcessing"
+        (click)="onCancel()">
+      </button>
+    </div>
+  </div>
+
+  <!-- Apple Pay -->
+  <div *ngIf="selectedMethod === 'applepay'" class="alternative-payment">
+    <div class="payment-info">
+      <i class="pi pi-apple payment-icon apple-icon"></i>
+      <h3>Payer avec Apple Pay</h3>
+      <p>Utilisez votre empreinte digitale ou Face ID pour un paiement rapide et sécurisé.</p>
+    </div>
