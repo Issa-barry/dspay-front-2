@@ -1,4 +1,4 @@
- .history-page {
+.history-page {
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
@@ -53,6 +53,7 @@
   margin: 0;
 }
 
+/* Search Bar */
 .search-bar {
   margin-bottom: 1.5rem;
   position: relative;
@@ -301,20 +302,9 @@
     z-index: 99;
   }
 
-  ::ng-deep .search-bar .p-input-icon-left {
-    display: block;
-    width: 100%;
-    position: relative;
-  }
-
   ::ng-deep .search-bar .p-input-icon-left > i {
-    position: absolute;
     left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #9ca3af;
     z-index: 3;
-    pointer-events: none;
   }
 
   .search-input {
@@ -323,7 +313,6 @@
     font-size: 0.9375rem;
     border: 1px solid #e5e7eb;
     background: #f9fafb;
-    width: 100%;
   }
 
   .transfers-list {

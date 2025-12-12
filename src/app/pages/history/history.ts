@@ -147,6 +147,30 @@ export class HistoryComponent implements OnInit {
         status: 'completed',
         paymentMethod: 'Carte bancaire',
         reference: 'TRF-2024-008'
+      },
+      {
+        id: 9,
+        beneficiaryName: 'Mariama SIDIBE',
+        amount: 180,
+        currency: 'EUR',
+        amountReceived: 1710000,
+        receivedCurrency: 'GNF',
+        date: new Date('2024-10-15T10:30:00'),
+        status: 'completed',
+        paymentMethod: 'Carte bancaire',
+        reference: 'TRF-2024-009'
+      },
+      {
+        id: 10,
+        beneficiaryName: 'Ibrahima SOW',
+        amount: 95,
+        currency: 'EUR',
+        amountReceived: 902500,
+        receivedCurrency: 'GNF',
+        date: new Date('2024-09-20T14:20:00'),
+        status: 'completed',
+        paymentMethod: 'PayPal',
+        reference: 'TRF-2024-010'
       }
     ];
 
@@ -172,8 +196,6 @@ export class HistoryComponent implements OnInit {
 
   viewDetails(transfer: Transfer) {
     console.log('View transfer details:', transfer);
-    // Navigation vers les détails du transfert
-    // this.router.navigate(['/transfer', transfer.id]);
   }
 
   getStatusLabel(status: string): string {
