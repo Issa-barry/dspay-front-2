@@ -1,0 +1,86 @@
+<div class="history-page card">
+  <!-- Header -->
+  <div class="page-header">
+    <button 
+      pButton 
+      icon="pi pi-arrow-left" 
+      class="p-button-text back-button"
+      (click)="goBack()">
+    </button>
+    <div class="header-content">
+      <h1 class="page-title">Historique des transferts</h1>
+      <p class="page-subtitle">Consultez tous vos transferts</p>
+    </div>
+  </div>
+
+  <!-- Search bar -->
+  <div class="search-bar">
+    <span class="p-input-icon-left">
+      <i class="pi pi-search"></i>
+      <input 
+        type="text" 
+        pInputText 
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="applyFilter()"
+        placeholder="Rechercher un transfert..."
+        class="search-input">
+    </span>
+  </div>
+
+  <!-- Transfers list -->
+  <div class="transfers-list" *ngIf="filteredTransfers.length > 0">
+    <div 
+      *ngFor="let transfer of filteredTransfers" 
+      class="transfer-item"
+      (click)="viewDetails(transfer)">
+      
+      <div class="transfer-main">
+        <div class="transfer-info">
+          <h3 class="beneficiary-name">{{ transfer.beneficiaryName }}</h3>
+          <p class="transfer-date">
+            <i class="pi pi-calendar"></i>
+            {{ formatDate(transfer.date) }}
+          </p>
+          <p class="transfer-reference">
+            <i class="pi pi-tag"></i>
+            {{ transfer.reference }}
+          </p>
+        </div>
+
+        <div class="transfer-amount">
+          <div class="amount-sent">
+            <span class="amount">{{ transfer.amount }} {{ transfer.currency }}</span>
+            <span class="label">Envoyé</span>
+          </div>
+          <i class="pi pi-arrow-right arrow-icon"></i>
+          <div class="amount-received">
+            <span class="amount">{{ formatAmount(transfer.amountReceived) }} {{ transfer.receivedCurrency }}</span>
+            <span class="label">Reçu</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="transfer-footer">
+        <div class="payment-method">
+          <i class="pi pi-credit-card"></i>
+          {{ transfer.paymentMethod }}
+        </div>
+        <p-tag 
+          [value]="getStatusLabel(transfer.status)" 
+          [severity]="getStatusSeverity(transfer.status)">
+        </p-tag>
+      </div>
+
+      <!-- Mobile chevron -->
+      <i class="pi pi-chevron-right mobile-chevron"></i>
+    </div>
+  </div>
+
+  <!-- Empty state -->
+  <div class="empty-state" *ngIf="filteredTransfers.length === 0">
+    <i class="pi pi-history empty-icon"></i>
+    <h3>Aucun transfert trouvé</h3>
+    <p *ngIf="searchQuery">Aucun résultat pour "{{ searchQuery }}"</p>
+    <p *ngIf="!searchQuery">Vous n'avez pas encore effectué de transfert</p>
+  </div>
+</div>

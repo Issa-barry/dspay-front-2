@@ -1,4 +1,4 @@
-.beneficiary-list-page {
+ .history-page {
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
@@ -53,28 +53,6 @@
   margin: 0;
 }
 
-.btn-label {
-  display: inline;
-}
-
-::ng-deep .add-btn .p-button {
-  background-color: #10b981;
-  border-color: #10b981;
-  padding: 0.75rem 1.25rem;
-  font-weight: 600;
-  font-size: 0.9375rem;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-shrink: 0;
-}
-
-::ng-deep .add-btn .p-button:hover {
-  background-color: #059669;
-  border-color: #059669;
-}
-
 .search-bar {
   margin-bottom: 1.5rem;
   position: relative;
@@ -83,6 +61,7 @@
 ::ng-deep .search-bar .p-input-icon-left {
   display: block;
   width: 100%;
+  position: relative;
 }
 
 ::ng-deep .search-bar .p-input-icon-left > i {
@@ -92,6 +71,7 @@
   transform: translateY(-50%);
   color: #9ca3af;
   z-index: 2;
+  pointer-events: none;
 }
 
 .search-input {
@@ -110,54 +90,43 @@
 }
 
 /* List layout */
-.beneficiaries-list {
+.transfers-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
-.beneficiary-item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+.transfer-item {
   background: white;
   border-radius: 12px;
   border: 1px solid #e5e7eb;
-  padding: 1rem;
+  padding: 1.25rem;
   transition: all 0.2s;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  position: relative;
 }
 
-.beneficiary-item:active {
+.transfer-item:active {
   transform: scale(0.98);
   background-color: #f9fafb;
 }
 
-.beneficiary-item:hover {
+.transfer-item:hover {
   border-color: #10b981;
   box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
 }
 
-.beneficiary-avatar {
-  width: 48px;
-  height: 48px;
-  min-width: 48px;
-  border-radius: 50%;
+.transfer-main {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 700;
-  font-size: 1.125rem;
-  text-transform: uppercase;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
-.beneficiary-info {
+.transfer-info {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
   min-width: 0;
 }
 
@@ -165,58 +134,85 @@
   font-size: 1rem;
   font-weight: 600;
   color: #111827;
-  margin: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  margin: 0 0 0.5rem 0;
 }
 
-.beneficiary-phone {
+.transfer-date,
+.transfer-reference {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: #6b7280;
+  margin: 0.25rem 0;
+}
+
+.transfer-date i,
+.transfer-reference i {
+  color: #10b981;
+  font-size: 0.75rem;
+}
+
+.transfer-amount {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.amount-sent,
+.amount-received {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.amount {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.label {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.arrow-icon {
+  color: #10b981;
+  font-size: 1rem;
+}
+
+.transfer-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.75rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.payment-method {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   font-size: 0.875rem;
   color: #6b7280;
-  margin: 0;
 }
 
-.beneficiary-phone i {
+.payment-method i {
   color: #10b981;
-  font-size: 0.875rem;
-}
-
-.beneficiary-actions {
-  display: flex;
-  gap: 0.5rem;
-  flex-shrink: 0;
-}
-
-::ng-deep .beneficiary-actions .p-button {
-  width: 2.5rem;
-  height: 2.5rem;
-}
-
-::ng-deep .beneficiary-actions .p-button-success {
-  color: #10b981;
-}
-
-::ng-deep .beneficiary-actions .p-button-success:hover {
-  background-color: #ecfdf5;
-}
-
-::ng-deep .beneficiary-actions .p-button-danger {
-  color: #ef4444;
-}
-
-::ng-deep .beneficiary-actions .p-button-danger:hover {
-  background-color: #fef2f2;
 }
 
 .mobile-chevron {
   display: none;
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
   color: #d1d5db;
   font-size: 1.125rem;
-  flex-shrink: 0;
 }
 
 .empty-state {
@@ -249,7 +245,7 @@
 
 /* Responsive - Mobile optimization */
 @media (max-width: 768px) {
-  .beneficiary-list-page {
+  .history-page {
     padding: 0;
     background: white;
     min-height: 100vh;
@@ -291,26 +287,8 @@
     text-overflow: ellipsis;
   }
 
-  /* Cacher le sous-titre sur mobile */
   .page-subtitle {
     display: none;
-  }
-
-  .btn-label {
-    display: none;
-  }
-
-  ::ng-deep .add-btn .p-button {
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    border-radius: 50%;
-    justify-content: center;
-  }
-
-  ::ng-deep .add-btn .p-button .p-button-icon {
-    margin: 0;
-    font-size: 1.25rem;
   }
 
   .search-bar {
@@ -323,25 +301,37 @@
     z-index: 99;
   }
 
+  ::ng-deep .search-bar .p-input-icon-left {
+    display: block;
+    width: 100%;
+    position: relative;
+  }
+
+  ::ng-deep .search-bar .p-input-icon-left > i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    z-index: 3;
+    pointer-events: none;
+  }
+
   .search-input {
-    padding: 0.75rem 1rem 0.75rem 2.75rem;
+    padding: 0.75rem 1rem 0.75rem 2.75rem !important;
     border-radius: 10px;
     font-size: 0.9375rem;
     border: 1px solid #e5e7eb;
     background: #f9fafb;
+    width: 100%;
   }
 
-  ::ng-deep .search-bar .p-input-icon-left > i {
-    left: 0.875rem;
-  }
-
-  .beneficiaries-list {
+  .transfers-list {
     padding: 0;
     gap: 0;
-    background: white;
   }
 
-  .beneficiary-item {
+  .transfer-item {
     padding: 1rem;
     border-radius: 0;
     border: none;
@@ -349,37 +339,51 @@
     box-shadow: none;
   }
 
-  .beneficiary-item:last-child {
+  .transfer-item:last-child {
     border-bottom: none;
   }
 
-  .beneficiary-item:hover {
+  .transfer-item:hover {
     transform: none;
     box-shadow: none;
     background-color: #fafafa;
   }
 
-  .beneficiary-avatar {
-    width: 44px;
-    height: 44px;
-    min-width: 44px;
-    font-size: 1rem;
+  .transfer-main {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .transfer-amount {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .amount {
+    font-size: 0.9375rem;
+  }
+
+  .label {
+    font-size: 0.6875rem;
+  }
+
+  .arrow-icon {
+    font-size: 0.875rem;
   }
 
   .beneficiary-name {
     font-size: 0.9375rem;
   }
 
-  .beneficiary-phone {
+  .transfer-date,
+  .transfer-reference {
+    font-size: 0.75rem;
+  }
+
+  .payment-method {
     font-size: 0.8125rem;
   }
 
-  /* Hide desktop actions on mobile */
-  .desktop-only {
-    display: none !important;
-  }
-
-  /* Show mobile chevron */
   .mobile-chevron {
     display: block;
   }
@@ -417,119 +421,7 @@
     top: 54px;
   }
 
-  .beneficiary-item {
+  .transfer-item {
     padding: 0.875rem 1rem;
-    gap: 0.875rem;
-  }
-}
-
-
-
-
-// ICONE DE RECHERE
-.search-bar {
-  margin-bottom: 1.5rem;
-  position: relative;
-}
-
-::ng-deep .search-bar .p-input-icon-left {
-  display: block;
-  width: 100%;
-  position: relative;
-}
-
-::ng-deep .search-bar .p-input-icon-left > i {
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #9ca3af;
-  z-index: 2;
-}
-
-.search-input {
-  width: 100%;
-  padding: 0.875rem 1rem 0.875rem 3rem;
-  border-radius: 12px;
-  border: 2px solid #e5e7eb;
-  font-size: 1rem;
-  background: white;
-}
-
-.search-input:focus {
-  border-color: #10b981;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
-  outline: none;
-}
-
-/* ... reste du CSS ... */
-
-/* Responsive - Mobile optimization */
-@media (max-width: 768px) {
-  /* ... autres styles mobile ... */
-
-  .search-bar {
-    padding: 0.75rem 1rem;
-    margin-bottom: 0;
-    background: white;
-    border-bottom: 1px solid #f0f0f0;
-    position: sticky;
-    top: 60px;
-    z-index: 99;
-  }
-
-  ::ng-deep .search-bar .p-input-icon-left {
-    display: block;
-    width: 100%;
-    position: relative;
-  }
-
-  ::ng-deep .search-bar .p-input-icon-left > i {
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #9ca3af;
-    z-index: 3;
-    pointer-events: none;
-  }
-
-  .search-input {
-    padding: 0.75rem 1rem 0.75rem 2.75rem !important;
-    border-radius: 10px;
-    font-size: 0.9375rem;
-    border: 1px solid #e5e7eb;
-    background: #f9fafb;
-    width: 100%;
-  }
-
-  /* ... reste du CSS mobile ... */
-}
-
-@media (max-width: 640px) {
-  .page-header {
-    padding: 0.625rem 0.875rem;
-  }
-
-  .page-title {
-    font-size: 1rem;
-  }
-
-  .search-bar {
-    padding: 0.625rem 1rem;
-    top: 54px;
-  }
-
-  ::ng-deep .search-bar .p-input-icon-left > i {
-    left: 1rem;
-  }
-
-  .search-input {
-    padding: 0.75rem 1rem 0.75rem 2.75rem !important;
-  }
-
-  .beneficiary-item {
-    padding: 0.875rem 1rem;
-    gap: 0.875rem;
   }
 }
