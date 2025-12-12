@@ -216,6 +216,43 @@
   font-size: 1.125rem;
 }
 
+/* Load More Button */
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.load-more-btn {
+  min-width: 200px;
+}
+
+::ng-deep .load-more-btn .p-button {
+  border-color: #10b981;
+  color: #10b981;
+  font-weight: 600;
+  padding: 0.875rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  border-width: 2px;
+  transition: all 0.2s;
+}
+
+::ng-deep .load-more-btn .p-button:hover {
+  background-color: #ecfdf5;
+  border-color: #059669;
+  color: #059669;
+}
+
+::ng-deep .load-more-btn .p-button:active {
+  transform: scale(0.98);
+}
+
+::ng-deep .load-more-btn .p-button .p-button-icon {
+  font-size: 1.125rem;
+}
+
+/* Empty State */
 .empty-state {
   text-align: center;
   padding: 3rem 1.5rem;
@@ -329,7 +366,7 @@
   }
 
   .transfer-item:last-child {
-    border-bottom: none;
+    border-bottom: 1px solid #f0f0f0;
   }
 
   .transfer-item:hover {
@@ -377,6 +414,24 @@
     display: block;
   }
 
+  .load-more-container {
+    padding: 1.5rem 1rem;
+    background: white;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .load-more-btn {
+    width: 100%;
+    min-width: auto;
+  }
+
+  ::ng-deep .load-more-btn .p-button {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-size: 0.9375rem;
+    border-radius: 8px;
+  }
+
   .empty-state {
     margin: 2rem 1rem;
     padding: 2.5rem 1.25rem;
@@ -412,5 +467,9 @@
 
   .transfer-item {
     padding: 0.875rem 1rem;
+  }
+
+  .load-more-container {
+    padding: 1.25rem 1rem;
   }
 }

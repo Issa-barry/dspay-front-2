@@ -28,9 +28,9 @@
   </div>
 
   <!-- Transfers list -->
-  <div class="transfers-list" *ngIf="filteredTransfers.length > 0">
+  <div class="transfers-list" *ngIf="displayedTransfers.length > 0">
     <div 
-      *ngFor="let transfer of filteredTransfers" 
+      *ngFor="let transfer of displayedTransfers" 
       class="transfer-item"
       (click)="viewDetails(transfer)">
       
@@ -62,7 +62,7 @@
 
       <div class="transfer-footer">
         <div class="payment-method">
-          <i class="pi pi-credit-card"></i>
+          <i class="pi pi-mobile"></i>
           {{ transfer.paymentMethod }}
         </div>
         <p-tag 
@@ -76,8 +76,19 @@
     </div>
   </div>
 
+  <!-- Load More Button -->
+  <div class="load-more-container" *ngIf="hasMore && displayedTransfers.length > 0">
+    <button 
+      pButton 
+      label="Charger plus" 
+      icon="pi pi-angle-down"
+      class="p-button-outlined load-more-btn"
+      (click)="loadMore()">
+    </button>
+  </div>
+
   <!-- Empty state -->
-  <div class="empty-state" *ngIf="filteredTransfers.length === 0">
+  <div class="empty-state" *ngIf="displayedTransfers.length === 0">
     <i class="pi pi-history empty-icon"></i>
     <h3>Aucun transfert trouvé</h3>
     <p *ngIf="searchQuery">Aucun résultat pour "{{ searchQuery }}"</p>
