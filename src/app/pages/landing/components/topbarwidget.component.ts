@@ -27,7 +27,7 @@ import {AppFloatingConfigurator} from "@/layout/component/app.floatingconfigurat
                     />
                 </g>
             </svg>
-            <span class="text-surface-900 dark:text-surface-0 font-medium text-2xl leading-normal mr-20">SAKAI</span>
+            <span class="text-surface-900 dark:text-surface-0 font-medium text-xs sm:text-2xl leading-normal mr-20">DIAMA MONEY</span>
         </a>
 
         <a pButton [text]="true" severity="secondary" [rounded]="true" pRipple class="lg:hidden!" pStyleClass="@next" enterFromClass="hidden" leaveToClass="hidden" [hideOnOutsideClick]="true">
@@ -50,7 +50,7 @@ import {AppFloatingConfigurator} from "@/layout/component/app.floatingconfigurat
             </ul>
             <div class="flex border-t lg:border-t-0 border-surface py-4 lg:py-0 mt-4 lg:mt-0 gap-2">
                 <button pButton pRipple label="Connexion" routerLink="/auth/login" [rounded]="true" [text]="true"></button>
-                <button pButton pRipple label="Créer un compte" routerLink="/auth/login" [rounded]="true"></button>
+                <button pButton pRipple label="Créer un compte" routerLink="/auth/register" [rounded]="true"></button>
                 <app-floating-configurator [float]="false"/>
             </div>
         </div> `
