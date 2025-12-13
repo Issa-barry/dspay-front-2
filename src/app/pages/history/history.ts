@@ -339,6 +339,7 @@ export class HistoryComponent implements OnInit {
 
   viewDetails(transfer: Transfer) {
     console.log('View transfer details:', transfer);
+    this.router.navigate(['/app/detail', transfer.id]);
   }
 
   getStatusLabel(status: string): string {
