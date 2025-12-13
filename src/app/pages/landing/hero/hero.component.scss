@@ -27,15 +27,17 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4rem;
-  align-items: center;
+  align-items: start; // Changé de 'center' à 'start'
   margin-bottom: 4rem;
 }
 
+// Left Side
 // Left Side
 .hero-left {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  padding-top: 1rem; // Ajouter un peu d'espace en haut
 }
 
 .hero-badge {
@@ -276,11 +278,12 @@
 }
 
 // Right Side - Visual
+// Right Side - Formulaire
 .hero-right {
   position: relative;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; // Changé de 'center' à 'flex-start'
 }
 
 .visual-container {
@@ -480,3 +483,4 @@
     align-items: center;
   }
 }
+

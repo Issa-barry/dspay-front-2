@@ -1,0 +1,269 @@
+.hero-send-form {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+
+  .form-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    border: 2px solid #e5e7eb;
+
+    @media (max-width: 768px) {
+      padding: 1.5rem;
+      border-radius: 20px;
+    }
+  }
+
+  .form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+
+    .form-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #111827;
+      margin: 0;
+
+      @media (max-width: 768px) {
+        font-size: 1.125rem;
+      }
+    }
+
+    .exchange-rate-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #ecfdf5;
+      color: #10b981;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.875rem;
+      font-weight: 600;
+
+      i {
+        font-size: 1rem;
+      }
+
+      @media (max-width: 768px) {
+        font-size: 0.875rem;
+        padding: 0.4rem 0.875rem;
+      }
+    }
+  }
+
+  .form-body {
+    .form-group {
+      margin-bottom: 1.5rem;
+
+      label {
+        display: block;
+        color: #6b7280;
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .input-wrapper {
+        position: relative;
+        background: #f9fafb;
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 1rem 1.5rem;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        &:focus-within {
+          border-color: #10b981;
+          background: white;
+          box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .currency-symbol {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: #10b981;
+        }
+
+        ::ng-deep .p-inputnumber {
+          flex: 1;
+
+          .p-inputnumber-input {
+            border: none !important;
+            outline: none !important;
+            padding: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            background: transparent;
+            width: 100%;
+            box-shadow: none !important;
+
+            &:focus {
+              box-shadow: none !important;
+              outline: none !important;
+              border: none !important;
+            }
+
+            &:hover {
+              border: none !important;
+            }
+
+            &::placeholder {
+              color: #d1d5db;
+            }
+          }
+        }
+
+        .currency-code {
+          font-size: 0.875rem;
+          font-weight: 600;
+          color: #6b7280;
+          text-transform: uppercase;
+        }
+
+        &.amount-received {
+          background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+          border-color: #10b981;
+          cursor: default;
+
+          .amount-value {
+            flex: 1;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #10b981;
+          }
+
+          .currency-code {
+            color: #059669;
+          }
+        }
+      }
+    }
+
+    .conversion-icon {
+      display: flex;
+      justify-content: center;
+      margin: -0.5rem 0;
+
+      .icon-circle {
+        width: 40px;
+        height: 40px;
+        background: #10b981;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        i {
+          color: white;
+          font-size: 1.25rem;
+        }
+      }
+    }
+
+    .transfer-button {
+      width: 100%;
+      padding: 1rem 2rem;
+      font-size: 1.125rem;
+      font-weight: 700;
+      background: #10b981;
+      border: none;
+      border-radius: 12px;
+      margin-top: 1.5rem;
+      transition: all 0.2s;
+      cursor: pointer;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover:not(:disabled) {
+        background: #059669;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+      }
+
+      &:active:not(:disabled) {
+        transform: translateY(0);
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      ::ng-deep .p-button-label {
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 1024px) {
+  .hero-send-form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-send-form {
+    .form-card {
+      padding: 1.25rem;
+    }
+
+    .form-header {
+      flex-direction: column;
+      align-items: flex-start;
+
+      .form-title {
+        font-size: 1.125rem;
+      }
+
+      .exchange-rate-badge {
+        align-self: flex-end;
+      }
+    }
+
+    .form-body {
+      .form-group {
+        .input-wrapper {
+          padding: 0.875rem 1.25rem;
+
+          .currency-symbol {
+            font-size: 1.25rem;
+          }
+
+          ::ng-deep .p-inputnumber .p-inputnumber-input {
+            font-size: 1.25rem;
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+          }
+
+          &.amount-received {
+            .amount-value {
+              font-size: 1.5rem;
+            }
+          }
+        }
+      }
+
+      .transfer-button {
+        padding: 0.875rem 1.5rem;
+        font-size: 1rem;
+      }
+    }
+  }
+}

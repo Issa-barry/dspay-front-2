@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
+import { HeroSendForm } from '../components/hero-send-form/hero-send-form';
 
 @Component({
   selector: 'app-hero',
@@ -12,7 +13,8 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     ButtonModule,
     InputTextModule,
-    FormsModule
+    FormsModule,
+    HeroSendForm
   ],
   templateUrl: './hero.component.html',
   styleUrl: './hero.component.scss'
