@@ -68,7 +68,7 @@ export class HeroSendForm implements OnInit {
 
   startTransfer(): void {
     if (this.amountToSend && this.amountToSend > 0) {
-      this.router.navigate(['/transfer/payment-method'], {
+      this.router.navigate(['/auth/login'], {
         queryParams: {
           amount: this.amountToSend,
           received: this.amountReceived
