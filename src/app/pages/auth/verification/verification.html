@@ -74,10 +74,10 @@
                     <div
                         class="flex justify-between w-full items-center mb-6 gap-4"
                     >
-                        <p-inputNumber [(ngModel)]="d1" inputStyleClass="text-center w-12" [maxlength]="1" (onInput)="focusOnNext(input2)"></p-inputNumber>
-                        <p-inputNumber [(ngModel)]="d2" #input2 inputStyleClass="text-center w-12" [maxlength]="1" (onInput)="focusOnNext(input3)"></p-inputNumber>
-                        <p-inputNumber [(ngModel)]="d3" #input3 inputStyleClass="text-center w-12" [maxlength]="1" (onInput)="focusOnNext(input4)"></p-inputNumber>
-                        <p-inputNumber [(ngModel)]="d4" #input4 inputStyleClass="text-center w-12" [maxlength]="1"></p-inputNumber>
+                        <p-inputNumber data-cy="otp-1" [(ngModel)]="d1" inputStyleClass="text-center w-12" [maxlength]="1" (onInput)="focusOnNext(input2)"></p-inputNumber>
+                        <p-inputNumber data-cy="otp-2" [(ngModel)]="d2" #input2 inputStyleClass="text-center w-12" [maxlength]="1" (onInput)="focusOnNext(input3)"></p-inputNumber>
+                        <p-inputNumber data-cy="otp-3" [(ngModel)]="d3" #input3 inputStyleClass="text-center w-12" [maxlength]="1" (onInput)="focusOnNext(input4)"></p-inputNumber>
+                        <p-inputNumber data-cy="otp-4" [(ngModel)]="d4" #input4 inputStyleClass="text-center w-12" [maxlength]="1"></p-inputNumber>
                     </div>
 
                     <div class="flex flex-wrap gap-2 justify-between">
@@ -88,6 +88,7 @@
                             class="flex-auto"
                             (click)="verify()"
                             [disabled]="!isCodeComplete"
+                            data-cy="btn-verify"
                         ></button>
                     </div>
                 </div>
