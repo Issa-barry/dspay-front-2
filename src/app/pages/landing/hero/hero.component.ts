@@ -1,66 +1,75 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, AfterViewInit, HostListener, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { FormsModule } from '@angular/forms';
 import { HeroSendForm } from '../components/hero-send-form/hero-send-form';
+
+interface Stat {
+  value: string;
+  label: string;
+}
+
+interface Badge {
+  icon: string;
+  text: string;
+}
 
 @Component({
   selector: 'app-hero',
   standalone: true,
-  imports: [
-    CommonModule,
-    ButtonModule,
-    InputTextModule,
-    FormsModule,
-    HeroSendForm
-  ],
+  imports: [CommonModule, HeroSendForm],
   templateUrl: './hero.component.html',
   styleUrl: './hero.component.scss'
 })
-export class HeroComponent {
-  amount: string = '';
-  exchangeRate: number = 9500;
-  
-  stats = [
+export class HeroComponent implements OnInit, AfterViewInit {
+  @ViewChild('statsBar') statsBar!: ElementRef;
+
+  stats: Stat[] = [
     { value: '50K+', label: 'Transferts réussis' },
     { value: '30+', label: 'Pays desservis' },
     { value: '24/7', label: 'Support client' },
     { value: '< 30min', label: 'Temps de transfert' }
   ];
 
-  features = [
-    { icon: 'pi-bolt', text: 'Transfert instantané' },
-    { icon: 'pi-shield', text: 'Sécurisé à 100%' },
-    { icon: 'pi-money-bill', text: 'Meilleur taux' },
-    { icon: 'pi-mobile', text: 'Dépôt direct sur wallet' }
-  ];
-
-  wallets = [
-    { name: 'Orange Money', color: '#FF6B00' },
-    { name: 'MTN Mobile Money', color: '#FFCC00' },
-    { name: 'KS-PAY', color: '#0066CC' },
-    { name: 'Soutrat Money', color: '#10b981' }
+  badges: Badge[] = [
+    { icon: 'pi-shield', text: 'Transfert instantané' },
+    { icon: 'pi-lock', text: 'Données cryptées' },
+    { icon: 'pi-verified', text: 'Dépôt direct sur wallet' }
   ];
 
   constructor(private router: Router) {}
 
-  get convertedAmount(): string {
-    const euros = parseFloat(this.amount) || 0;
-    const gnf = euros * this.exchangeRate;
-    return new Intl.NumberFormat('fr-FR').format(gnf);
+  ngOnInit(): void {}
+
+  ngAfterViewInit(): void {
+    // Vérifier la visibilité initiale au cas où la section est déjà visible
+    this.checkStatsVisibility();
   }
 
-  startTransfer() {
-    this.router.navigate(['/auth/register']);
+  @HostListener('window:scroll', [])
+  onWindowScroll(): void {
+    this.checkStatsVisibility();
   }
 
-  calculateTransfer() {
-    if (this.amount) {
-      this.router.navigate(['/dashboard'], { 
-        queryParams: { amount: this.amount } 
-      });
+  private checkStatsVisibility(): void {
+    if (!this.statsBar) return;
+
+    const statsElement = this.statsBar.nativeElement;
+    const rect = statsElement.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+
+    // Ajouter la classe 'visible' si l'élément est dans le viewport (80% de visibilité)
+    if (rect.top <= windowHeight * 0.8) {
+      statsElement.classList.add('visible');
     }
   }
+
+  // Ajouter ces méthodes dans la classe HeroComponent
+
+trackByStat(index: number, stat: Stat): string {
+  return stat.value;
+}
+
+trackByBadge(index: number, badge: Badge): string {
+  return badge.icon;
+}
 }

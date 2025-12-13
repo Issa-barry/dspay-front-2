@@ -9,7 +9,7 @@
     </div>
 
     <div class="form-body">
-      <!-- Amount to Send -->
+      <!-- Amount to Send (EUR) -->
       <div class="form-group">
         <label for="amountToSend">Montant à envoyer</label>
         <div class="input-wrapper amount-send">
@@ -23,7 +23,7 @@
             [min]="1"
             [max]="10000"
             placeholder="0"
-            (onInput)="onAmountChange()"
+            (onInput)="onEurChange()"
             styleClass="amount-input"
           ></p-inputNumber>
           <span class="currency-code">EUR</span>
@@ -33,15 +33,28 @@
       <!-- Conversion Icon -->
       <div class="conversion-icon">
         <div class="icon-circle">
-          <i class="pi pi-arrow-down"></i>
+          <i class="pi pi-arrows-v"></i>
         </div>
       </div>
 
-      <!-- Amount Received -->
+      <!-- Amount Received (GNF) - Editable with formatting -->
       <div class="form-group">
         <label for="amountReceived">Montant reçu</label>
-        <div class="input-wrapper amount-received">
-          <span class="amount-value">{{ formatGNFAmount(amountReceived) }}</span>
+        <div class="input-wrapper amount-received editable">
+          <p-inputNumber
+            [(ngModel)]="amountReceived"
+            inputId="amountReceived"
+            mode="decimal"
+            [minFractionDigits]="0"
+            [maxFractionDigits]="0"
+            [min]="1"
+            [max]="100000000"
+            placeholder="0"
+            (onInput)="onGnfChange()"
+            styleClass="amount-input-gnf"
+            [useGrouping]="true"
+            [locale]="'fr-FR'"
+          ></p-inputNumber>
           <span class="currency-code">GNF</span>
         </div>
       </div>
