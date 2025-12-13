@@ -151,6 +151,6 @@ export class BeneficiaryForm implements OnInit {
 }
 
   cancel() {
-    this.router.navigate(['/beneficiary']);
+    this.router.navigate(['/app/beneficiary']);
   }
 }

@@ -1,0 +1,82 @@
+<div class="faq-page">
+  <!-- Header -->
+  <div class="page-header">
+    <button 
+      pButton 
+      icon="pi pi-arrow-left" 
+      class="p-button-text back-button"
+      (click)="goBack()">
+    </button>
+    <div class="header-content">
+      <h1 class="page-title">Questions fréquentes</h1>
+      <p class="page-subtitle">Trouvez rapidement des réponses à vos questions</p>
+    </div>
+  </div>
+
+  <!-- Search bar -->
+  <div class="search-bar">
+    <span class="p-input-icon-left">
+      <i class="pi pi-search"></i>
+      <input 
+        type="text" 
+        pInputText 
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="applyFilters()"
+        placeholder="Rechercher une question..."
+        class="search-input">
+    </span>
+  </div>
+
+  <!-- Categories -->
+  <div class="categories">
+    <button
+      *ngFor="let category of categories"
+      class="category-btn"
+      [class.active]="selectedCategory === category.name"
+      (click)="selectCategory(category.name)">
+      <i class="pi {{ category.icon }}"></i>
+      <span class="category-name">{{ getCategoryLabel(category.name) }}</span>
+      <span class="category-count">{{ category.count }}</span>
+    </button>
+  </div>
+
+  <!-- FAQ Accordion -->
+  <!-- <div class="faq-content" *ngIf="filteredFaqs.length > 0">
+    <p-accordion [multiple]="true">
+      <p-accordionTab *ngFor="let faq of filteredFaqs" [header]="faq.question">
+        <div class="faq-answer">
+          <span class="category-badge">{{ faq.category }}</span>
+          <p>{{ faq.answer }}</p>
+        </div>
+      </p-accordionTab>
+    </p-accordion>
+  </div> -->
+
+  <!-- Empty state -->
+  <div class="empty-state" *ngIf="filteredFaqs.length === 0">
+    <i class="pi pi-question-circle empty-icon"></i>
+    <h3>Aucune question trouvée</h3>
+    <p *ngIf="searchQuery">Aucun résultat pour "{{ searchQuery }}"</p>
+    <p *ngIf="!searchQuery">Aucune question dans cette catégorie</p>
+    <button 
+      pButton 
+      label="Réinitialiser" 
+      icon="pi pi-refresh"
+      class="p-button-outlined"
+      (click)="searchQuery = ''; selectedCategory = 'all'; applyFilters()">
+    </button>
+  </div>
+
+  <!-- Contact section -->
+  <div class="contact-section">
+    <div class="contact-card">
+      <i class="pi pi-question-circle contact-icon"></i>
+      <h3>Vous ne trouvez pas de réponse ?</h3>
+      <p>Notre équipe est là pour vous aider</p>
+      <div class="contact-buttons">
+        <button pButton label="Nous contacter" icon="pi pi-envelope" class="p-button-outlined"></button>
+        <button pButton label="Chat en direct" icon="pi pi-comments" class="p-button-success"></button>
+      </div>
+    </div>
+  </div>
+</div>

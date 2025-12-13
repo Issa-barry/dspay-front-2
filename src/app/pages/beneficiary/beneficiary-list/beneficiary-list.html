@@ -1,32 +1,38 @@
-<div class="beneficiary-list-page">
-  <div class="page-header">
-    <div class="header-content">
-      <h1 class="page-title">Liste bénéficiaires</h1>
-      <p class="page-subtitle">Gérez vos bénéficiaires pour vos transferts</p>
-    </div>
-    <button 
-      pButton 
-      label="Ajouter un bénéficiaire" 
-      icon="pi pi-plus"
-      class="add-btn"
-      (click)="addNew()">
-    </button>
+<div class="beneficiary-list-page card">
+  <!-- Header mobile-friendly -->
+ <div class="page-header">
+  <button 
+    pButton 
+    icon="pi pi-arrow-left" 
+    class="p-button-text back-button"
+    (click)="goBack()">
+  </button>
+  <div class="header-content">
+    <h1 class="page-title">Mes Bénéficiaires</h1>
+    <p class="page-subtitle">Gérez vos bénéficiaires pour vos transferts</p>
   </div>
+  <button 
+    pButton 
+    icon="pi pi-plus"
+    class="add-btn"
+    (click)="addNew()">
+    <span class="btn-label">Ajouter</span>
+  </button>
+</div>
 
   <!-- Search bar -->
-<!-- Search bar -->
-<div class="search-bar">
-  <span class="p-input-icon-left">
-    <i class="pi pi-search"></i>
-    <input 
-      type="text" 
-      pInputText 
-      [(ngModel)]="searchQuery"
-      (ngModelChange)="applyFilter()"
-      placeholder="Search by name or phone..."
-      class="search-input">
-  </span>
-</div>
+  <div class="search-bar">
+    <span class="p-input-icon-left">
+      <i class="pi pi-search"></i>
+      <input 
+        type="text" 
+        pInputText 
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="applyFilter()"
+        placeholder="Rechercher..."
+        class="search-input">
+    </span>
+  </div>
 
   <!-- Beneficiaries list -->
   <div class="beneficiaries-list" *ngIf="filteredBeneficiaries.length > 0">
@@ -53,16 +59,16 @@
           pButton 
           icon="pi pi-pencil" 
           class="p-button-rounded p-button-text p-button-success"
-          (click)="editBeneficiary(beneficiary.id)"
-          pTooltip="Edit"
+          (click)="editBeneficiary(beneficiary.id, $event)"
+          pTooltip="Modifier"
           tooltipPosition="top">
         </button>
         <button 
           pButton 
           icon="pi pi-trash" 
           class="p-button-rounded p-button-text p-button-danger"
-          (click)="deleteBeneficiary(beneficiary)"
-          pTooltip="Delete"
+          (click)="deleteBeneficiary(beneficiary, $event)"
+          pTooltip="Supprimer"
           tooltipPosition="top">
         </button>
       </div>
@@ -75,12 +81,12 @@
   <!-- Empty state -->
   <div class="empty-state" *ngIf="filteredBeneficiaries.length === 0">
     <i class="pi pi-users empty-icon"></i>
-    <h3>No beneficiaries found</h3>
-    <p *ngIf="searchQuery">No results for "{{ searchQuery }}"</p>
-    <p *ngIf="!searchQuery">Start by adding your first beneficiary</p>
+    <h3>Aucun bénéficiaire</h3>
+    <p *ngIf="searchQuery">Aucun résultat pour "{{ searchQuery }}"</p>
+    <p *ngIf="!searchQuery">Ajoutez votre premier bénéficiaire</p>
     <button 
       pButton 
-      label="Add Beneficiary" 
+      label="Ajouter un bénéficiaire" 
       icon="pi pi-plus"
       (click)="addNew()">
     </button>
