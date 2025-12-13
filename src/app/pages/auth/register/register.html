@@ -1,4 +1,4 @@
-<app-floating-configurator />
+<!-- <app-floating-configurator /> -->
 <div class="bg-surface-50 dark:bg-surface-950 min-h-[100dvh] overflow-hidden">
     <!-- Mobile: Plein écran, Desktop: Centré avec card -->
     <div class="h-[100dvh] flex flex-col sm:items-center sm:justify-center w-full sm:px-4">
@@ -6,12 +6,22 @@
             <div class="mobile-app-content bg-surface-0 dark:bg-surface-900 h-full sm:rounded-[53px] flex flex-col">
                 
                 <!-- Header - Sticky on mobile -->
-                <div class="mobile-header pt-safe px-6 py-6 sm:py-10 text-center border-b sm:border-0 border-surface-200 dark:border-surface-700" [routerLink]="['/']" routerLinkActive="router-link-active" >
-                    <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="mb-4 w-14 sm:w-16 mx-auto">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M17.1637 19.2467C17.1566 19.4033 17.1529 19.561 17.1529 19.7194C17.1529 25.3503 21.7203 29.915 27.3546 29.915C32.9887 29.915 37.5561 25.3503 37.5561 19.7194C37.5561 19.5572 37.5524 19.3959 37.5449 19.2355C38.5617 19.0801 39.5759 18.9013 40.5867 18.6994L40.6926 18.6782C40.7191 19.0218 40.7326 19.369 40.7326 19.7194C40.7326 27.1036 34.743 33.0896 27.3546 33.0896C19.966 33.0896 13.9765 27.1036 13.9765 19.7194C13.9765 19.374 13.9896 19.0316 14.0154 18.6927L14.0486 18.6994C15.0837 18.9062 16.1223 19.0886 17.1637 19.2467ZM33.3284 11.4538C31.6493 10.2396 29.5855 9.52381 27.3546 9.52381C25.1195 9.52381 23.0524 10.2421 21.3717 11.4603C20.0078 11.3232 18.6475 11.1387 17.2933 10.907C19.7453 8.11308 23.3438 6.34921 27.3546 6.34921C31.36 6.34921 34.9543 8.10844 37.4061 10.896C36.0521 11.1292 34.692 11.3152 33.3284 11.4538ZM43.826 18.0518C43.881 18.6003 43.9091 19.1566 43.9091 19.7194C43.9091 28.8568 36.4973 36.2642 27.3546 36.2642C18.2117 36.2642 10.8 28.8568 10.8 19.7194C10.8 19.1615 10.8276 18.61 10.8816 18.0663L7.75383 17.4411C7.66775 18.1886 7.62354 18.9488 7.62354 19.7194C7.62354 30.6102 16.4574 39.4388 27.3546 39.4388C38.2517 39.4388 47.0855 30.6102 47.0855 19.7194C47.0855 18.9439 47.0407 18.1789 46.9536 17.4267L43.826 18.0518ZM44.2613 9.54743L40.9084 10.2176C37.9134 5.95821 32.9593 3.1746 27.3546 3.1746C21.7442 3.1746 16.7856 5.96385 13.7915 10.2305L10.4399 9.56057C13.892 3.83178 20.1756 0 27.3546 0C34.5281 0 40.8075 3.82591 44.2613 9.54743Z" fill="var(--primary-color)" />
-                    </svg>
-                    <h1 class="text-surface-900 dark:text-surface-0 text-2xl font-bold mb-2">DIAMA-MONEY</h1>
-                    <p class="text-muted-color text-sm">Créer votre compte</p>
+                 <div class="mobile-header pt-safe px-6 py-6 sm:py-10 text-center border-b sm:border-0 border-surface-200 dark:border-surface-700">
+                    <!-- Bouton retour mobile uniquement -->
+                    <button 
+                        *ngIf="currentStep > 0"
+                        (click)="previousStep(); $event.stopPropagation()"
+                        class="mobile-back-button sm:hidden absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-surface-100 dark:bg-surface-800 text-surface-700 dark:text-surface-200">
+                        <i class="pi pi-arrow-left"></i>
+                    </button>
+
+                    <div [routerLink]="currentStep === 0 ? ['/'] : null" [class.cursor-pointer]="currentStep === 0">
+                        <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="mb-4 w-14 sm:w-16 mx-auto">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M17.1637 19.2467C17.1566 19.4033 17.1529 19.561 17.1529 19.7194C17.1529 25.3503 21.7203 29.915 27.3546 29.915C32.9887 29.915 37.5561 25.3503 37.5561 19.7194C37.5561 19.5572 37.5524 19.3959 37.5449 19.2355C38.5617 19.0801 39.5759 18.9013 40.5867 18.6994L40.6926 18.6782C40.7191 19.0218 40.7326 19.369 40.7326 19.7194C40.7326 27.1036 34.743 33.0896 27.3546 33.0896C19.966 33.0896 13.9765 27.1036 13.9765 19.7194C13.9765 19.374 13.9896 19.0316 14.0154 18.6927L14.0486 18.6994C15.0837 18.9062 16.1223 19.0886 17.1637 19.2467ZM33.3284 11.4538C31.6493 10.2396 29.5855 9.52381 27.3546 9.52381C25.1195 9.52381 23.0524 10.2421 21.3717 11.4603C20.0078 11.3232 18.6475 11.1387 17.2933 10.907C19.7453 8.11308 23.3438 6.34921 27.3546 6.34921C31.36 6.34921 34.9543 8.10844 37.4061 10.896C36.0521 11.1292 34.692 11.3152 33.3284 11.4538ZM43.826 18.0518C43.881 18.6003 43.9091 19.1566 43.9091 19.7194C43.9091 28.8568 36.4973 36.2642 27.3546 36.2642C18.2117 36.2642 10.8 28.8568 10.8 19.7194C10.8 19.1615 10.8276 18.61 10.8816 18.0663L7.75383 17.4411C7.66775 18.1886 7.62354 18.9488 7.62354 19.7194C7.62354 30.6102 16.4574 39.4388 27.3546 39.4388C38.2517 39.4388 47.0855 30.6102 47.0855 19.7194C47.0855 18.9439 47.0407 18.1789 46.9536 17.4267L43.826 18.0518ZM44.2613 9.54743L40.9084 10.2176C37.9134 5.95821 32.9593 3.1746 27.3546 3.1746C21.7442 3.1746 16.7856 5.96385 13.7915 10.2305L10.4399 9.56057C13.892 3.83178 20.1756 0 27.3546 0C34.5281 0 40.8075 3.82591 44.2613 9.54743Z" fill="var(--primary-color)" />
+                        </svg>
+                        <h1 class="text-surface-900 dark:text-surface-0 text-2xl font-bold mb-2">DIAMA-MONEY</h1>
+                        <p class="text-muted-color text-sm">Créer votre compte</p>
+                    </div>
                 </div>
 
                 <!-- Content - Scrollable on mobile -->
@@ -27,23 +37,23 @@
                                 [(ngModel)]="selectedCountry" 
                                 optionLabel="dialCode"
                                 placeholder="+XXX"
-                                styleClass="w-28 sm:w-36"
+                                [style]="{'width': '120px'}"
                                 inputStyleClass="h-14">
                                 <ng-template pTemplate="selectedItem">
-                                    <div *ngIf="selectedCountry" class="flex items-center gap-2">
+                                    <div *ngIf="selectedCountry" class="country-select-value">
                                         <img [src]="selectedCountry.flag" 
                                              [alt]="selectedCountry.name"
-                                             class="w-7 h-5 object-cover rounded" />
-                                        <span class="text-base font-medium">{{ selectedCountry.dialCode }}</span>
+                                             class="country-flag" />
+                                        <span class="dial-code">{{ selectedCountry.dialCode }}</span>
                                     </div>
                                 </ng-template>
                                 <ng-template let-country pTemplate="item">
-                                    <div class="flex items-center gap-3 py-2">
+                                    <div class="country-option">
                                         <img [src]="country.flag" 
                                              [alt]="country.name"
-                                             class="w-7 h-5 object-cover rounded" />
-                                        <span class="text-base">{{ country.name }}</span>
-                                        <span class="text-muted-color text-sm ml-auto">{{ country.dialCode }}</span>
+                                             class="country-flag" />
+                                        <span class="country-name">{{ country.name }}</span>
+                                        <span class="dial-code-option">{{ country.dialCode }}</span>
                                     </div>
                                 </ng-template>
                             </p-select>
@@ -112,46 +122,28 @@
 
                 </div>
 
-                <!-- Footer - Sticky on mobile -->
+                  <!-- Footer - Sticky on mobile -->
                 <div class="mobile-footer pb-safe px-6 sm:px-12 py-6 border-t sm:border-0 border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900">
-                    <!-- Navigation buttons -->
-                    <div class="flex gap-3 mb-4" *ngIf="currentStep > 0">
-                        <p-button 
-                            label="Retour" 
-                            icon="pi pi-arrow-left" 
-                            severity="secondary"
-                            styleClass="flex-1 h-14 text-base"
-                            (click)="previousStep()">
-                        </p-button>
-                        <p-button 
-                            *ngIf="currentStep < 3"
-                            label="Suivant" 
-                            icon="pi pi-arrow-right" 
-                            iconPos="right"
-                            styleClass="flex-1 h-14 text-base"
-                            [disabled]="!canProceed()"
-                            (click)="nextStep()">
-                        </p-button>
-                        <p-button 
-                            *ngIf="currentStep === 3"
-                            label="Créer mon compte" 
-                            icon="pi pi-check" 
-                            iconPos="right"
-                            styleClass="flex-1 h-14 text-base"
-                            [disabled]="!isStep4Valid()"
-                            (click)="submitRegistration()">
-                        </p-button>
-                    </div>
-
-                    <!-- First step button -->
+                    
+                    <!-- Bouton suivant/créer (pleine largeur) -->
                     <p-button 
-                        *ngIf="currentStep === 0"
+                        *ngIf="currentStep < 3"
                         label="Suivant" 
                         icon="pi pi-arrow-right" 
                         iconPos="right"
-                        styleClass="w-full h-14 text-base mb-4" 
-                        [disabled]="!isStep1Valid()"
+                        styleClass="w-full h-14 text-base mb-4"
+                        [disabled]="!canProceed()"
                         (click)="nextStep()">
+                    </p-button>
+
+                    <p-button 
+                        *ngIf="currentStep === 3"
+                        label="Créer mon compte" 
+                        icon="pi pi-check" 
+                        iconPos="right"
+                        styleClass="w-full h-14 text-base mb-4"
+                        [disabled]="!isStep4Valid()"
+                        (click)="submitRegistration()">
                     </p-button>
 
                     <!-- Login link -->
@@ -160,7 +152,6 @@
                         <a routerLink="/auth/login" class="text-primary font-semibold text-sm">Se connecter</a>
                     </div>
                 </div>
-                
 
             </div>
         </div>

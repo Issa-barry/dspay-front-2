@@ -15,12 +15,27 @@
 
 // Sticky header and footer on mobile
 .mobile-header {
+    position: relative;
+    
     @media (max-width: 640px) {
         position: sticky;
         top: 0;
         z-index: 10;
         background: var(--surface-0);
         backdrop-filter: blur(10px);
+    }
+}
+
+// Bouton retour mobile (en haut à gauche)
+.mobile-back-button {
+    transition: all 0.2s ease;
+    
+    &:active {
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+    
+    &:hover {
+        background: var(--surface-200);
     }
 }
 
@@ -59,64 +74,72 @@
         }
     }
 
-    // Select - Fix pour afficher le drapeau
+    // Select - Fix pour afficher le drapeau correctement
     .p-select {
         border-radius: 12px !important;
         
         .p-select-label {
             display: flex !important;
             align-items: center !important;
+            padding: 0.5rem 0.75rem !important;
+            min-height: 3.5rem !important;
         }
     }
 
-    // Drapeaux - tailles fixes
-    .p-select-option img,
-    .p-select-label img {
-        width: 1.75rem !important; // 28px
-        height: 1.25rem !important; // 20px
-        min-width: 1.75rem !important;
-        min-height: 1.25rem !important;
-        object-fit: cover;
-        border-radius: 3px;
-        flex-shrink: 0;
+    // Custom classes pour le select de pays
+    .country-select-value {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        width: 100%;
+    }
+
+    .country-flag {
+        width: 28px !important;
+        height: 20px !important;
+        min-width: 28px !important;
+        min-height: 20px !important;
+        object-fit: cover !important;
+        border-radius: 3px !important;
+        flex-shrink: 0 !important;
         display: block !important;
     }
 
-    // Padding pour le select - Optimisé
-    .p-select-label {
-        padding: 0.5rem 0.75rem !important;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        min-height: 3.5rem !important;
-
-        @media (min-width: 640px) {
-            padding: 0.75rem 1rem !important;
-            gap: 0.75rem;
-        }
-
-        // Force l'affichage du contenu
-        > div {
-            display: flex !important;
-            align-items: center !important;
-            gap: 0.5rem;
-        }
+    .dial-code {
+        font-size: 1rem !important;
+        font-weight: 500 !important;
+        white-space: nowrap !important;
+        color: var(--text-color) !important;
     }
 
-    // Options de la liste déroulante
-    .p-select-option {
+    .country-option {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.75rem !important;
         padding: 0.875rem 1rem !important;
+        width: 100%;
         
         &:hover {
-            background: var(--primary-50);
+            background: var(--primary-50) !important;
         }
     }
 
-    // Texte de l'indicatif
-    .p-select-label span {
-        font-size: 1rem;
-        font-weight: 500;
-        white-space: nowrap;
+    .country-name {
+        flex: 1;
+        font-size: 1rem !important;
+    }
+
+    .dial-code-option {
+        color: var(--text-muted-color) !important;
+        font-size: 0.875rem !important;
+        margin-left: auto;
+    }
+
+    // Panel du dropdown
+    .p-select-overlay {
+        .p-select-list {
+            padding: 0.5rem 0 !important;
+        }
     }
 
     // Input focus states
