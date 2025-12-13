@@ -46,21 +46,66 @@ export class Register {
     prenom: string = '';
     password: string = '';
     
-    // Countries list
+    // Countries list - Pays francophones et Europe
     countries: Country[] = [
-        { name: 'Guinée', code: 'GN', dialCode: '+224', flag: '🇬🇳' },
-        { name: 'France', code: 'FR', dialCode: '+33', flag: '🇫🇷' },
-        { name: 'Sénégal', code: 'SN', dialCode: '+221', flag: '🇸🇳' },
-        { name: 'Mali', code: 'ML', dialCode: '+223', flag: '🇲🇱' },
-        { name: 'Côte d\'Ivoire', code: 'CI', dialCode: '+225', flag: '🇨🇮' },
+        // Afrique francophone (priorité)
+        // { name: 'Guinée', code: 'GN', dialCode: '+224', flag: 'https://flagcdn.com/gn.svg' },
+        // { name: 'Sénégal', code: 'SN', dialCode: '+221', flag: 'https://flagcdn.com/sn.svg' },
+        // { name: 'Mali', code: 'ML', dialCode: '+223', flag: 'https://flagcdn.com/ml.svg' },
+        // { name: 'Côte d\'Ivoire', code: 'CI', dialCode: '+225', flag: 'https://flagcdn.com/ci.svg' },
+        
+        // France et DOM-TOM
+        { name: 'France', code: 'FR', dialCode: '+33', flag: 'https://flagcdn.com/fr.svg' },
+        { name: 'Mayotte', code: 'YT', dialCode: '+262', flag: 'https://flagcdn.com/yt.svg' },
+        { name: 'La Réunion', code: 'RE', dialCode: '+262', flag: 'https://flagcdn.com/re.svg' },
+        { name: 'Guadeloupe', code: 'GP', dialCode: '+590', flag: 'https://flagcdn.com/gp.svg' },
+        { name: 'Martinique', code: 'MQ', dialCode: '+596', flag: 'https://flagcdn.com/mq.svg' },
+        { name: 'Guyane française', code: 'GF', dialCode: '+594', flag: 'https://flagcdn.com/gf.svg' },
+        { name: 'Saint-Martin', code: 'MF', dialCode: '+590', flag: 'https://flagcdn.com/mf.svg' },
+        { name: 'Saint-Barthélemy', code: 'BL', dialCode: '+590', flag: 'https://flagcdn.com/bl.svg' },
+        { name: 'Saint-Pierre-et-Miquelon', code: 'PM', dialCode: '+508', flag: 'https://flagcdn.com/pm.svg' },
+        { name: 'Wallis-et-Futuna', code: 'WF', dialCode: '+681', flag: 'https://flagcdn.com/wf.svg' },
+        { name: 'Nouvelle-Calédonie', code: 'NC', dialCode: '+687', flag: 'https://flagcdn.com/nc.svg' },
+        { name: 'Polynésie française', code: 'PF', dialCode: '+689', flag: 'https://flagcdn.com/pf.svg' },
+        
+        // Europe
+        { name: 'Grèce', code: 'GR', dialCode: '+30', flag: 'https://flagcdn.com/gr.svg' },
+        { name: 'Pays-Bas', code: 'NL', dialCode: '+31', flag: 'https://flagcdn.com/nl.svg' },
+        { name: 'Belgique', code: 'BE', dialCode: '+32', flag: 'https://flagcdn.com/be.svg' },
+        { name: 'Espagne', code: 'ES', dialCode: '+34', flag: 'https://flagcdn.com/es.svg' },
+        { name: 'Hongrie', code: 'HU', dialCode: '+36', flag: 'https://flagcdn.com/hu.svg' },
+        { name: 'Italie', code: 'IT', dialCode: '+39', flag: 'https://flagcdn.com/it.svg' },
+        { name: 'Roumanie', code: 'RO', dialCode: '+40', flag: 'https://flagcdn.com/ro.svg' },
+        { name: 'Suisse', code: 'CH', dialCode: '+41', flag: 'https://flagcdn.com/ch.svg' },
+        { name: 'Autriche', code: 'AT', dialCode: '+43', flag: 'https://flagcdn.com/at.svg' },
+        { name: 'Royaume-Uni', code: 'GB', dialCode: '+44', flag: 'https://flagcdn.com/gb.svg' },
+        { name: 'Jersey', code: 'JE', dialCode: '+44', flag: 'https://flagcdn.com/je.svg' },
+        { name: 'Guernesey', code: 'GG', dialCode: '+44', flag: 'https://flagcdn.com/gg.svg' },
+        { name: 'Danemark', code: 'DK', dialCode: '+45', flag: 'https://flagcdn.com/dk.svg' },
+        { name: 'Suède', code: 'SE', dialCode: '+46', flag: 'https://flagcdn.com/se.svg' },
+        { name: 'Pologne', code: 'PL', dialCode: '+48', flag: 'https://flagcdn.com/pl.svg' },
+        { name: 'Allemagne', code: 'DE', dialCode: '+49', flag: 'https://flagcdn.com/de.svg' },
+        { name: 'Portugal', code: 'PT', dialCode: '+351', flag: 'https://flagcdn.com/pt.svg' },
+        { name: 'Luxembourg', code: 'LU', dialCode: '+352', flag: 'https://flagcdn.com/lu.svg' },
+        { name: 'Irlande', code: 'IE', dialCode: '+353', flag: 'https://flagcdn.com/ie.svg' },
+        { name: 'Malte', code: 'MT', dialCode: '+356', flag: 'https://flagcdn.com/mt.svg' },
+        { name: 'Chypre', code: 'CY', dialCode: '+357', flag: 'https://flagcdn.com/cy.svg' },
+        { name: 'Finlande', code: 'FI', dialCode: '+358', flag: 'https://flagcdn.com/fi.svg' },
+        { name: 'Bulgarie', code: 'BG', dialCode: '+359', flag: 'https://flagcdn.com/bg.svg' },
+        { name: 'Lituanie', code: 'LT', dialCode: '+370', flag: 'https://flagcdn.com/lt.svg' },
+        { name: 'Lettonie', code: 'LV', dialCode: '+371', flag: 'https://flagcdn.com/lv.svg' },
+        { name: 'Estonie', code: 'EE', dialCode: '+372', flag: 'https://flagcdn.com/ee.svg' },
+        { name: 'Croatie', code: 'HR', dialCode: '+385', flag: 'https://flagcdn.com/hr.svg' },
+        { name: 'Tchéquie', code: 'CZ', dialCode: '+420', flag: 'https://flagcdn.com/cz.svg' },
+        { name: 'Slovaquie', code: 'SK', dialCode: '+421', flag: 'https://flagcdn.com/sk.svg' }
     ];
 
     constructor() {
-        // Set default country
+        // Set default country to Guinée
         this.selectedCountry = this.countries[0];
     }
 
-    // Validation methods
+    // Reste du code identique...
     isStep1Valid(): boolean {
         return !!(this.selectedCountry && this.phone && this.phone.length >= 8);
     }
@@ -78,7 +123,6 @@ export class Register {
         return !!(this.password && this.password.length >= 8);
     }
 
-    // Navigation methods
     nextStep(): void {
         if (this.canProceed()) {
             this.currentStep++;
@@ -101,7 +145,6 @@ export class Register {
         }
     }
 
-    // Submit registration
     submitRegistration(): void {
         if (this.isStep4Valid()) {
             const registrationData = {
@@ -114,11 +157,9 @@ export class Register {
             };
             
             console.log('Registration data:', registrationData);
-            // TODO: Call API service to register user
         }
     }
 
-    // Get progress percentage
     getProgress(): number {
         return ((this.currentStep + 1) / 4) * 100;
     }

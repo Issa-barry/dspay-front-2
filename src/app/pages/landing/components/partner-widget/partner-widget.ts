@@ -4,40 +4,104 @@ import { CommonModule } from '@angular/common';
 interface PaymentPartner {
     name: string;
     logo: string;
-    bgColor?: string;
+    bgColor: string;
+    textColor?: string;
+    gridPosition: string;
 }
 
 @Component({
-  selector: 'app-partner-widget',
- standalone: true,
+    selector: 'app-partner-widget',
+    standalone: true,
     imports: [CommonModule],
-  templateUrl: './partner-widget.html',
-  styleUrl: './partner-widget.scss'
+    templateUrl: './partner-widget.html',
+    styleUrl: './partner-widget.scss'
 })
 export class PartnerWidget {
     partners: PaymentPartner[] = [
-        { name: 'Klarna', logo: 'assets/images/partners/klarna.svg', bgColor: '#FFB3C7' },
-        { name: 'Stripe', logo: 'assets/images/partners/stripe.svg', bgColor: '#E8E4FF' },
-        { name: 'PayPal', logo: 'assets/images/partners/paypal.svg', bgColor: '#FFFFFF' },
-        { name: 'BEDC', logo: 'assets/images/partners/bedc.svg', bgColor: '#FFFFFF' },
-        { name: 'Mastercard', logo: 'assets/images/partners/mastercard.svg', bgColor: '#FFFFFF' },
-        { name: 'MTN', logo: 'assets/images/partners/mtn.svg', bgColor: '#FFFFFF' },
-        { name: 'PayCard', logo: 'assets/images/partners/visa.svg', bgColor: '#FFFFFF' },
-        { name: 'IE2', logo: 'assets/images/partners/ie2.svg', bgColor: '#FFFFFF' },
-        { name: 'DSTV', logo: 'assets/images/partners/dstv.svg', bgColor: '#FFFFFF' }
-    ];
-
-    // Version avec icônes PrimeNG si vous n'avez pas les logos
-    partnersWithIcons: PaymentPartner[] = [
-        { name: 'Orange Money', logo: 'pi pi-mobile', bgColor: '#FFB3C7' },
-        { name: 'Stripe', logo: 'pi pi-credit-card', bgColor: '#E8E4FF' },
-        { name: 'PayPal', logo: 'pi pi-paypal', bgColor: '#FFFFFF' },
-        { name: 'Wave', logo: 'pi pi-wave-pulse', bgColor: '#FFFFFF' },
-        { name: 'Mastercard', logo: 'pi pi-credit-card', bgColor: '#FFFFFF' },
-        { name: 'MTN', logo: 'pi pi-phone', bgColor: '#FFFFFF' },
-        { name: 'Visa', logo: 'pi pi-credit-card', bgColor: '#FFFFFF' },
-        { name: 'KS-PAY', logo: 'pi pi-wallet', bgColor: '#FFFFFF' },
-        { name: 'PayCard', logo: 'pi pi-credit-card', bgColor: '#FFFFFF' },
-        { name: 'Mobile Money', logo: 'pi pi-mobile', bgColor: '#FFFFFF' }
+        { 
+            name: 'VISA', 
+            logo: 'VISA', 
+            bgColor: '#FFFFFF',
+            textColor: '#1A1F71',
+            gridPosition: 'grid-area: 1 / 1 / 2 / 2;'
+        },
+        { 
+            name: 'ALAT', 
+            logo: 'ALAT', 
+            bgColor: '#FFFFFF',
+            textColor: '#C41E3A',
+            gridPosition: 'grid-area: 1 / 3 / 2 / 4;'
+        },
+        { 
+            name: 'KS-PAY', 
+            logo: 'KS-PAY', 
+            bgColor: '#FFFFFF',
+            textColor: '#00457C',
+            gridPosition: 'grid-area: 2 / 2 / 3 / 3;'
+        },
+        { 
+            name: 'Orange Money', 
+            logo: 'Orange Money', 
+            bgColor: '#FF6600',
+            textColor: '#FFFFFF',
+            gridPosition: 'grid-area: 3 / 1 / 4 / 2;'
+        },
+        { 
+            name: 'PAYCARD', 
+            logo: 'PAYCARD', 
+            bgColor: '#FFFFFF',
+            textColor: '#635BFF',
+            gridPosition: 'grid-area: 4 / 3 / 5 / 4;'
+        },
+        // Placeholders gris
+        { 
+            name: '', 
+            logo: '', 
+            bgColor: '#E5E7EB',
+            gridPosition: 'grid-area: 1 / 2 / 2 / 3;',
+            textColor: ''
+        },
+        { 
+            name: '', 
+            logo: '', 
+            bgColor: '#E5E7EB',
+            gridPosition: 'grid-area: 2 / 3 / 3 / 4;',
+            textColor: ''
+        },
+        { 
+            name: '', 
+            logo: '', 
+            bgColor: '#E5E7EB',
+            gridPosition: 'grid-area: 2 / 1 / 3 / 2;',
+            textColor: ''
+        },
+        { 
+            name: '', 
+            logo: '', 
+            bgColor: '#E5E7EB',
+            gridPosition: 'grid-area: 3 / 2 / 4 / 3;',
+            textColor: ''
+        },
+        { 
+            name: '', 
+            logo: '', 
+            bgColor: '#E5E7EB',
+            gridPosition: 'grid-area: 3 / 3 / 4 / 4;',
+            textColor: ''
+        },
+        { 
+            name: '', 
+            logo: '', 
+            bgColor: '#E5E7EB',
+            gridPosition: 'grid-area: 4 / 1 / 5 / 2;',
+            textColor: ''
+        },
+        { 
+            name: '', 
+            logo: '', 
+            bgColor: '#E5E7EB',
+            gridPosition: 'grid-area: 4 / 2 / 5 / 3;',
+            textColor: ''
+        }
     ];
 }

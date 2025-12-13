@@ -1,0 +1,27 @@
+// Fix mobile viewport issues
+::ng-deep {
+    // Hauteur fixe pour les inputs
+    .p-inputtext,
+    .p-password input {
+        height: 3rem !important; // 48px
+        font-size: 1rem !important;
+    }
+
+    // Bouton avec hauteur fixe
+    .p-button.h-12 {
+        height: 3rem !important;
+    }
+
+    // Empêcher le zoom sur iOS
+    input,
+    select,
+    textarea {
+        font-size: 16px !important; // Minimum 16px pour éviter le zoom sur iOS
+    }
+}
+
+// Safe area pour iPhone avec notch
+.py-safe {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+}
