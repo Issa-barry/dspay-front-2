@@ -1,0 +1,42 @@
+.features-payment-section {
+    .feature-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        
+        &:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+    }
+
+    .icon-wrapper {
+        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+    }
+
+    .payment-logos-grid {
+        .payment-logo-item {
+            cursor: pointer;
+            border: 1px solid #E5E7EB;
+
+            &:hover {
+                border-color: #10B981;
+                transform: scale(1.05);
+            }
+
+            i {
+                transition: all 0.3s ease;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .payment-logos-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .payment-logos-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}

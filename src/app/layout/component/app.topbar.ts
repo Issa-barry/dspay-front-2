@@ -33,7 +33,7 @@ import { LayoutService } from '../service/layout.service';
                         />
                     </g>
                 </svg>
-                <span>DIAMA-MONEY</span>
+                <span>DIAMA MONEY</span>
             </a>
         </div>
 
