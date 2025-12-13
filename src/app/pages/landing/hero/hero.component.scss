@@ -27,8 +27,9 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4rem;
-  align-items: center;
+  align-items: start;
   margin-bottom: 4rem;
+  min-height: calc(100vh - 12rem);
 }
 
 // Left Side
@@ -36,6 +37,7 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  padding-top: 1rem;
 }
 
 .hero-badge {
@@ -90,260 +92,15 @@
   margin: 0;
 }
 
-// Calculator Card
-.calculator-card {
-  background: white;
-  border-radius: 20px;
-  padding: 2rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-  border: 2px solid #e5e7eb;
-}
-
-.calculator-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-
-.calculator-header h3 {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #111827;
-  margin: 0;
-}
-
-.rate-badge {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: #ecfdf5;
-  color: #10b981;
-  border-radius: 50px;
-  font-size: 0.875rem;
-  font-weight: 600;
-}
-
-.calculator-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.input-group,
-.result-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.input-group label,
-.result-group label {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #6b7280;
-}
-
-.amount-input {
-  position: relative;
-  display: flex;
-  align-items: center;
-  background: #f9fafb;
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 0 1rem;
-  transition: all 0.2s;
-}
-
-.amount-input:focus-within {
-  border-color: #10b981;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
-}
-
-.currency-symbol {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #10b981;
-  margin-right: 0.5rem;
-}
-
-.amount-field {
-  flex: 1;
-  border: none;
-  background: transparent;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #111827;
-  padding: 1rem 0;
-  outline: none;
-}
-
-.amount-field::placeholder {
-  color: #d1d5db;
-}
-
-.currency-code {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #6b7280;
-  margin-left: 0.5rem;
-}
-
-.conversion-arrow {
-  display: flex;
-  justify-content: center;
-  margin: -0.5rem 0;
-}
-
-.conversion-arrow i {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: #10b981;
-  color: white;
-  border-radius: 50%;
-  font-size: 1.25rem;
-}
-
-.result-display {
-  display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
-  padding: 1.5rem;
-  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-  border: 2px solid #10b981;
-  border-radius: 12px;
-}
-
-.result-amount {
-  font-size: 2rem;
-  font-weight: 800;
-  color: #10b981;
-}
-
-.result-currency {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #059669;
-}
-
-.transfer-button {
-  width: 100%;
-}
-
-::ng-deep .transfer-button .p-button {
-  width: 100%;
-  padding: 1rem 2rem;
-  font-size: 1.125rem;
-  font-weight: 700;
-  background: #10b981;
-  border: none;
-  border-radius: 12px;
-  transition: all 0.2s;
-}
-
-::ng-deep .transfer-button .p-button:hover {
-  background: #059669;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
-}
-
-.features-list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #e5e7eb;
-}
-
-.feature-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  color: #6b7280;
-  font-weight: 500;
-}
-
-.feature-item i {
-  color: #10b981;
-  font-size: 1rem;
-}
-
-// Right Side - Visual
+// Right Side - Formulaire
 .hero-right {
   position: relative;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 }
 
-.visual-container {
-  position: relative;
-  width: 100%;
-  height: 600px;
-}
-
-.wallet-cards {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-  position: relative;
-  z-index: 2;
-}
-
-.wallet-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1.5rem;
-  background: white;
-  border: 2px solid #e5e7eb;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s;
-  animation: fadeInUp 0.6s ease-out backwards;
-}
-
-.wallet-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
-  border-color: #10b981;
-}
-
-.wallet-icon {
-  width: 64px;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  font-size: 2rem;
-}
-
-.wallet-name {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: #111827;
-  text-align: center;
-}
-
-.wallet-check {
-  color: #10b981;
-  font-size: 1.25rem;
-}
-
-// Floating Stats - SUPPRIMÉS
-
-// Transfer Illustration - SUPPRIMÉE
-
-// Stats Bar
+// Stats Bar - Apparaît au scroll
 .stats-bar {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -352,6 +109,14 @@
   background: white;
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .stat-item {
@@ -430,14 +195,11 @@
   .hero-content {
     grid-template-columns: 1fr;
     gap: 3rem;
+    min-height: auto;
   }
 
   .hero-title {
     font-size: 2.5rem;
-  }
-
-  .visual-container {
-    height: 400px;
   }
 
   .stats-bar {
@@ -456,18 +218,6 @@
 
   .hero-description {
     font-size: 1rem;
-  }
-
-  .calculator-card {
-    padding: 1.5rem;
-  }
-
-  .wallet-cards {
-    grid-template-columns: 1fr;
-  }
-
-  .features-list {
-    grid-template-columns: 1fr;
   }
 
   .stats-bar {

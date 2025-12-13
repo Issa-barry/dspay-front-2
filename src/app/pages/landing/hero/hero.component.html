@@ -1,7 +1,7 @@
 <div class="hero-section">
   <div class="hero-container">
     <div class="hero-content">
-      <!-- Left Side - Text & Calculator -->
+      <!-- Left Side - Text -->
       <div class="hero-left">
         <div class="hero-badge">
           <i class="pi pi-check-circle"></i>
@@ -9,107 +9,24 @@
         </div>
 
         <h1 class="hero-title">
-          Envoyez de l'argent en 
+          Déposez de l’argent sur vos wallets en 
           <span class="highlight">Guinée</span> 
-          en quelques secondes
         </h1>
 
         <p class="hero-description">
-          Transférez de l'argent depuis l'Europe vers la Guinée instantanément. 
-          Dépôt direct sur Orange Money, MTN, KS-PAY et Soutrat Money.
+          Dépôt direct sur <strong>Orange-Money, PayCard,  KS-PAY</strong>.
         </p>
-
-        <!-- Calculator Card -->
-        <div class="calculator-card">
-          <div class="calculator-header">
-            <h3>Calculer mon transfert</h3>
-            <span class="rate-badge">
-              <i class="pi pi-chart-line"></i>
-              1 EUR = {{ exchangeRate.toLocaleString() }} GNF
-            </span>
-          </div>
-
-          <div class="calculator-form">
-            <!-- Montant à envoyer -->
-            <div class="input-group">
-              <label>Montant à envoyer</label>
-              <div class="amount-input">
-                <span class="currency-symbol">€</span>
-                <input 
-                  type="number" 
-                  pInputText 
-                  [(ngModel)]="amount"
-                  placeholder="582"
-                  class="amount-field">
-                <span class="currency-code">EUR</span>
-              </div>
-            </div>
-
-            <!-- Flèche de conversion -->
-            <div class="conversion-arrow">
-              <i class="pi pi-arrow-down"></i>
-            </div>
-
-            <!-- Montant reçu -->
-            <div class="result-group">
-              <label>Montant reçu</label>
-              <div class="result-display">
-                <span class="result-amount">{{ convertedAmount }}</span>
-                <span class="result-currency">GNF</span>
-              </div>
-            </div>
-
-            <!-- Bouton -->
-            <button 
-              pButton 
-              label="Démarrer le transfert" 
-              icon="pi pi-arrow-right"
-              iconPos="right"
-              class="transfer-button"
-              (click)="startTransfer()">
-            </button>
-
-            <!-- Features List -->
-            <div class="features-list">
-              <div class="feature-item">
-                <i class="pi pi-bolt"></i>
-                <span>Transfert instantané</span>
-              </div>
-              <div class="feature-item">
-                <i class="pi pi-shield"></i>
-                <span>Sécurisé à 100%</span>
-              </div>
-              <div class="feature-item">
-                <i class="pi pi-money-bill"></i>
-                <span>Meilleur taux</span>
-              </div>
-              <div class="feature-item">
-                <i class="pi pi-mobile"></i>
-                <span>Dépôt direct sur wallet</span>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
-      <!-- Right Side - Wallet Cards -->
-      <!-- <div class="hero-right">
-        <div class="wallet-cards">
-          <div 
-            class="wallet-card" 
-            *ngFor="let wallet of wallets; let i = index"
-            [style.animation-delay.s]="i * 0.15">
-            <div class="wallet-icon" [style.background]="wallet.color"></div>
-            <span class="wallet-name">{{ wallet.name }}</span>
-            <i class="pi pi-check-circle wallet-check"></i>
-          </div>
-        </div>
-      </div> -->
+      <!-- Right Side - Form -->
+      <div class="hero-right">
+        <app-hero-send-form></app-hero-send-form>
+      </div>
     </div>
 
-    <!-- Stats Bar -->
-    <div class="stats-bar">
-      <div class="stat-item" *ngFor="let stat of stats">
+    <!-- Stats Bar with Scroll Animation -->
+    <div class="stats-bar" #statsBar>
+      <div class="stat-item" *ngFor="let stat of stats; trackBy: trackByStat">
         <span class="stat-value">{{ stat.value }}</span>
         <span class="stat-label">{{ stat.label }}</span>
       </div>
@@ -118,19 +35,11 @@
 
   <!-- Trust Section -->
   <div class="trust-section">
-    <p class="trust-text">Nous sommes régulés et certifiés</p>
+    <p class="trust-text">Services</p>
     <div class="trust-badges">
-      <div class="badge-item">
-        <i class="pi pi-shield"></i>
-        <span>Sécurité bancaire</span>
-      </div>
-      <div class="badge-item">
-        <i class="pi pi-lock"></i>
-        <span>Données cryptées</span>
-      </div>
-      <div class="badge-item">
-        <i class="pi pi-verified"></i>
-        <span>Certifié ISO</span>
+      <div class="badge-item" *ngFor="let badge of badges; trackBy: trackByBadge">
+        <i class="pi" [ngClass]="badge.icon"></i>
+        <span>{{ badge.text }}</span>
       </div>
     </div>
   </div>
