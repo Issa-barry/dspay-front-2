@@ -21,27 +21,27 @@ export class AppMenu {
     ngOnInit() {
         this.model = [
             {
-                 items: [{ label: 'ACCEUIL', icon: 'pi pi-fw pi-home', routerLink: ['/'] }]
+                 items: [{ label: 'ACCEUIL', icon: 'pi pi-fw pi-home', routerLink: ['/app'] }]
             },
             {
                  items: [
                     // { label: 'Transfert', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
-                    { label: 'Bénéficiaires', icon: 'pi pi-fw pi-users', routerLink: ['/beneficiary'] },
-                    { label: 'Historique', icon: 'pi pi-fw pi-history', class: 'rotated-icon', routerLink: ['/history'] },
+                    { label: 'Bénéficiaires', icon: 'pi pi-fw pi-users', routerLink: ['/app/beneficiary'] },
+                    { label: 'Historique', icon: 'pi pi-fw pi-history', class: 'rotated-icon', routerLink: ['/app/history'] },
                  ]
             },
             {
                  items: [
                     {
-                        label: 'Aide ',
+                        label: 'Support ',
                         icon: 'pi pi-fw pi-question-circle',
-                        routerLink: ['/documentation']
+                        routerLink: ['/app/faq']
                     },
-                    {
-                        label: 'Nous contacter',
-                        icon: 'pi pi-fw pi-book',
-                        routerLink: ['/documentation']
-                    },
+                    // {
+                    //     label: 'Nous contacter',
+                    //     icon: 'pi pi-fw pi-book',
+                    //     routerLink: ['/app/documentation']
+                    // },
                 ]
             }
         ];

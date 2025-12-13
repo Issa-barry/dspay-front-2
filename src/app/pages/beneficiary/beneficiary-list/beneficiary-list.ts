@@ -144,7 +144,7 @@ export class BeneficiaryList implements OnInit {
   }
 
   addNew() {
-    this.router.navigate(['/beneficiary/new']);
+    this.router.navigate(['/app/beneficiary/new']);
   }
 
   editBeneficiary(id: number, event?: Event) {
@@ -152,7 +152,7 @@ export class BeneficiaryList implements OnInit {
     if (event) {
       event.stopPropagation();
     }
-    this.router.navigate(['/beneficiary', id]);
+    this.router.navigate(['/app/beneficiary', id]);
   }
 
   deleteBeneficiary(beneficiary: Beneficiary, event?: Event) {
@@ -187,7 +187,6 @@ export class BeneficiaryList implements OnInit {
   }
     goBack() {
     this.location.back();
-    // Ou si vous voulez aller à une page spécifique :
-    // this.router.navigate(['/']);
+    //  this.router.navigate(['/app/beneficiary']);
   }
 }
