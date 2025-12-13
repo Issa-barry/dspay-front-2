@@ -1,0 +1,40 @@
+<app-floating-configurator />
+<div class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen overflow-hidden px-4 py-8">
+    <div class="flex flex-col items-center justify-center w-full max-w-md">
+        <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)" class="w-full">
+            <div class="w-full bg-surface-0 dark:bg-surface-900 py-8 sm:py-12 px-4 sm:px-8" style="border-radius: 53px">
+                <div class="text-center mb-6" [routerLink]="['/']" style="cursor: pointer">
+                    <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="mb-4 w-12 sm:w-16 shrink-0 mx-auto">
+                        <!-- SVG content remains the same -->
+                    </svg>
+                    <div class="text-surface-900 dark:text-surface-0 text-xl sm:text-2xl font-medium mb-3">DIAMA-MONEY</div>
+                    <span class="text-muted-color font-medium text-sm">Créer votre compte</span>
+                </div>
+
+                <div>
+                    <label for="nom" class="block text-surface-900 dark:text-surface-0 text-base sm:text-lg font-medium mb-2">Nom</label>
+                    <input pInputText id="nom" type="text" placeholder="Votre nom" class="w-full mb-4" />
+
+                    <label for="prenom" class="block text-surface-900 dark:text-surface-0 text-base sm:text-lg font-medium mb-2">Prénom</label>
+                    <input pInputText id="prenom" type="text" placeholder="Votre prénom" class="w-full mb-4" />
+
+                    <label for="email" class="block text-surface-900 dark:text-surface-0 text-base sm:text-lg font-medium mb-2">Email</label>
+                    <input pInputText id="email" type="email" placeholder="votre@email.com" class="w-full mb-4" [(ngModel)]="email" />
+
+                    <label for="phone" class="block text-surface-900 dark:text-surface-0 text-base sm:text-lg font-medium mb-2">Téléphone</label>
+                    <input pInputText id="phone" type="tel" placeholder="+224 XXX XX XX XX" class="w-full mb-4" />
+
+                    <label for="password" class="block text-surface-900 dark:text-surface-0 font-medium text-base sm:text-lg mb-2">Mot de passe</label>
+                    <p-password id="password" [(ngModel)]="password" placeholder="Mot de passe" [toggleMask]="true" styleClass="mb-4" [fluid]="true" [feedback]="false"></p-password>
+
+                    <p-button label="Créer mon compte" styleClass="w-full mt-4" routerLink="/app"></p-button>
+                    
+                    <div class="text-center mt-4">
+                        <span class="text-muted-color text-sm">Vous avez déjà un compte? </span>
+                        <a routerLink="/auth/login" class="text-primary font-medium text-sm cursor-pointer">Se connecter</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

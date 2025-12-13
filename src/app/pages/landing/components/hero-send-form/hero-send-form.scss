@@ -12,8 +12,8 @@
     border: 2px solid #e5e7eb;
 
     @media (max-width: 768px) {
-      padding: 1.5rem;
-      border-radius: 20px;
+      padding: 1.5rem; // Corrigé de 18rem à 1.5rem
+      border-radius: 16px; // Légèrement réduit pour mobile
     }
   }
 
@@ -231,8 +231,14 @@
 
 @media (max-width: 768px) {
   .hero-send-form {
+    max-width: calc(100% + 1rem); // Augmenter légèrement la largeur
+    padding: 0;
+    margin: 0 -0.5rem; // Margin négatif pour étendre un peu
+
     .form-card {
-      padding: 1.25rem;
+      padding: 1.75rem; // Légèrement augmenté de 1.5rem à 1.75rem
+      margin: 0;
+      border-radius: 16px;
     }
 
     .form-header {
@@ -245,6 +251,59 @@
 
       .exchange-rate-badge {
         align-self: flex-end;
+      }
+    }
+
+    .form-body {
+      .form-group {
+        .input-wrapper {
+          padding: 0.875rem 1.25rem;
+
+          .currency-symbol {
+            font-size: 1.25rem;
+          }
+
+          ::ng-deep .p-inputnumber .p-inputnumber-input {
+            font-size: 1.25rem;
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+          }
+
+          &.amount-received ::ng-deep .p-inputnumber .p-inputnumber-input {
+            font-size: 1.5rem;
+          }
+        }
+      }
+
+      .transfer-button {
+        padding: 0.875rem 1.5rem;
+        font-size: 1rem;
+      }
+    }
+  }
+}
+ @media (max-width: 768px) {
+  .hero-send-form {
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+
+    .form-card {
+      padding: 1.75rem;
+      margin: 0;
+      border-radius: 16px;
+    }
+
+    .form-header {
+      flex-direction: column;
+      align-items: center; // Centrer les éléments
+      margin-bottom: 1rem;
+      .form-title {
+        display: none;
+      } 
+      .exchange-rate-badge {
+        align-self: center; // Centrer le badge au lieu de flex-start
       }
     }
 
