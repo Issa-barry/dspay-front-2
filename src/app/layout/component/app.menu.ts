@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
@@ -8,40 +8,56 @@ import { AppMenuitem } from './app.menuitem';
     selector: 'app-menu',
     standalone: true,
     imports: [CommonModule, AppMenuitem, RouterModule],
-    template: `<ul class="layout-menu">
-        <ng-container *ngFor="let item of model; let i = index">
-            <li app-menuitem *ngIf="!item.separator" [item]="item" [index]="i" [root]="true"></li>
-            <li *ngIf="item.separator" class="menu-separator"></li>
-        </ng-container>
-    </ul> `
+    template: `
+        <ul class="layout-menu">
+            <ng-container *ngFor="let item of model; let i = index">
+                <li app-menuitem *ngIf="!item.separator" [item]="item" [index]="i" [root]="true"></li>
+                <li *ngIf="item.separator" class="menu-separator"></li>
+            </ng-container>
+        </ul>
+    `
 })
-export class AppMenu {
+export class AppMenu implements OnInit {
     model: MenuItem[] = [];
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.model = [
+            // Section principale
             {
-                 items: [{ label: 'ACCEUIL', icon: 'pi pi-fw pi-home', routerLink: ['/app'] }]
+                items: [
+                    { 
+                        label: 'ACCUEIL', 
+                        icon: 'pi pi-fw pi-home', 
+                        routerLink: ['/app'] 
+                    }
+                ]
             },
+            
+            // Section gestion
             {
-                 items: [
-                    // { label: 'Transfert', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
-                    { label: 'Bénéficiaires', icon: 'pi pi-fw pi-users', routerLink: ['/app/beneficiary'] },
-                    { label: 'Historique', icon: 'pi pi-fw pi-history', class: 'rotated-icon', routerLink: ['/app/history'] },
-                 ]
+                items: [
+                    { 
+                        label: 'Bénéficiaires', 
+                        icon: 'pi pi-fw pi-users', 
+                        routerLink: ['/app/beneficiary'] 
+                    },
+                    { 
+                        label: 'Historique', 
+                        icon: 'pi pi-fw pi-history', 
+                        class: 'rotated-icon', 
+                        routerLink: ['/app/history'] 
+                    }
+                ]
             },
+            
+            // Section support
             {
-                 items: [
+                items: [
                     {
-                        label: 'Support ',
+                        label: 'Support',
                         icon: 'pi pi-fw pi-question-circle',
                         routerLink: ['/app/faq']
-                    },
-                    // {
-                    //     label: 'Nous contacter',
-                    //     icon: 'pi pi-fw pi-book',
-                    //     routerLink: ['/app/documentation']
-                    // },
+                    }
                 ]
             }
         ];

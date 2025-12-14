@@ -8,6 +8,7 @@ export class User {
   civilite: 'Mr' | 'Mme' | 'Mlle' | 'Autre' = 'Autre';
   nom!: string;
   prenom!: string;
+  
 
   // Téléphone
   phone!: string;        // E.164 : +33612345678
@@ -16,10 +17,11 @@ export class User {
   // Infos personnelles
   date_naissance?: string; // YYYY-MM-DD
   role_id?: number;
+  statut?: string;
 
   // Adresse intégrée
   pays!: string;
-  code?: string;         // ISO2 : FR, GN
+  country_code?: string;         // ISO2 : FR, GN
   adresse?: string;
   complement_adresse?: string;
   ville?: string;

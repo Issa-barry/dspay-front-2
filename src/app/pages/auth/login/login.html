@@ -1,122 +1,131 @@
 <!-- <app-floating-configurator /> -->
-<div class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-[100dvh] overflow-hidden">
-    <div class="flex flex-col items-center justify-center w-full max-w-[95%] sm:max-w-lg px-2 sm:px-4 py-safe">
-        <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)" class="w-full">
-            <div class="w-full bg-surface-0 dark:bg-surface-900 py-8 sm:py-12 px-4 sm:px-8 md:px-12" style="border-radius: 53px">
-                <div class="text-center mb-6" [routerLink]="['/']" style="cursor: pointer">
-                    <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="mb-4 w-12 sm:w-16 shrink-0 mx-auto">
-                        <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
-                            d="M17.1637 19.2467C17.1566 19.4033 17.1529 19.561 17.1529 19.7194C17.1529 25.3503 21.7203 29.915 27.3546 29.915C32.9887 29.915 37.5561 25.3503 37.5561 19.7194C37.5561 19.5572 37.5524 19.3959 37.5449 19.2355C38.5617 19.0801 39.5759 18.9013 40.5867 18.6994L40.6926 18.6782C40.7191 19.0218 40.7326 19.369 40.7326 19.7194C40.7326 27.1036 34.743 33.0896 27.3546 33.0896C19.966 33.0896 13.9765 27.1036 13.9765 19.7194C13.9765 19.374 13.9896 19.0316 14.0154 18.6927L14.0486 18.6994C15.0837 18.9062 16.1223 19.0886 17.1637 19.2467ZM33.3284 11.4538C31.6493 10.2396 29.5855 9.52381 27.3546 9.52381C25.1195 9.52381 23.0524 10.2421 21.3717 11.4603C20.0078 11.3232 18.6475 11.1387 17.2933 10.907C19.7453 8.11308 23.3438 6.34921 27.3546 6.34921C31.36 6.34921 34.9543 8.10844 37.4061 10.896C36.0521 11.1292 34.692 11.3152 33.3284 11.4538ZM43.826 18.0518C43.881 18.6003 43.9091 19.1566 43.9091 19.7194C43.9091 28.8568 36.4973 36.2642 27.3546 36.2642C18.2117 36.2642 10.8 28.8568 10.8 19.7194C10.8 19.1615 10.8276 18.61 10.8816 18.0663L7.75383 17.4411C7.66775 18.1886 7.62354 18.9488 7.62354 19.7194C7.62354 30.6102 16.4574 39.4388 27.3546 39.4388C38.2517 39.4388 47.0855 30.6102 47.0855 19.7194C47.0855 18.9439 47.0407 18.1789 46.9536 17.4267L43.826 18.0518ZM44.2613 9.54743L40.9084 10.2176C37.9134 5.95821 32.9593 3.1746 27.3546 3.1746C21.7442 3.1746 16.7856 5.96385 13.7915 10.2305L10.4399 9.56057C13.892 3.83178 20.1756 0 27.3546 0C34.5281 0 40.8075 3.82591 44.2613 9.54743Z"
-                            fill="var(--primary-color)"
-                        />
-                    </svg>
-                    <div class="text-surface-900 dark:text-surface-0 text-2xl font-medium mb-2">DIAMA-MONEY</div>
-                    <span class="text-muted-color font-medium text-sm">Connectez-vous pour continuer</span>
+<div class="bg-surface-50 dark:bg-surface-950 min-h-[100dvh] overflow-hidden">
+    <!-- Mobile: Plein écran, Desktop: Centré avec card -->
+    <div class="h-[100dvh] flex flex-col sm:items-center sm:justify-center w-full sm:px-4 sm:py-8">
+        <div class="mobile-app-container sm:rounded-[56px] sm:p-1 sm:bg-gradient-to-b sm:from-primary-500 sm:to-transparent w-full sm:max-w-lg h-full sm:h-auto">
+            <div class="mobile-app-content bg-surface-0 dark:bg-surface-900 h-full sm:rounded-[53px] flex flex-col">
+                
+                <!-- Header -->
+                <div class="mobile-header pt-safe px-6 py-6 sm:py-10 text-center">
+                    <div [routerLink]="['/']" class="cursor-pointer">
+                        <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="mb-4 w-12 sm:w-16 shrink-0 mx-auto">
+                            <path
+                                fill-rule="evenodd"
+                                clip-rule="evenodd"
+                                d="M17.1637 19.2467C17.1566 19.4033 17.1529 19.561 17.1529 19.7194C17.1529 25.3503 21.7203 29.915 27.3546 29.915C32.9887 29.915 37.5561 25.3503 37.5561 19.7194C37.5561 19.5572 37.5524 19.3959 37.5449 19.2355C38.5617 19.0801 39.5759 18.9013 40.5867 18.6994L40.6926 18.6782C40.7191 19.0218 40.7326 19.369 40.7326 19.7194C40.7326 27.1036 34.743 33.0896 27.3546 33.0896C19.966 33.0896 13.9765 27.1036 13.9765 19.7194C13.9765 19.374 13.9896 19.0316 14.0154 18.6927L14.0486 18.6994C15.0837 18.9062 16.1223 19.0886 17.1637 19.2467ZM33.3284 11.4538C31.6493 10.2396 29.5855 9.52381 27.3546 9.52381C25.1195 9.52381 23.0524 10.2421 21.3717 11.4603C20.0078 11.3232 18.6475 11.1387 17.2933 10.907C19.7453 8.11308 23.3438 6.34921 27.3546 6.34921C31.36 6.34921 34.9543 8.10844 37.4061 10.896C36.0521 11.1292 34.692 11.3152 33.3284 11.4538ZM43.826 18.0518C43.881 18.6003 43.9091 19.1566 43.9091 19.7194C43.9091 28.8568 36.4973 36.2642 27.3546 36.2642C18.2117 36.2642 10.8 28.8568 10.8 19.7194C10.8 19.1615 10.8276 18.61 10.8816 18.0663L7.75383 17.4411C7.66775 18.1886 7.62354 18.9488 7.62354 19.7194C7.62354 30.6102 16.4574 39.4388 27.3546 39.4388C38.2517 39.4388 47.0855 30.6102 47.0855 19.7194C47.0855 18.9439 47.0407 18.1789 46.9536 17.4267L43.826 18.0518ZM44.2613 9.54743L40.9084 10.2176C37.9134 5.95821 32.9593 3.1746 27.3546 3.1746C21.7442 3.1746 16.7856 5.96385 13.7915 10.2305L10.4399 9.56057C13.892 3.83178 20.1756 0 27.3546 0C34.5281 0 40.8075 3.82591 44.2613 9.54743Z"
+                                fill="var(--primary-color)"
+                            />
+                        </svg>
+                        <h1 class="text-surface-900 dark:text-surface-0 text-2xl font-bold mb-2">DIAMA-MONEY</h1>
+                        <p class="text-muted-color text-sm">Connectez-vous pour continuer</p>
+                    </div>
                 </div>
 
-                <!-- ✅ Formulaire avec (ngSubmit) pour empêcher le double submit -->
-                <form (ngSubmit)="login()" #loginForm="ngForm">
-                    <!-- Message d'erreur global -->
-                    <p-message 
-                        *ngIf="errorMessage" 
-                        severity="error" 
-                        [text]="errorMessage"
-                        styleClass="mb-4 w-full">
-                    </p-message>
+                <!-- Content - Scrollable -->
+                <div class="mobile-content flex-1 overflow-y-auto px-6 sm:px-12 py-6 sm:py-8">
+                    <form (ngSubmit)="login()" #loginForm="ngForm">
+                        <!-- Message d'erreur -->
+                        <p-message 
+                            *ngIf="errorMessage" 
+                            severity="error" 
+                            [text]="errorMessage"
+                            styleClass="mb-6 w-full">
+                        </p-message>
 
-                    <!-- Téléphone -->
-                    <label for="phone" class="block text-surface-900 dark:text-surface-0 text-base font-medium mb-2">
-                        Numéro de téléphone
-                    </label>
-                    <div class="flex gap-2 mb-4">
-                        <p-select
-                            [options]="countries" 
-                            [(ngModel)]="selectedCountry" 
-                            name="country"
-                            optionLabel="dialCode"
-                            placeholder="+XXX"
-                            [style]="{'width': '130px'}"
+                        <!-- Téléphone -->
+                        <label for="phone" class="block text-surface-900 dark:text-surface-0 text-sm font-semibold mb-2">
+                            Numéro de téléphone
+                        </label>
+                        <div class="flex gap-2 mb-6">
+                            <p-select
+                                [options]="countries" 
+                                [(ngModel)]="selectedCountry" 
+                                name="country"
+                                optionLabel="dialCode"
+                                placeholder="+XXX"
+                                [style]="{'width': '120px'}"
+                                [disabled]="loading"
+                                inputStyleClass="h-14">
+                                <ng-template pTemplate="selectedItem">
+                                    <div *ngIf="selectedCountry" class="country-select-value">
+                                        <img [src]="selectedCountry.flag" 
+                                             [alt]="selectedCountry.name"
+                                             class="country-flag" />
+                                        <span class="dial-code">{{ selectedCountry.dialCode }}</span>
+                                    </div>
+                                </ng-template>
+                                <ng-template let-country pTemplate="item">
+                                    <div class="country-option">
+                                        <img [src]="country.flag" 
+                                             [alt]="country.name"
+                                             class="country-flag" />
+                                        <span class="country-name">{{ country.name }}</span>
+                                        <span class="dial-code-option">{{ country.dialCode }}</span>
+                                    </div>
+                                </ng-template>
+                            </p-select>
+                            
+                            <input 
+                                pInputText 
+                                id="phone" 
+                                type="tel" 
+                                placeholder="XXX XX XX XX" 
+                                [(ngModel)]="phone"
+                                name="phone"
+                                (input)="formatPhoneInput($event)"
+                                [disabled]="loading"
+                                class="flex-1 text-base h-14 px-4" 
+                                required />
+                        </div>
+
+                        <!-- Mot de passe -->
+                        <label for="password1" class="block text-surface-900 dark:text-surface-0 text-sm font-semibold mb-2">
+                            Mot de passe
+                        </label>
+                        <p-password 
+                            id="password1" 
+                            [(ngModel)]="password"
+                            name="password" 
+                            placeholder="Minimum 8 caractères" 
+                            [toggleMask]="true" 
+                            styleClass="mb-4" 
+                            [fluid]="true" 
+                            [feedback]="false"
                             [disabled]="loading"
-                            inputStyleClass="h-12">
-                            <ng-template pTemplate="selectedItem">
-                                <div *ngIf="selectedCountry" class="country-select-value">
-                                    <img [src]="selectedCountry.flag" 
-                                         [alt]="selectedCountry.name"
-                                         class="country-flag" />
-                                    <span class="dial-code">{{ selectedCountry.dialCode }}</span>
-                                </div>
-                            </ng-template>
-                            <ng-template let-country pTemplate="item">
-                                <div class="country-option">
-                                    <img [src]="country.flag" 
-                                         [alt]="country.name"
-                                         class="country-flag" />
-                                    <span class="country-name">{{ country.name }}</span>
-                                    <span class="dial-code-option">{{ country.dialCode }}</span>
-                                </div>
-                            </ng-template>
-                        </p-select>
-                        
-                        <input 
-                            pInputText 
-                            id="phone" 
-                            type="tel" 
-                            placeholder="XXX XX XX XX" 
-                            [(ngModel)]="phone"
-                            name="phone"
-                            (input)="formatPhoneInput($event)"
-                            [disabled]="loading"
-                            class="flex-1 text-base h-12 px-4" 
-                            required />
-                    </div>
+                            inputStyleClass="h-14 text-base px-4"
+                            required>
+                        </p-password>
 
-                    <!-- Mot de passe -->
-                    <label for="password1" class="block text-surface-900 dark:text-surface-0 font-medium text-base mb-2">
-                        Mot de passe
-                    </label>
-                    <p-password 
-                        id="password1" 
-                        [(ngModel)]="password"
-                        name="password" 
-                        placeholder="Votre mot de passe" 
-                        [toggleMask]="true" 
-                        styleClass="mb-3" 
-                        [fluid]="true" 
-                        [feedback]="false"
-                        [disabled]="loading"
-                        inputStyleClass="h-12 text-base"
-                        required>
-                    </p-password>
+                        <div class="flex items-center justify-end mb-6">
+                            <span 
+                                class="font-medium cursor-pointer text-primary text-sm hover:underline" 
+                                [routerLink]="['/auth/forgotpassword']">
+                                Mot de passe oublié?
+                            </span>
+                        </div>
+                    </form>
+                </div>
 
-                    <div class="flex items-center justify-end mb-6">
-                        <span 
-                            class="font-medium no-underline cursor-pointer text-primary text-sm" 
-                            [routerLink]="['/auth/forgotpassword']" 
-                            routerLinkActive="router-link-active">
-                            Mot de passe oublié?
-                        </span>
-                    </div>
-                    
-                    <!-- ✅ Bouton de type submit -->
+                <!-- Footer - Sticky -->
+                <div class="mobile-footer pb-safe px-6 sm:px-12 py-6 bg-surface-0 dark:bg-surface-900">
                     <p-button 
                         type="submit"
                         [label]="loading ? 'Connexion en cours...' : 'Connexion'"
                         [icon]="loading ? 'pi pi-spin pi-spinner' : ''"
-                        styleClass="w-full h-12"
+                        styleClass="w-full h-14 text-base mb-4"
                         [disabled]="!isFormValid()"
-                        [loading]="loading">
+                        [loading]="loading"
+                        (click)="login()">
                     </p-button>
 
-                    <!-- Lien vers inscription -->
-                    <div class="text-center mt-6">
+                    <div class="text-center">
                         <span class="text-muted-color text-sm">Vous n'avez pas de compte? </span>
                         <a routerLink="/auth/register" class="text-primary font-semibold text-sm hover:underline">
                             S'inscrire
                         </a>
                     </div>
-                </form>
+                </div>
+
             </div>
         </div>
     </div>

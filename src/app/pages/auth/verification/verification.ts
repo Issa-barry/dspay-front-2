@@ -38,7 +38,7 @@ export class Verification implements OnInit, OnDestroy {
 
   email: string = 'dm**@gmail.com'; // À récupérer depuis le state/service
   isVerifying: boolean = false;
-  countdown: number = 60;
+  countdown: number = 120;
   canResend: boolean = false;
   private countdownInterval: any;
 

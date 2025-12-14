@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
-import { CheckboxModule } from 'primeng/checkbox';
+import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
-import { RippleModule } from 'primeng/ripple';
-import { Select } from 'primeng/select';
-import { AppFloatingConfigurator } from '@/layout/component/app.floatingconfigurator';
+import { SelectModule } from 'primeng/select';
+import { MessageModule } from 'primeng/message';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environements/environment.dev';
+import { AuthService } from '@/pages/service/auth/auth/auth.service';
 
 interface Country {
     name: string;
@@ -17,39 +18,66 @@ interface Country {
     flag: string;
 }
 
+interface RegisterRequest {
+    civilite?: string;
+    nom: string;
+    prenom: string;
+    email: string;
+    phone: string;
+    password: string;
+    password_confirmation: string;
+    date_naissance?: string;
+    pays: string;
+    code: string;
+    dial_code: string;
+    adresse?: string;
+    complement_adresse?: string;
+    ville?: string;
+    quartier?: string;
+    code_postal?: string;
+    region?: string;
+}
+
+interface RegisterResponse {
+    success: boolean;
+    message: string;
+    data?: any;
+    errors?: any;
+}
+
 @Component({
     selector: 'app-register',
     standalone: true,
     imports: [
         CommonModule,
-        ButtonModule,
-        CheckboxModule,
-        InputTextModule,
-        PasswordModule,
-        FormsModule,
         RouterModule,
-        RippleModule,
-        Select,
-        AppFloatingConfigurator
+        FormsModule,
+        InputTextModule,
+        ButtonModule,
+        PasswordModule,
+        SelectModule,
+        MessageModule
     ],
     templateUrl: './register.html',
     styleUrl: './register.scss'
 })
-export class Register {
+export class Register implements OnInit {
+    // Step management
     currentStep: number = 0;
     
     // Form data
-    selectedCountry: Country | null = null;
     phone: string = '';
     email: string = '';
     nom: string = '';
     prenom: string = '';
     password: string = '';
-    
-    // Countries list - Pays francophones et Europe
+     
+    selectedCountry: Country | null = null;
+    loading: boolean = false;
+    errorMessage: string = '';
+    successMessage: string = '';
+
     countries: Country[] = [
-       
-        
         // France et DOM-TOM
         { name: 'France', code: 'FR', dialCode: '+33', flag: 'https://flagcdn.com/fr.svg' },
         { name: 'Mayotte', code: 'YT', dialCode: '+262', flag: 'https://flagcdn.com/yt.svg' },
@@ -93,9 +121,9 @@ export class Register {
         { name: 'Estonie', code: 'EE', dialCode: '+372', flag: 'https://flagcdn.com/ee.svg' },
         { name: 'Croatie', code: 'HR', dialCode: '+385', flag: 'https://flagcdn.com/hr.svg' },
         { name: 'Tchéquie', code: 'CZ', dialCode: '+420', flag: 'https://flagcdn.com/cz.svg' },
-        { name: 'Slovaquie', code: 'SK', dialCode: '+421', flag: 'https://flagcdn.com/sk.svg' }, 
-
-         // Afrique francophone 
+        { name: 'Slovaquie', code: 'SK', dialCode: '+421', flag: 'https://flagcdn.com/sk.svg' },
+        
+        // Afrique francophone
         { name: 'Guinée', code: 'GN', dialCode: '+224', flag: 'https://flagcdn.com/gn.svg' },
         { name: 'Sénégal', code: 'SN', dialCode: '+221', flag: 'https://flagcdn.com/sn.svg' },
         { name: 'Mali', code: 'ML', dialCode: '+223', flag: 'https://flagcdn.com/ml.svg' },
@@ -104,69 +132,139 @@ export class Register {
 
     constructor(
         private router: Router,
-    ) {
-        // Set default country to Guinée
+        private authService: AuthService
+    ) {}
+
+    ngOnInit(): void {
+        // Sélectionner la France par défaut
         this.selectedCountry = this.countries[0];
-        
     }
 
-    // Reste du code identique...
-    isStep1Valid(): boolean {
-        return !!(this.selectedCountry && this.phone && this.phone.length >= 8);
-    }
-
-    isStep2Valid(): boolean {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return !!(this.email && emailRegex.test(this.email));
-    }
-
-    isStep3Valid(): boolean {
-        return !!(this.nom && this.nom.trim() && this.prenom && this.prenom.trim());
-    }
-
-    isStep4Valid(): boolean {
-        return !!(this.password && this.password.length >= 8);
-    }
-
+    // Navigation
     nextStep(): void {
         if (this.canProceed()) {
             this.currentStep++;
+            this.errorMessage = '';
         }
     }
 
     previousStep(): void {
         if (this.currentStep > 0) {
             this.currentStep--;
+            this.errorMessage = '';
         }
     }
 
+    // Validation par étape
     canProceed(): boolean {
         switch (this.currentStep) {
-            case 0: return this.isStep1Valid();
-            case 1: return this.isStep2Valid();
-            case 2: return this.isStep3Valid();
-            case 3: return this.isStep4Valid();
-            default: return false;
+            case 0: // Phone
+                return this.phone.trim() !== '' && this.selectedCountry !== null;
+            case 1: // Email
+                return this.email.trim() !== '' && this.isValidEmail(this.email);
+            case 2: // Name
+                return this.nom.trim() !== '' && this.prenom.trim() !== '';
+            case 3: // Password
+                return this.isStep4Valid();
+            default:
+                return false;
         }
     }
 
-    submitRegistration(): void {
-        if (this.isStep4Valid()) {
-            const registrationData = {
-                country: this.selectedCountry,
-                phone: this.selectedCountry?.dialCode + this.phone,
-                email: this.email,
-                nom: this.nom,
-                prenom: this.prenom,
-                password: this.password
-            };
-            
-            console.log('Registration data:', registrationData);
-            this.router.navigate(['/auth/register-verification']);
-        }
+    isStep4Valid(): boolean {
+        return this.password.length >= 8 
+            //    &&  this.passwordConfirm.length >= 8 
+            //     && this.password === this.passwordConfirm;
     }
 
-    getProgress(): number {
-        return ((this.currentStep + 1) / 4) * 100;
+    isValidEmail(email: string): boolean {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
+    // Formatage téléphone
+    formatPhoneInput(event: any): void {
+        let value = event.target.value.replace(/\D/g, '');
+        
+        if (this.selectedCountry?.code === 'GN') {
+            // Guinée: XXX XX XX XX
+            if (value.length > 3 && value.length <= 5) {
+                value = `${value.slice(0, 3)} ${value.slice(3)}`;
+            } else if (value.length > 5 && value.length <= 7) {
+                value = `${value.slice(0, 3)} ${value.slice(3, 5)} ${value.slice(5)}`;
+            } else if (value.length > 7) {
+                value = `${value.slice(0, 3)} ${value.slice(3, 5)} ${value.slice(5, 7)} ${value.slice(7, 9)}`;
+            }
+        } else if (this.selectedCountry?.code === 'FR') {
+            // France: XX XX XX XX XX
+            if (value.length > 2) {
+                value = value.match(/.{1,2}/g)?.join(' ') || value;
+            }
+        }
+
+        this.phone = value;
+    }
+
+    // Soumission
+     submitRegistration(): void {
+        if (!this.isStep4Valid() || this.loading) {
+            return;
+        }
+
+        this.loading = true;
+        this.errorMessage = '';
+        this.successMessage = '';
+
+        // Construire le phone au format E.164
+        const fullPhone = `${this.selectedCountry!.dialCode}${this.phone.replace(/\s/g, '').replace(/^0/, '')}`;
+
+        const registerData = {
+            nom: this.nom.trim(),
+            prenom: this.prenom.trim(),
+            email: this.email.trim().toLowerCase(),
+            phone: fullPhone,
+            password: this.password,
+            password_confirmation: this.password,
+            pays: this.selectedCountry!.name,
+            code: this.selectedCountry!.code,
+            dial_code: this.selectedCountry!.dialCode
+        };
+
+        // ✅ Appeler authService.register()
+        this.authService.register(registerData).subscribe({
+            next: (response) => {
+                if (response.success) {
+                    console.log('✅ Inscription réussie:', response);
+                    this.successMessage = response.message;
+                    
+                    setTimeout(() => {
+                        this.router.navigate(['/auth/register-verification']);
+                    }, 2000);
+                } else {
+                    this.errorMessage = response.message || 'Une erreur est survenue';
+                    this.loading = false;
+                }
+            },
+            error: (error: any) => {
+                this.loading = false;
+                console.error('❌ Erreur inscription:', error);
+
+                if (error.status === 422) {
+                    const errors = error.error?.errors || error.error?.data;
+                    if (errors) {
+                        const errorMessages = Object.values(errors).flat();
+                        this.errorMessage = errorMessages.join(' ');
+                    } else {
+                        this.errorMessage = error.error?.message || 'Données invalides.';
+                    }
+                } else if (error.status === 500) {
+                    this.errorMessage = 'Erreur serveur. Veuillez réessayer plus tard.';
+                } else if (error.status === 0) {
+                    this.errorMessage = 'Impossible de se connecter au serveur.';
+                } else {
+                    this.errorMessage = error.error?.message || 'Une erreur est survenue.';
+                }
+            }
+        });
     }
 }

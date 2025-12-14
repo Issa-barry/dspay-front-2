@@ -10,8 +10,28 @@ interface LoginRequest {
   phone?: string;
   email?: string;
   password: string;
-  dial_code?: string;      // ✅ Ajouté
-  country_code?: string;   // ✅ Ajouté
+  dial_code?: string;
+  country_code?: string;
+}
+
+interface RegisterRequest {
+  civilite?: string;
+  nom: string;
+  prenom: string;
+  email: string;
+  phone: string;
+  password: string;
+  password_confirmation: string;
+  date_naissance?: string;
+  pays: string;
+  code: string;
+  dial_code: string;
+  adresse?: string;
+  complement_adresse?: string;
+  ville?: string;
+  quartier?: string;
+  code_postal?: string;
+  region?: string;
 }
 
 interface LoginResponse {
@@ -27,6 +47,13 @@ interface LoginResponse {
   errors?: any;
 }
 
+interface RegisterResponse {
+  success: boolean;
+  message: string;
+  data?: any;
+  errors?: any;
+}
+
 interface AuthState {
   user: User | null;
   token: string | null;
@@ -37,7 +64,7 @@ interface AuthState {
   providedIn: 'root'
 })
 export class AuthService {
-    private apiUrl = environment.apiUrl;
+  private apiUrl = environment.apiUrl;
   
   private authState$ = new BehaviorSubject<AuthState>({
     user: null,
@@ -53,6 +80,32 @@ export class AuthService {
     private router: Router
   ) {
     this.restoreSession();
+  }
+
+  /**
+   * ✅ INSCRIPTION - Créer un nouveau compte
+   */
+  register(data: RegisterRequest): Observable<RegisterResponse> {
+    console.log('📡 REGISTER:', {
+      nom: data.nom,
+      prenom: data.prenom,
+      email: data.email,
+      phone: data.phone,
+      pays: data.pays,
+      code: data.code
+    });
+
+    return this.http.post<RegisterResponse>(`${this.apiUrl}/users/clients/create`, data).pipe(
+      tap(response => {
+        if (response.success) {
+          console.log('✅ Inscription réussie:', response.message);
+        }
+      }),
+      catchError(error => {
+        console.error('❌ Erreur d\'inscription:', error);
+        return throwError(() => error);
+      })
+    );
   }
 
   /**
@@ -80,19 +133,19 @@ export class AuthService {
   }
 
   /**
-   * ✅ Connexion avec TÉLÉPHONE (avec infos du pays)
+   * Connexion avec TÉLÉPHONE
    */
   loginWithPhone(
     phone: string, 
     password: string,
-    dialCode?: string,      // ✅ Ajouté
-    countryCode?: string    // ✅ Ajouté
+    dialCode?: string,
+    countryCode?: string
   ): Observable<LoginResponse> {
     const loginData: LoginRequest = {
       phone: phone,
       password: password,
-      dial_code: dialCode,      // ✅ Envoyé au backend
-      country_code: countryCode // ✅ Envoyé au backend
+      dial_code: dialCode,
+      country_code: countryCode
     };
 
     console.log('📡 LOGIN avec PHONE:', { 
@@ -137,7 +190,7 @@ export class AuthService {
   }
 
   /**
-   * ✅ Nettoyage LOCAL (sans appel API)
+   * Nettoyage LOCAL (sans appel API)
    */
   clearSessionLocal(): void {
     console.log('🧹 Nettoyage session locale');
