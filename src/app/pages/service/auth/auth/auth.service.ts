@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { User } from '@/core/models/user.model';
+import { environment } from 'src/environements/environment.dev';
  
 interface LoginRequest {
   phone?: string;
@@ -36,7 +37,7 @@ interface AuthState {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://127.0.0.1:8000/api/v1';
+    private apiUrl = environment.apiUrl;
   
   private authState$ = new BehaviorSubject<AuthState>({
     user: null,

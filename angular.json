@@ -42,8 +42,22 @@
                         "scripts": []
                     },
                     "configurations": {
-                        "production": {
-                            "outputHashing": "all"
+                      "production": {
+                            "outputHashing": "all",
+                            "fileReplacements": [
+                            {
+                                "replace": "src/environments/environment.ts",
+                                "with": "src/environments/environment.prod.ts"
+                            }
+                            ]
+                        },
+                       "preprod": {
+                            "fileReplacements": [
+                                {
+                                "replace": "src/environements/environment.dev.ts",
+                                "with": "src/environements/environment.pre-prod.ts"
+                                }
+                            ]
                         },
                         "development": {
                             "optimization": false,
