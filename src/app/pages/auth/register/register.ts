@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
@@ -100,9 +100,12 @@ export class Register {
         { name: 'Slovaquie', code: 'SK', dialCode: '+421', flag: 'https://flagcdn.com/sk.svg' }
     ];
 
-    constructor() {
+    constructor(
+        private router: Router,
+    ) {
         // Set default country to Guinée
         this.selectedCountry = this.countries[0];
+        
     }
 
     // Reste du code identique...
@@ -157,6 +160,7 @@ export class Register {
             };
             
             console.log('Registration data:', registrationData);
+            this.router.navigate(['/auth/register-verification']);
         }
     }
 

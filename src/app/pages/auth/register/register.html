@@ -1,12 +1,12 @@
 <!-- <app-floating-configurator /> -->
 <div class="bg-surface-50 dark:bg-surface-950 min-h-[100dvh] overflow-hidden">
     <!-- Mobile: Plein écran, Desktop: Centré avec card -->
-    <div class="h-[100dvh] flex flex-col sm:items-center sm:justify-center w-full sm:px-4">
-        <div class="mobile-app-container sm:rounded-[56px] sm:p-1 sm:bg-gradient-to-b sm:from-primary-500 sm:to-transparent w-full sm:max-w-2xl h-full sm:h-auto">
-            <div class="mobile-app-content bg-surface-0 dark:bg-surface-900 h-full sm:rounded-[53px] flex flex-col">
+    <div class="h-[100dvh] flex flex-col sm:items-center sm:justify-center w-full sm:px-4 sm:py-8">
+        <div class="mobile-app-container sm:rounded-[56px] sm:p-1 sm:bg-gradient-to-b sm:from-primary-500 sm:to-transparent w-full sm:max-w-2xl h-full sm:h-auto sm:max-h-[90vh]">
+            <div class="mobile-app-content bg-surface-0 dark:bg-surface-900 h-full sm:rounded-[53px] flex flex-col sm:overflow-hidden">
                 
                 <!-- Header - Sticky on mobile -->
-                 <div class="mobile-header pt-safe px-6 py-6 sm:py-10 text-center border-b sm:border-0 border-surface-200 dark:border-surface-700">
+                <div class="mobile-header pt-safe px-6 py-6 sm:py-10 text-center border-b sm:border-0 border-surface-200 dark:border-surface-700">
                     <!-- Bouton retour mobile uniquement -->
                     <button 
                         *ngIf="currentStep > 0"
@@ -24,7 +24,7 @@
                     </div>
                 </div>
 
-                <!-- Content - Scrollable on mobile -->
+                <!-- Content - Scrollable on mobile, contained on desktop -->
                 <div class="mobile-content flex-1 overflow-y-auto px-6 sm:px-12 py-6 sm:py-8">
                     
                     <!-- Step 1: Phone -->
@@ -122,7 +122,7 @@
 
                 </div>
 
-                  <!-- Footer - Sticky on mobile -->
+                <!-- Footer - Sticky on mobile -->
                 <div class="mobile-footer pb-safe px-6 sm:px-12 py-6 border-t sm:border-0 border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900">
                     
                     <!-- Bouton suivant/créer (pleine largeur) -->
