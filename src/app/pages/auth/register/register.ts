@@ -48,7 +48,7 @@ export class Register {
     
     // Countries list - Pays francophones et Europe
     countries: Country[] = [
-        // Afrique francophone (priorité)
+        // Afrique francophone 
         // { name: 'Guinée', code: 'GN', dialCode: '+224', flag: 'https://flagcdn.com/gn.svg' },
         // { name: 'Sénégal', code: 'SN', dialCode: '+221', flag: 'https://flagcdn.com/sn.svg' },
         // { name: 'Mali', code: 'ML', dialCode: '+223', flag: 'https://flagcdn.com/ml.svg' },
