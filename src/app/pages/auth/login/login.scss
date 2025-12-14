@@ -1,27 +1,110 @@
-// Fix mobile viewport issues
+// Styles pour le select de pays
 ::ng-deep {
-    // Hauteur fixe pour les inputs
+    // Hauteur uniforme pour tous les inputs
     .p-inputtext,
-    .p-password input {
-        height: 3rem !important; // 48px
+    .p-password input,
+    .p-select {
+        min-height: 3rem !important;
+        font-size: 16px !important;
+        border-radius: 12px !important;
+    }
+
+    // Boutons
+    .p-button {
+        border-radius: 12px !important;
+        font-weight: 600 !important;
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    }
+
+    // Select - Fix pour afficher le drapeau correctement
+    .p-select {
+        border-radius: 12px !important;
+        
+        .p-select-label {
+            display: flex !important;
+            align-items: center !important;
+            padding: 0.5rem 0.75rem !important;
+            min-height: 3rem !important;
+        }
+    }
+
+    // Custom classes pour le select de pays
+    .country-select-value {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        width: 100%;
+    }
+
+    .country-flag {
+        width: 28px !important;
+        height: 20px !important;
+        min-width: 28px !important;
+        min-height: 20px !important;
+        object-fit: cover !important;
+        border-radius: 3px !important;
+        flex-shrink: 0 !important;
+        display: block !important;
+    }
+
+    .dial-code {
+        font-size: 1rem !important;
+        font-weight: 500 !important;
+        white-space: nowrap !important;
+        color: var(--text-color) !important;
+    }
+
+    .country-option {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.75rem !important;
+        padding: 0.875rem 1rem !important;
+        width: 100%;
+        
+        &:hover {
+            background: var(--primary-50) !important;
+        }
+    }
+
+    .country-name {
+        flex: 1;
         font-size: 1rem !important;
     }
 
-    // Bouton avec hauteur fixe
-    .p-button.h-12 {
-        height: 3rem !important;
+    .dial-code-option {
+        color: var(--text-muted-color) !important;
+        font-size: 0.875rem !important;
+        margin-left: auto;
+    }
+
+    // Panel du dropdown
+    .p-select-overlay {
+        .p-select-list {
+            padding: 0.5rem 0 !important;
+        }
+    }
+
+    // Input focus states
+    .p-inputtext:focus,
+    .p-password input:focus {
+        box-shadow: 0 0 0 3px rgba(var(--primary-500), 0.1) !important;
+        border-color: var(--primary-500) !important;
     }
 
     // Empêcher le zoom sur iOS
     input,
     select,
     textarea {
-        font-size: 16px !important; // Minimum 16px pour éviter le zoom sur iOS
+        font-size: 16px !important;
     }
 }
 
-// Safe area pour iPhone avec notch
+// Safe area pour iPhone
 .py-safe {
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
+    padding-top: max(env(safe-area-inset-top), 1rem);
+    padding-bottom: max(env(safe-area-inset-bottom), 1rem);
 }

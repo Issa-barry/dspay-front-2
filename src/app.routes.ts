@@ -6,6 +6,7 @@ import { Landing } from './app/pages/landing/landing';
 import { Notfound } from './app/pages/notfound/notfound';
 import { HistoryComponent } from '@/pages/history/history';
 import { Faq } from '@/pages/faq/faq';
+import { SendDetail } from '@/pages/dashboard/components/send-detail/send-detail';
 
 export const appRoutes: Routes = [
     // Landing comme page par défaut
@@ -19,6 +20,7 @@ export const appRoutes: Routes = [
             { path: '', component: Dashboard },
             { path: 'dashboard', component: Dashboard },
             { path: 'history', component: HistoryComponent },
+            { path: 'detail/:id', component: SendDetail },
             { path: 'faq', component: Faq },
             { path: 'uikit', loadChildren: () => import('./app/pages/uikit/uikit.routes') },
             { path: 'documentation', component: Documentation },
