@@ -5,12 +5,12 @@ import { NotificationsWidget } from './components/notificationswidget';
 import { RecentSalesWidget } from './components/recentsaleswidget';
 import { RevenueStreamWidget } from './components/revenuestreamwidget';
 import { SendForm } from './components/send-form/send-form';
-import { HistoriqueWidget } from './components/historique/widgets/hisotiquewidget';
-import { SendForm2 } from './components/send-form2/send-form2';
+ import { SendForm2 } from './components/send-form2/send-form2';
 import { WalletComponent } from './components/wallet/WalletComponent';
 import { BeneficiaryComponent } from './components/beneficiary-component/beneficiary-component';
 import { RecapitulatifComponent } from './components/recapitulatif/recapitulatif';
 import { PaymentCbComponent } from './components/payment-cb/payment-cb';
+import { HistorySendDashboardWidget } from './components/historique/widgets/history.send.dahsboard.widget';
 
 @Component({
     selector: 'app-dashboard',
@@ -18,8 +18,7 @@ import { PaymentCbComponent } from './components/payment-cb/payment-cb';
       CommonModule,
       SendForm,
       SendForm2, 
-      RecentSalesWidget,  
-      HistoriqueWidget, 
+      HistorySendDashboardWidget, 
       WalletComponent,
       BeneficiaryComponent,
       RecapitulatifComponent,

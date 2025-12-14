@@ -5,12 +5,12 @@ import { MenuModule } from 'primeng/menu';
 
 @Component({
     standalone: true,
-    selector: 'app-best-selling-widget',
+    selector: 'app-history-send-dashboard-widget',
     imports: [CommonModule, ButtonModule, MenuModule],
-    templateUrl: './hisotiquewidget.html',
-    styleUrls: ['./hisotiquewidget.scss']
+    templateUrl: './history.send.dahsboard.widget.html',
+    styleUrls: ['./history.send.dahsboard.widget.scss']
 })
-export class HistoriqueWidget {
+export class HistorySendDashboardWidget {
     menu = null;
 
     items = [
