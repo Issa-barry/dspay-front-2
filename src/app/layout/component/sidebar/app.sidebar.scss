@@ -1,1 +1,29 @@
- 
+.layout-sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+app-menu {
+  flex: 1 1 auto;
+  display: block;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  color: var(--text-color);
+
+  a {
+    border-radius: var(--content-border-radius);
+    color: inherit;
+
+    i,
+    span {
+      color: inherit;
+    }
+
+    &:hover {
+      background-color: var(--surface-hover);
+      color: var(--text-color);
+    }
+  }
+}

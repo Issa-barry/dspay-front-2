@@ -1,3 +1,32 @@
 <div class="layout-sidebar">
         <app-menu></app-menu>
+        <div class="sidebar-footer py-2 border-t border-primary-400 dark:border-primary-300">
+                        <ul class="list-none p-2 m-0 hidden animate-duration-150 overflow-hidden">
+                            <li>
+                                <a class="flex items-center cursor-pointer p-3 gap-2 rounded-lg transition-colors duration-150">
+                                    <i class="pi pi-user text-base! leading-none!"></i>
+                                    <span class="font-medium text-base leading-tight">Compte</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="flex items-center cursor-pointer p-3 gap-2 rounded-lg transition-colors duration-150">
+                                    <i class="pi pi-sign-out text-base! leading-none!"></i>
+                                    <span class="font-medium text-base leading-tight">Deconnexion</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <a
+                            pStyleClass="@prev"
+                            enterFromClass="hidden"
+                            enterActiveClass="animate-slidedown"
+                            leaveToClass="hidden"
+                            leaveActiveClass="animate-slideup"
+                            class="flex items-center cursor-pointer p-2 gap-2"
+                        >
+                            <img src="https://fqjltiegiezfetthbags.supabase.co/storage/v1/render/image/public/block.images/blocks/avatars/avatar-amyels.png" class="w-8 h-8 rounded-full" />
+                            <span class="font-medium text-base leading-tight">Nom complet</span>
+                            <i class="pi pi-angle-up text-base! leading-none! text-primary-contrast ml-auto"></i>
+                        </a>
+                    </div>
+        
 </div>
