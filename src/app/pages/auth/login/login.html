@@ -17,9 +17,45 @@
                 </div>
 
                 <div>
-                    <label for="email1" class="block text-surface-900 dark:text-surface-0 text-base font-medium mb-2">Email</label>
-                    <input pInputText id="email1" type="email" placeholder="Votre email" class="w-full mb-4 h-12 text-base" [(ngModel)]="email" />
+                    <!-- Téléphone -->
+                    <label for="phone" class="block text-surface-900 dark:text-surface-0 text-base font-medium mb-2">Numéro de téléphone</label>
+                    <div class="flex gap-2 mb-4">
+                        <p-select
+                            [options]="countries" 
+                            [(ngModel)]="selectedCountry" 
+                            optionLabel="dialCode"
+                            placeholder="+XXX"
+                            [style]="{'width': '120px'}"
+                            inputStyleClass="h-12">
+                            <ng-template pTemplate="selectedItem">
+                                <div *ngIf="selectedCountry" class="country-select-value">
+                                    <img [src]="selectedCountry.flag" 
+                                         [alt]="selectedCountry.name"
+                                         class="country-flag" />
+                                    <span class="dial-code">{{ selectedCountry.dialCode }}</span>
+                                </div>
+                            </ng-template>
+                            <ng-template let-country pTemplate="item">
+                                <div class="country-option">
+                                    <img [src]="country.flag" 
+                                         [alt]="country.name"
+                                         class="country-flag" />
+                                    <span class="country-name">{{ country.name }}</span>
+                                    <span class="dial-code-option">{{ country.dialCode }}</span>
+                                </div>
+                            </ng-template>
+                        </p-select>
+                        
+                        <input 
+                            pInputText 
+                            id="phone" 
+                            type="tel" 
+                            placeholder="XXX XX XX XX" 
+                            [(ngModel)]="phone"
+                            class="flex-1 text-base h-12 px-4" />
+                    </div>
 
+                    <!-- Mot de passe -->
                     <label for="password1" class="block text-surface-900 dark:text-surface-0 font-medium text-base mb-2">Mot de passe</label>
                     <p-password 
                         id="password1" 
@@ -33,10 +69,21 @@
                     </p-password>
 
                     <div class="flex items-center justify-end mb-6">
-                        <span class="font-medium no-underline cursor-pointer text-primary text-sm">Mot de passe oublié?</span>
+                        <span class="font-medium no-underline cursor-pointer text-primary text-sm" [routerLink]="['/auth/forgotpassword']" routerLinkActive="router-link-active">Mot de passe oublié?</span>
                     </div>
                     
-                    <p-button label="Connexion" styleClass="w-full h-12" routerLink="/app"></p-button>
+                    <p-button 
+                        label="Connexion" 
+                        styleClass="w-full h-12"
+                        [disabled]="!isFormValid()"
+                        (onClick)="login()">
+                    </p-button>
+
+                    <!-- Lien vers inscription -->
+                    <div class="text-center mt-6">
+                        <span class="text-muted-color text-sm">Vous n'avez pas de compte? </span>
+                        <a routerLink="/auth/register" class="text-primary font-semibold text-sm hover:underline">S'inscrire</a>
+                    </div>
                 </div>
             </div>
         </div>
