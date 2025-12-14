@@ -48,11 +48,7 @@ export class Register {
     
     // Countries list - Pays francophones et Europe
     countries: Country[] = [
-        // Afrique francophone 
-        // { name: 'Guinée', code: 'GN', dialCode: '+224', flag: 'https://flagcdn.com/gn.svg' },
-        // { name: 'Sénégal', code: 'SN', dialCode: '+221', flag: 'https://flagcdn.com/sn.svg' },
-        // { name: 'Mali', code: 'ML', dialCode: '+223', flag: 'https://flagcdn.com/ml.svg' },
-        // { name: 'Côte d\'Ivoire', code: 'CI', dialCode: '+225', flag: 'https://flagcdn.com/ci.svg' },
+       
         
         // France et DOM-TOM
         { name: 'France', code: 'FR', dialCode: '+33', flag: 'https://flagcdn.com/fr.svg' },
@@ -97,7 +93,13 @@ export class Register {
         { name: 'Estonie', code: 'EE', dialCode: '+372', flag: 'https://flagcdn.com/ee.svg' },
         { name: 'Croatie', code: 'HR', dialCode: '+385', flag: 'https://flagcdn.com/hr.svg' },
         { name: 'Tchéquie', code: 'CZ', dialCode: '+420', flag: 'https://flagcdn.com/cz.svg' },
-        { name: 'Slovaquie', code: 'SK', dialCode: '+421', flag: 'https://flagcdn.com/sk.svg' }
+        { name: 'Slovaquie', code: 'SK', dialCode: '+421', flag: 'https://flagcdn.com/sk.svg' }, 
+
+         // Afrique francophone 
+        { name: 'Guinée', code: 'GN', dialCode: '+224', flag: 'https://flagcdn.com/gn.svg' },
+        { name: 'Sénégal', code: 'SN', dialCode: '+221', flag: 'https://flagcdn.com/sn.svg' },
+        { name: 'Mali', code: 'ML', dialCode: '+223', flag: 'https://flagcdn.com/ml.svg' },
+        { name: 'Côte d\'Ivoire', code: 'CI', dialCode: '+225', flag: 'https://flagcdn.com/ci.svg' },
     ];
 
     constructor(
