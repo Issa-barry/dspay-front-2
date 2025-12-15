@@ -53,6 +53,24 @@
     <div class="exchange-rate">
       <h3>Taux d'échange</h3>
       <p>1 € = {{ exchangeRate | number:'1.0-0' }} GNF</p>
+           <li class="md:hidden">
+                <a
+                    class="flex items-center cursor-pointer p-3 gap-2 rounded-lg transition-colors duration-150 hover:bg-surface-100 dark:hover:bg-surface-800"
+                    (click)="onLogout(); $event.preventDefault()"
+                    [class.opacity-50]="loadingLogout"
+                    [class.pointer-events-none]="loadingLogout"
+                    [attr.aria-busy]="loadingLogout"
+                >
+                    <i
+                        class="pi text-base! leading-none!"
+                        [ngClass]="loadingLogout ? 'pi-spin pi-spinner' : 'pi-sign-out'"
+                        aria-hidden="true"
+                    ></i>
+                    <span class="font-medium text-base leading-tight">
+                        {{ loadingLogout ? 'Déconnexion...' : 'Deconnexion' }}
+                    </span>
+                </a>
+            </li>
     </div>
   </form>
 </div>

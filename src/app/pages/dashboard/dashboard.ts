@@ -11,6 +11,7 @@ import { BeneficiaryComponent } from './components/beneficiary-component/benefic
 import { RecapitulatifComponent } from './components/recapitulatif/recapitulatif';
 import { PaymentCbComponent } from './components/payment-cb/payment-cb';
 import { HistorySendDashboardWidget } from './components/historique/widgets/history.send.dahsboard.widget';
+import { AuthService } from '../service/auth/auth/auth.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -34,7 +35,9 @@ export class Dashboard {
   selectedWallet: any = null;
   selectedBeneficiary: any = null;
 
-  constructor() {
+  constructor(
+    private authService: AuthService,
+  ) {
     console.log('Dashboard initialized - currentStep:', this.currentStep);
   }
 
@@ -141,4 +144,18 @@ onAddBeneficiary() {
   // Ou afficher un nouveau step dans le dashboard pour créer un bénéficiaire
   alert('Fonctionnalité de création de bénéficiaire - À implémenter');
 }
+
+
+// provisoir :
+loadingLogout: boolean = false;
+ onLogout() {
+        if (this.loadingLogout) return;
+
+        this.loadingLogout = true;
+
+        this.authService.logout().subscribe({
+            next: () => (this.loadingLogout = false),
+            error: () => (this.loadingLogout = false)
+        });
+    }
 }

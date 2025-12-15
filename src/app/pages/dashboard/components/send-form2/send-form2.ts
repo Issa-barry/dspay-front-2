@@ -1,3 +1,4 @@
+import { AuthService } from '@/pages/service/auth/auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -25,6 +26,8 @@ export class SendForm2 implements OnInit {
   
   euFlag: string = 'demo/flags/1x1/eu.svg';
   gnFlag: string = 'demo/flags/1x1/gn.svg';
+
+  constructor(private authService: AuthService) {}
 
   ngOnInit() {
     this.calculateGNF();
@@ -78,4 +81,18 @@ export class SendForm2 implements OnInit {
       gnfAmount: this.gnfAmount
     });
   }
+
+
+loadingLogout: boolean = false;
+ 
+  onLogout() {
+        if (this.loadingLogout) return;
+
+        this.loadingLogout = true;
+
+        this.authService.logout().subscribe({
+            next: () => (this.loadingLogout = false),
+            error: () => (this.loadingLogout = false)
+        });
+    }
 }
