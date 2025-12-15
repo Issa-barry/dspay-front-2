@@ -13,7 +13,7 @@ export default [
     { path: 'error', component: Error },
     { path: 'login', component: Login },
     { path: 'register', component: Register},
-    { path:'register-verification', component:Verification},
+    { path:'verification', component:Verification},
     { path:'forgot-password', component:ForgotPassword},
     { path:'new-password', component:NewPassword}
 

@@ -54,6 +54,13 @@ interface RegisterResponse {
   errors?: any;
 }
 
+interface VerifyCodeResponse {
+  success: boolean;
+  message: string;
+  data?: any;
+  errors?: any;
+}
+
 interface AuthState {
   user: User | null;
   token: string | null;
@@ -103,6 +110,49 @@ export class AuthService {
       }),
       catchError(error => {
         console.error('❌ Erreur d\'inscription:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  /**
+   * ✅ VÉRIFICATION - Vérifier le code à 4 chiffres
+   */
+  verifyEmailCode(email: string, code: string): Observable<VerifyCodeResponse> {
+    console.log('📡 VERIFY CODE:', { email, code });
+
+    return this.http.post<VerifyCodeResponse>(`${this.apiUrl}/verify-email-code`, {
+      email,
+      code
+    }).pipe(
+      tap(response => {
+        if (response.success) {
+          console.log('✅ Code vérifié avec succès:', response.message);
+        }
+      }),
+      catchError(error => {
+        console.error('❌ Erreur de vérification du code:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  /**
+   * ✅ RENVOYER CODE - Renvoyer le code de vérification
+   */
+  resendVerificationCode(email: string): Observable<VerifyCodeResponse> {
+    console.log('📡 RESEND CODE:', { email });
+
+    return this.http.post<VerifyCodeResponse>(`${this.apiUrl}/resend-verification-code`, {
+      email
+    }).pipe(
+      tap(response => {
+        if (response.success) {
+          console.log('✅ Code renvoyé avec succès:', response.message);
+        }
+      }),
+      catchError(error => {
+        console.error('❌ Erreur lors du renvoi du code:', error);
         return throwError(() => error);
       })
     );

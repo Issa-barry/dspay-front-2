@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -7,10 +7,11 @@ import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
 import { SelectModule } from 'primeng/select';
 import { MessageModule } from 'primeng/message';
-import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environements/environment.dev';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 import { AuthService } from '@/pages/service/auth/auth/auth.service';
-
+import { VerificationService } from '@/pages/service/verification/verification.service';
+ 
 interface Country {
     name: string;
     code: string;
@@ -56,12 +57,20 @@ interface RegisterResponse {
         ButtonModule,
         PasswordModule,
         SelectModule,
-        MessageModule
+        MessageModule,
+        ToastModule
     ],
+    providers: [MessageService],
     templateUrl: './register.html',
     styleUrl: './register.scss'
 })
 export class Register implements OnInit {
+    // Injections
+    private router = inject(Router);
+    private authService = inject(AuthService);
+    private verificationService = inject(VerificationService);
+    private messageService = inject(MessageService);
+
     // Step management
     currentStep: number = 0;
     
@@ -130,14 +139,11 @@ export class Register implements OnInit {
         { name: 'Côte d\'Ivoire', code: 'CI', dialCode: '+225', flag: 'https://flagcdn.com/ci.svg' },
     ];
 
-    constructor(
-        private router: Router,
-        private authService: AuthService
-    ) {}
-
     ngOnInit(): void {
         // Sélectionner la France par défaut
         this.selectedCountry = this.countries[0];
+
+        console.log('🔧 Register initialisé');
     }
 
     // Navigation
@@ -172,9 +178,7 @@ export class Register implements OnInit {
     }
 
     isStep4Valid(): boolean {
-        return this.password.length >= 8 
-            //    &&  this.passwordConfirm.length >= 8 
-            //     && this.password === this.passwordConfirm;
+        return this.password.length >= 8;
     }
 
     isValidEmail(email: string): boolean {
@@ -206,7 +210,7 @@ export class Register implements OnInit {
     }
 
     // Soumission
-     submitRegistration(): void {
+    submitRegistration(): void {
         if (!this.isStep4Valid() || this.loading) {
             return;
         }
@@ -216,9 +220,10 @@ export class Register implements OnInit {
         this.successMessage = '';
 
         // Construire le phone au format E.164
-        const fullPhone = `${this.selectedCountry!.dialCode}${this.phone.replace(/\s/g, '').replace(/^0/, '')}`;
+        const cleanPhone = this.phone.replace(/\s/g, '').replace(/^0/, '');
+        const fullPhone = `${this.selectedCountry!.dialCode}${cleanPhone}`;
 
-        const registerData = {
+        const registerData: RegisterRequest = {
             nom: this.nom.trim(),
             prenom: this.prenom.trim(),
             email: this.email.trim().toLowerCase(),
@@ -230,19 +235,66 @@ export class Register implements OnInit {
             dial_code: this.selectedCountry!.dialCode
         };
 
+        console.log('📤 Envoi des données d\'inscription:', {
+            ...registerData,
+            password: '***',
+            password_confirmation: '***'
+        });
+
         // ✅ Appeler authService.register()
         this.authService.register(registerData).subscribe({
             next: (response) => {
+                console.log('✅ Réponse inscription:', response);
+
                 if (response.success) {
-                    console.log('✅ Inscription réussie:', response);
-                    this.successMessage = response.message;
+                    this.successMessage = response.message || 'Compte créé avec succès !';
                     
+                    // Afficher un toast de succès
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Inscription réussie',
+                        detail: 'Un code de vérification a été envoyé à votre email.',
+                        life: 3000
+                    });
+
+                    const emailToSave = this.email.trim().toLowerCase();
+                    console.log('📧 Email à sauvegarder:', emailToSave);
+
+                    // ✅ CRITIQUE : Enregistrer l'email dans le service de vérification
+                    this.verificationService.setVerificationData(emailToSave);
+                    
+                    // Vérifier que l'email a bien été sauvegardé
+                    const savedEmail = this.verificationService.getVerificationEmail();
+                    console.log('✅ Email vérifié dans le service:', savedEmail);
+
+                    if (savedEmail === emailToSave) {
+                        console.log('✅ Email correctement enregistré');
+                    } else {
+                        console.error('❌ Erreur: Email non enregistré correctement');
+                    }
+
+                    // Rediriger après un délai pour que l'utilisateur voie le message
                     setTimeout(() => {
-                        this.router.navigate(['/auth/register-verification']);
-                    }, 2000);
+                        console.log('🔄 Navigation vers /auth/verification');
+                        this.router.navigate(['/auth/verification']).then(success => {
+                            if (success) {
+                                console.log('✅ Navigation réussie');
+                            } else {
+                                console.error('❌ Échec de navigation');
+                            }
+                        });
+                    }, 1500);
+
                 } else {
                     this.errorMessage = response.message || 'Une erreur est survenue';
                     this.loading = false;
+
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Erreur',
+                        detail: this.errorMessage,
+                        life: 5000
+                    });
                 }
             },
             error: (error: any) => {
@@ -250,19 +302,58 @@ export class Register implements OnInit {
                 console.error('❌ Erreur inscription:', error);
 
                 if (error.status === 422) {
+                    // Erreurs de validation
                     const errors = error.error?.errors || error.error?.data;
                     if (errors) {
+                        // Afficher chaque erreur
+                        Object.keys(errors).forEach(field => {
+                            const messages = Array.isArray(errors[field]) ? errors[field] : [errors[field]];
+                            messages.forEach((msg: string) => {
+                                this.messageService.add({
+                                    severity: 'error',
+                                    summary: `Erreur - ${field}`,
+                                    detail: msg,
+                                    life: 5000
+                                });
+                            });
+                        });
+
+                        // Message général
                         const errorMessages = Object.values(errors).flat();
-                        this.errorMessage = errorMessages.join(' ');
+                        this.errorMessage = (errorMessages as string[]).join(' ');
                     } else {
                         this.errorMessage = error.error?.message || 'Données invalides.';
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Erreur de validation',
+                            detail: this.errorMessage,
+                            life: 5000
+                        });
                     }
                 } else if (error.status === 500) {
                     this.errorMessage = 'Erreur serveur. Veuillez réessayer plus tard.';
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Erreur serveur',
+                        detail: this.errorMessage,
+                        life: 5000
+                    });
                 } else if (error.status === 0) {
                     this.errorMessage = 'Impossible de se connecter au serveur.';
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Erreur de connexion',
+                        detail: this.errorMessage,
+                        life: 5000
+                    });
                 } else {
                     this.errorMessage = error.error?.message || 'Une erreur est survenue.';
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Erreur',
+                        detail: this.errorMessage,
+                        life: 5000
+                    });
                 }
             }
         });
