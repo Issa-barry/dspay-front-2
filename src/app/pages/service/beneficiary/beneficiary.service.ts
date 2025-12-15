@@ -47,7 +47,7 @@ private readonly baseUrl = `${environment.apiUrl}/beneficiaires`;
       .post<ApiResponse<any>>(`${this.baseUrl}/create`, payload)
       .pipe(map((res) => new Beneficiary(res.data)));
   }
-
+ 
   /** PUT /beneficiaires/updateById/{id} */
   updateById(id: number, payload: { nom?: string; prenom?: string; phone?: string }): Observable<Beneficiary> {
     return this.http

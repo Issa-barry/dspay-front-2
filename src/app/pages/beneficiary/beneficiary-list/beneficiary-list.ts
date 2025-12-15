@@ -108,38 +108,49 @@ export class BeneficiaryList implements OnInit {
     this.router.navigate(['/app/beneficiary', id]);
   }
 
-deleteBeneficiary(beneficiary: Beneficiary, event?: Event) {
+deleteBeneficiary(beneficiary: Beneficiary, event?: Event): void {
   if (event) event.stopPropagation();
   if (!beneficiary.id) return;
 
   this.confirmationService.confirm({
-    message: `Are you sure you want to delete ${beneficiary.nom_complet}?`,
-    header: 'Delete Confirmation',
+    message: `Êtes-vous sûr de vouloir supprimer ${beneficiary.nom_complet} ?`,
+    header: 'Confirmation',
     icon: 'pi pi-exclamation-triangle',
-    acceptLabel: 'Yes, delete',
-    rejectLabel: 'Cancel',
+    acceptLabel: 'Oui, supprimer',
+    rejectLabel: 'Annuler',
     acceptButtonStyleClass: 'p-button-danger',
     accept: () => {
-      this.beneficiaryService.deleteById(beneficiary.id!).subscribe({
+      // ✅ Optimistic UI: on retire tout de suite de la liste
+      const id = beneficiary.id!;
+      this.beneficiaries = this.beneficiaries.filter(b => b.id !== id);
+      this.filteredBeneficiaries = this.filteredBeneficiaries.filter(b => b.id !== id);
+
+      this.beneficiaryService.deleteById(id).subscribe({
         next: () => {
-          this.loadBeneficiaries();
           this.messageService.add({
             severity: 'success',
-            summary: 'Deleted',
-            detail: 'Beneficiary deleted successfully'
+            summary: 'Supprimé',
+            detail: 'Bénéficiaire supprimé avec succès'
           });
+
+          // ✅ optionnel: resynchroniser la pagination / recherche
+          // this.loadBeneficiaries();
         },
-        error: () => {
+        error: (err) => {
+          // ❌ rollback si erreur
+          this.loadBeneficiaries();
+
           this.messageService.add({
             severity: 'error',
             summary: 'Erreur',
-            detail: 'Suppression impossible.'
+            detail: err?.error?.message || 'Suppression impossible.'
           });
         }
       });
     }
   });
 }
+
 
 
   onBeneficiaryClick(id: number): void {

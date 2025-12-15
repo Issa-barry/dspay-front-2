@@ -26,6 +26,7 @@
   <div class="search-bar">
     <span class="p-input-icon-left">
       <i class="pi pi-search"></i>
+      <!--  -->
       <input
         type="text"
         pInputText
@@ -34,6 +35,18 @@
         placeholder="Rechercher..."
         class="search-input">
     </span>
+
+    <!-- filtrage appel back -->
+     <!-- <span class="p-input-icon-left">
+      <i class="pi pi-search"></i>
+         <input
+        type="text"
+        pInputText
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearchChange()"
+        placeholder="Rechercher..."
+        class="search-input">
+    </span> -->
   </div>
 
   <!-- Beneficiaries list -->
