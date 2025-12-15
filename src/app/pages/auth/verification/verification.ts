@@ -49,7 +49,7 @@ export class Verification implements OnInit, OnDestroy {
   maskedEmail: string = '';
   isVerifying: boolean = false;
   isResending: boolean = false;
-  countdown: number = 120;
+  countdown: number = 60*10;
   canResend: boolean = false;
   private countdownInterval: any;
 
