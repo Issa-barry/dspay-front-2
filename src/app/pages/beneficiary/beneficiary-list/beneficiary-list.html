@@ -1,32 +1,34 @@
 <div class="beneficiary-list-page card">
   <!-- Header mobile-friendly -->
- <div class="page-header">
-  <button 
-    pButton 
-    icon="pi pi-arrow-left" 
-    class="p-button-text back-button"
-    (click)="goBack()">
-  </button>
-  <div class="header-content">
-    <h1 class="page-title">Mes Bénéficiaires</h1>
-    <p class="page-subtitle">Gérez vos bénéficiaires pour vos transferts</p>
+  <div class="page-header">
+    <button
+      pButton
+      icon="pi pi-arrow-left"
+      class="p-button-text back-button"
+      (click)="goBack()">
+    </button>
+
+    <div class="header-content">
+      <h1 class="page-title">Mes Bénéficiaires</h1>
+      <p class="page-subtitle">Gérez vos bénéficiaires pour vos transferts</p>
+    </div>
+
+    <button
+      pButton
+      icon="pi pi-plus"
+      class="add-btn"
+      (click)="addNew()">
+      <span class="btn-label">Ajouter</span>
+    </button>
   </div>
-  <button 
-    pButton 
-    icon="pi pi-plus"
-    class="add-btn"
-    (click)="addNew()">
-    <span class="btn-label">Ajouter</span>
-  </button>
-</div>
 
   <!-- Search bar -->
   <div class="search-bar">
     <span class="p-input-icon-left">
       <i class="pi pi-search"></i>
-      <input 
-        type="text" 
-        pInputText 
+      <input
+        type="text"
+        pInputText
         [(ngModel)]="searchQuery"
         (ngModelChange)="applyFilter()"
         placeholder="Rechercher..."
@@ -36,17 +38,18 @@
 
   <!-- Beneficiaries list -->
   <div class="beneficiaries-list" *ngIf="filteredBeneficiaries.length > 0">
-    <div 
-      *ngFor="let beneficiary of filteredBeneficiaries" 
+    <div
+      *ngFor="let beneficiary of filteredBeneficiaries"
       class="beneficiary-item"
-      (click)="editBeneficiary(beneficiary.id)">
+      (click)="beneficiary.id && editBeneficiary(beneficiary.id)">
       
       <div class="beneficiary-avatar" [style.background-color]="beneficiary.color">
         <span>{{ beneficiary.initials }}</span>
       </div>
 
       <div class="beneficiary-info">
-        <h3 class="beneficiary-name">{{ beneficiary.name }}</h3>
+        <!-- ✅ back renvoie nom_complet -->
+        <h3 class="beneficiary-name">{{ beneficiary.nom_complet }}</h3>
         <p class="beneficiary-phone">
           <i class="pi pi-phone"></i>
           {{ beneficiary.phone }}
@@ -55,17 +58,18 @@
 
       <!-- Desktop actions -->
       <div class="beneficiary-actions desktop-only" (click)="$event.stopPropagation()">
-        <button 
-          pButton 
-          icon="pi pi-pencil" 
+        <button
+          pButton
+          icon="pi pi-pencil"
           class="p-button-rounded p-button-text p-button-success"
-          (click)="editBeneficiary(beneficiary.id, $event)"
+          (click)="beneficiary.id && editBeneficiary(beneficiary.id, $event)"
           pTooltip="Modifier"
           tooltipPosition="top">
         </button>
-        <button 
-          pButton 
-          icon="pi pi-trash" 
+
+        <button
+          pButton
+          icon="pi pi-trash"
           class="p-button-rounded p-button-text p-button-danger"
           (click)="deleteBeneficiary(beneficiary, $event)"
           pTooltip="Supprimer"
@@ -84,17 +88,14 @@
     <h3>Aucun bénéficiaire</h3>
     <p *ngIf="searchQuery">Aucun résultat pour "{{ searchQuery }}"</p>
     <p *ngIf="!searchQuery">Ajoutez votre premier bénéficiaire</p>
-    <button 
-      pButton 
-      label="Ajouter un bénéficiaire" 
+    <button
+      pButton
+      label="Ajouter un bénéficiaire"
       icon="pi pi-plus"
       (click)="addNew()">
     </button>
   </div>
 
-  <!-- Confirmation Dialog -->
   <p-confirmDialog></p-confirmDialog>
-  
-  <!-- Toast messages -->
   <p-toast></p-toast>
 </div>

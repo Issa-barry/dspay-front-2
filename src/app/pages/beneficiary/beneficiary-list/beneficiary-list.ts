@@ -2,22 +2,18 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { Location } from '@angular/common';
+
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
-import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-import { Location } from '@angular/common';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
-export interface Beneficiary {
-  id: number;
-  name: string;
-  phone: string;
-  initials: string;
-  color: string;
-  createdAt?: Date;
-}
+import { Beneficiary } from 'src/app/core/models/beneficiary.model';
+import { BeneficiaryService } from '@/pages/service/beneficiary/beneficiary.service';
+ 
 
 @Component({
   selector: 'app-beneficiary-list',
@@ -38,155 +34,119 @@ export interface Beneficiary {
 export class BeneficiaryList implements OnInit {
   beneficiaries: Beneficiary[] = [];
   filteredBeneficiaries: Beneficiary[] = [];
-  searchQuery: string = '';
+
+  searchQuery = '';
+  perPage = 50;
+
+  loading = false;
 
   constructor(
     private router: Router,
-      private location: Location,
+    private location: Location,
+    private beneficiaryService: BeneficiaryService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadBeneficiaries();
   }
 
-  loadBeneficiaries() {
-    // Données de démonstration
-    this.beneficiaries = [
-      { 
-        id: 1, 
-        name: 'Abdourahman DIALLO', 
-        phone: '+224 622 25 70 40',
-        initials: 'AD', 
-        color: '#EC4899',
-        createdAt: new Date('2024-01-15')
-      },
-      { 
-        id: 2, 
-        name: 'Adama Camara', 
-        phone: '+224 611 21 43 50',
-        initials: 'AC', 
-        color: '#3B82F6',
-        createdAt: new Date('2024-02-20')
-      },
-      { 
-        id: 3, 
-        name: 'Aissatou Diallo', 
-        phone: '+224 627 75 59 33',
-        initials: 'AD', 
-        color: '#EC4899',
-        createdAt: new Date('2024-03-10')
-      },
-      { 
-        id: 4, 
-        name: 'Alpha Ousmane Barry', 
-        phone: '+224 622 22 21 98',
-        initials: 'AB', 
-        color: '#F97316',
-        createdAt: new Date('2024-01-25')
-      },
-      { 
-        id: 5, 
-        name: 'Aminata DIALLO', 
-        phone: '+224 621 09 07 88',
-        initials: 'AD', 
-        color: '#EC4899',
-        createdAt: new Date('2024-02-05')
-      },
-      { 
-        id: 6, 
-        name: 'Bintou BARRY', 
-        phone: '+224 628 11 32 30',
-        initials: 'BB', 
-        color: '#3B82F6',
-        createdAt: new Date('2024-03-01')
-      },
-      { 
-        id: 7, 
-        name: 'Fatoumata Diaraye DIALLO', 
-        phone: '+224 611 19 68 07',
-        initials: 'FD', 
-        color: '#14B8A6',
-        createdAt: new Date('2024-01-10')
-      },
-      { 
-        id: 8, 
-        name: 'Mamadou Bailo BALDÉ', 
-        phone: '+224 622 24 29 74',
-        initials: 'MB', 
-        color: '#F97316',
-        createdAt: new Date('2024-02-14')
-      },
-      { 
-        id: 9, 
-        name: 'Mariama SIDIBE', 
-        phone: '+224 620 45 67 89',
-        initials: 'MS', 
-        color: '#8B5CF6',
-        createdAt: new Date('2024-03-05')
-      }
-    ];
-    
-    this.applyFilter();
+  loadBeneficiaries(): void {
+    this.loading = true;
+
+    this.beneficiaryService
+      .getAll({ search: this.searchQuery?.trim() || undefined, per_page: this.perPage })
+      .subscribe({
+        next: (page) => {
+          this.beneficiaries = page.items;
+          this.filteredBeneficiaries = [...this.beneficiaries]; // backend fait déjà le filtre
+          this.loading = false;
+          console.log("benfe", this.beneficiaries);
+          
+        },
+        error: () => {
+          this.loading = false;
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erreur',
+            detail: 'Impossible de charger la liste des bénéficiaires.'
+          });
+        }
+      });
   }
 
-  applyFilter() {
+  // 🔎 si tu veux filtrer en live sans re-call API, garde applyFilter()
+  // sinon, préfère appeler l’API (meilleur si grosse liste)
+  onSearchChange(): void {
+    // Option A: appelle le back (recommandé)
+    this.loadBeneficiaries();
+
+    // Option B: filtre local
+    // this.applyFilter();
+  }
+
+  applyFilter(): void {
     if (!this.searchQuery.trim()) {
       this.filteredBeneficiaries = [...this.beneficiaries];
-    } else {
-      const lowerQuery = this.searchQuery.toLowerCase();
-      this.filteredBeneficiaries = this.beneficiaries.filter(b =>
-        b.name.toLowerCase().includes(lowerQuery) ||
-        b.phone.includes(this.searchQuery)
-      );
+      return;
     }
+
+    const lower = this.searchQuery.toLowerCase();
+    this.filteredBeneficiaries = this.beneficiaries.filter(b =>
+      (b.nom_complet ?? '').toLowerCase().includes(lower) ||
+      (b.phone ?? '').includes(this.searchQuery)
+    );
   }
 
-  addNew() {
+  addNew(): void {
     this.router.navigate(['/app/beneficiary/new']);
   }
 
-  editBeneficiary(id: number, event?: Event) {
-    // Empêcher la propagation si appelé depuis un bouton
-    if (event) {
-      event.stopPropagation();
-    }
+  editBeneficiary(id: number, event?: Event): void {
+    if (event) event.stopPropagation();
     this.router.navigate(['/app/beneficiary', id]);
   }
 
-  deleteBeneficiary(beneficiary: Beneficiary, event?: Event) {
-    // Empêcher la propagation pour ne pas déclencher le click du parent
-    if (event) {
-      event.stopPropagation();
-    }
-    
-    this.confirmationService.confirm({
-      message: `Are you sure you want to delete ${beneficiary.name}?`,
-      header: 'Delete Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      acceptLabel: 'Yes, delete',
-      rejectLabel: 'Cancel',
-      acceptButtonStyleClass: 'p-button-danger',
-      accept: () => {
-        this.beneficiaries = this.beneficiaries.filter(b => b.id !== beneficiary.id);
-        this.applyFilter();
-        
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Deleted',
-          detail: 'Beneficiary deleted successfully'
-        });
-      }
-    });
-  }
+deleteBeneficiary(beneficiary: Beneficiary, event?: Event) {
+  if (event) event.stopPropagation();
+  if (!beneficiary.id) return;
 
-  onBeneficiaryClick(id: number) {
-    // Navigation au clic sur la carte (mobile)
+  this.confirmationService.confirm({
+    message: `Are you sure you want to delete ${beneficiary.nom_complet}?`,
+    header: 'Delete Confirmation',
+    icon: 'pi pi-exclamation-triangle',
+    acceptLabel: 'Yes, delete',
+    rejectLabel: 'Cancel',
+    acceptButtonStyleClass: 'p-button-danger',
+    accept: () => {
+      this.beneficiaryService.deleteById(beneficiary.id!).subscribe({
+        next: () => {
+          this.loadBeneficiaries();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Deleted',
+            detail: 'Beneficiary deleted successfully'
+          });
+        },
+        error: () => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erreur',
+            detail: 'Suppression impossible.'
+          });
+        }
+      });
+    }
+  });
+}
+
+
+  onBeneficiaryClick(id: number): void {
     this.editBeneficiary(id);
   }
-    goBack() {
+
+  goBack(): void {
     this.location.back();
-    //  this.router.navigate(['/app/beneficiary']);
   }
 }
