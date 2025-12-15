@@ -57,6 +57,7 @@ import { Router, RouterModule } from '@angular/router';
                             <h4 class="font-medium text-2xl leading-normal mb-6 text-surface-900 dark:text-surface-0">Condtiions</h4>
                             <a class="leading-normal text-xl block cursor-pointer mb-2 text-surface-700 dark:text-surface-100">CGU</a>
                             <a class="leading-normal text-xl block cursor-pointer mb-2 text-surface-700 dark:text-surface-100">CGV</a>
+                            <a class="leading-normal text-xl block cursor-pointer mb-2 text-surface-700 dark:text-surface-100">Version : 1.0.0</a>
                          </div>
                     </div>
                 </div>
