@@ -5,12 +5,13 @@ import { NotificationsWidget } from './components/notificationswidget';
 import { RecentSalesWidget } from './components/recentsaleswidget';
 import { RevenueStreamWidget } from './components/revenuestreamwidget';
 import { SendForm } from './components/send-form/send-form';
-import { HistoriqueWidget } from './components/historique/widgets/hisotiquewidget';
-import { SendForm2 } from './components/send-form2/send-form2';
+ import { SendForm2 } from './components/send-form2/send-form2';
 import { WalletComponent } from './components/wallet/WalletComponent';
 import { BeneficiaryComponent } from './components/beneficiary-component/beneficiary-component';
 import { RecapitulatifComponent } from './components/recapitulatif/recapitulatif';
 import { PaymentCbComponent } from './components/payment-cb/payment-cb';
+import { HistorySendDashboardWidget } from './components/historique/widgets/history.send.dahsboard.widget';
+import { AuthService } from '../service/auth/auth/auth.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -18,8 +19,7 @@ import { PaymentCbComponent } from './components/payment-cb/payment-cb';
       CommonModule,
       SendForm,
       SendForm2, 
-      RecentSalesWidget,  
-      HistoriqueWidget, 
+      HistorySendDashboardWidget, 
       WalletComponent,
       BeneficiaryComponent,
       RecapitulatifComponent,
@@ -35,7 +35,9 @@ export class Dashboard {
   selectedWallet: any = null;
   selectedBeneficiary: any = null;
 
-  constructor() {
+  constructor(
+    private authService: AuthService,
+  ) {
     console.log('Dashboard initialized - currentStep:', this.currentStep);
   }
 
@@ -142,4 +144,18 @@ onAddBeneficiary() {
   // Ou afficher un nouveau step dans le dashboard pour créer un bénéficiaire
   alert('Fonctionnalité de création de bénéficiaire - À implémenter');
 }
+
+
+// provisoir :
+loadingLogout: boolean = false;
+ onLogout() {
+        if (this.loadingLogout) return;
+
+        this.loadingLogout = true;
+
+        this.authService.logout().subscribe({
+            next: () => (this.loadingLogout = false),
+            error: () => (this.loadingLogout = false)
+        });
+    }
 }

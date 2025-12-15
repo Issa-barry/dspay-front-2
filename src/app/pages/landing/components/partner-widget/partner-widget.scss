@@ -1,0 +1,52 @@
+.payment-partners-section {
+    .partner-card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        border-radius: 16px;
+        min-height: 100px;
+        border: 1px solid #E5E7EB;
+        transition: all 0.3s ease;
+        cursor: pointer;
+
+        &:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+            border-color: #10B981;
+        }
+
+        &.bg-white {
+            background: white;
+        }
+
+        span {
+            text-align: center;
+        }
+    }
+
+    .partner-placeholder {
+        background: #E5E7EB;
+        border-radius: 16px;
+        min-height: 100px;
+    }
+
+    @media (max-width: 768px) {
+        .partner-card,
+        .partner-placeholder {
+            min-height: 80px;
+            padding: 1rem;
+        }
+
+        .partner-card span {
+            font-size: 0.875rem !important;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .partner-card,
+        .partner-placeholder {
+            min-height: 70px;
+        }
+    }
+}

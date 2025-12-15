@@ -1,0 +1,42 @@
+<div class="features-payment-section py-8 px-4 lg:px-20">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- Cost Reduction Card -->
+        <div class="feature-card p-8" style="background: linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%); border-radius: 16px;">
+            <div class="icon-wrapper mb-6 flex items-center justify-center" style="width: 64px; height: 64px; background: white; border-radius: 50%;">
+                <i class="pi pi-wallet" style="font-size: 2rem; color: #F59E0B;"></i>
+            </div>
+            
+            <h3 class="text-2xl font-bold text-surface-900 mb-4">Réduction des coûts</h3>
+            <p class="text-surface-700 text-base leading-relaxed">
+                DIAMA-MONEY réduit les frais de maintenance et de traitement des paiements. Aucun frais caché, transparence totale sur tous vos transferts.
+            </p>
+        </div>
+
+        <!-- Payment Methods Card -->
+        <div class="feature-card p-8" style="background: linear-gradient(135deg, #F3F4F6 0%, #E5E7EB 100%); border-radius: 16px;">
+            <div class="mb-6">
+                <h3 class="text-2xl font-bold text-surface-900 mb-3">Envoyez, recevez et échangez de l'argent</h3>
+                <p class="text-surface-700 text-base leading-relaxed">
+                    Les transferts et paiements fonctionnent sur DIAMA-MONEY. Recevez une notification immédiatement après une transaction complétée.
+                </p>
+            </div>
+
+            <!-- Payment Logos Grid -->
+            <div class="payment-logos-grid grid grid-cols-4 gap-3 mt-6">
+                <div *ngFor="let provider of paymentProviders" 
+                     class="payment-logo-item flex items-center justify-center p-4 bg-white hover:shadow-lg transition-all duration-300"
+                     style="border-radius: 12px; min-height: 80px;">
+                    <div class="text-center">
+                        <i [class]="provider.logo" 
+                           [style.color]="provider.bgColor"
+                           style="font-size: 2rem;"></i>
+                        <div class="text-xs mt-2 font-semibold" [style.color]="provider.bgColor">
+                            {{ provider.name }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

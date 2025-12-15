@@ -4,13 +4,15 @@ import { RippleModule } from 'primeng/ripple';
 import { StyleClassModule } from 'primeng/styleclass';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
-import { TopbarWidget } from './components/topbarwidget.component';
-import { HeroWidget } from './components/herowidget';
+ import { HeroWidget } from './components/herowidget';
 import { FeaturesWidget } from './components/featureswidget';
-import { HighlightsWidget } from './components/highlightswidget';
-import { PricingWidget } from './components/pricingwidget';
+ import { PricingWidget } from './components/pricingwidget';
 import { FooterWidget } from './components/footerwidget';
 import { HeroComponent } from './hero/hero.component';
+import { HighlightsWidget } from './components/highlights-widget/highlights-widget';
+import { WalletWidget } from './components/wallet-widget/wallet-widget';
+import { PartnerWidget } from './components/partner-widget/partner-widget';
+import { TopbarWidget } from './components/topbar-widget/topbar-widget';
 
 @Component({
     selector: 'app-landing',
@@ -26,7 +28,9 @@ import { HeroComponent } from './hero/hero.component';
          StyleClassModule, 
          ButtonModule, 
          DividerModule,
-         HeroComponent
+         HeroComponent,
+         WalletWidget,
+         PartnerWidget
         ],
     templateUrl: './landing.html'
 })

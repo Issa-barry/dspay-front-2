@@ -1,0 +1,206 @@
+// Mobile App Design
+.mobile-app-container {
+    @media (max-width: 640px) {
+        background: none !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+    }
+    
+    // Desktop: hauteur automatique basée sur le contenu
+    @media (min-width: 641px) {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.mobile-app-content {
+    @media (max-width: 640px) {
+        border-radius: 0 !important;
+    }
+    
+    // Desktop: hauteur min pour contenir tout le contenu
+    @media (min-width: 641px) {
+        min-height: 600px; // Ajustez selon vos besoins
+    }
+}
+
+// Sticky header and footer on mobile
+.mobile-header {
+    position: relative;
+    
+    @media (max-width: 640px) {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: var(--surface-0);
+        backdrop-filter: blur(10px);
+    }
+    
+    // Desktop: flex-shrink pour ne pas compresser le header
+    @media (min-width: 641px) {
+        flex-shrink: 0;
+    }
+}
+
+// Bouton retour mobile (en haut à gauche)
+.mobile-back-button {
+    transition: all 0.2s ease;
+    
+    &:active {
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+    
+    &:hover {
+        background: var(--surface-200);
+    }
+}
+
+.mobile-footer {
+    @media (max-width: 640px) {
+        position: sticky;
+        bottom: 0;
+        z-index: 10;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    // Desktop: flex-shrink pour ne pas compresser le footer
+    @media (min-width: 641px) {
+        flex-shrink: 0;
+    }
+}
+
+.mobile-content {
+    @media (max-width: 640px) {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    // Desktop: flex-grow pour prendre l'espace disponible
+    @media (min-width: 641px) {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center; // Centre le contenu verticalement
+    }
+}
+
+// Fix mobile viewport issues
+::ng-deep {
+    // Hauteur uniforme pour tous les inputs
+    .p-inputtext,
+    .p-password input,
+    .p-select {
+        min-height: 3.5rem !important;
+        font-size: 16px !important;
+        border-radius: 12px !important;
+    }
+
+    // Boutons style mobile
+    .p-button {
+        &.h-14 {
+            height: 3.5rem !important;
+            border-radius: 12px !important;
+            font-weight: 600 !important;
+        }
+    }
+
+    // Select - Fix pour afficher le drapeau correctement
+    .p-select {
+        border-radius: 12px !important;
+        
+        .p-select-label {
+            display: flex !important;
+            align-items: center !important;
+            padding: 0.5rem 0.75rem !important;
+            min-height: 3.5rem !important;
+        }
+    }
+
+    // Custom classes pour le select de pays
+    .country-select-value {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        width: 100%;
+    }
+
+    .country-flag {
+        width: 28px !important;
+        height: 20px !important;
+        min-width: 28px !important;
+        min-height: 20px !important;
+        object-fit: cover !important;
+        border-radius: 3px !important;
+        flex-shrink: 0 !important;
+        display: block !important;
+    }
+
+    .dial-code {
+        font-size: 1rem !important;
+        font-weight: 500 !important;
+        white-space: nowrap !important;
+        color: var(--text-color) !important;
+    }
+
+    .country-option {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.75rem !important;
+        padding: 0.875rem 1rem !important;
+        width: 100%;
+        
+        &:hover {
+            background: var(--primary-50) !important;
+        }
+    }
+
+    .country-name {
+        flex: 1;
+        font-size: 1rem !important;
+    }
+
+    .dial-code-option {
+        color: var(--text-muted-color) !important;
+        font-size: 0.875rem !important;
+        margin-left: auto;
+    }
+
+    // Panel du dropdown
+    .p-select-overlay {
+        .p-select-list {
+            padding: 0.5rem 0 !important;
+        }
+    }
+
+    // Input focus states
+    .p-inputtext:focus,
+    .p-password input:focus {
+        box-shadow: 0 0 0 3px rgba(var(--primary-500), 0.1) !important;
+        border-color: var(--primary-500) !important;
+    }
+
+    // Password strength indicator
+    .p-password-meter {
+        border-radius: 8px !important;
+    }
+
+    // Empêcher le zoom sur iOS
+    input,
+    select,
+    textarea {
+        font-size: 16px !important;
+    }
+}
+
+// Safe area pour iPhone
+.pt-safe {
+    padding-top: max(env(safe-area-inset-top), 1rem);
+}
+
+.pb-safe {
+    padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+}
+
+// Transitions smooth
+* {
+    -webkit-tap-highlight-color: transparent;
+}

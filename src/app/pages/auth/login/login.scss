@@ -1,0 +1,156 @@
+// Mobile App Design
+.mobile-app-container {
+    @media (max-width: 640px) {
+        background: none !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+    }
+}
+
+.mobile-app-content {
+    @media (max-width: 640px) {
+        border-radius: 0 !important;
+    }
+    
+    @media (min-width: 641px) {
+        min-height: 500px;
+    }
+}
+
+// Sticky header on mobile
+.mobile-header {
+    position: relative;
+    
+    @media (max-width: 640px) {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: var(--surface-0);
+        backdrop-filter: blur(10px);
+    }
+    
+    @media (min-width: 641px) {
+        flex-shrink: 0;
+    }
+}
+
+// Sticky footer on mobile
+.mobile-footer {
+    @media (max-width: 640px) {
+        position: sticky;
+        bottom: 0;
+        z-index: 10;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    @media (min-width: 641px) {
+        flex-shrink: 0;
+    }
+}
+
+.mobile-content {
+    @media (max-width: 640px) {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    @media (min-width: 641px) {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}
+
+// Styles PrimeNG
+::ng-deep {
+    .p-inputtext,
+    .p-password input,
+    .p-select {
+        min-height: 3.5rem !important;
+        font-size: 16px !important;
+        border-radius: 12px !important;
+    }
+
+    .p-button {
+        &.h-14 {
+            height: 3.5rem !important;
+            border-radius: 12px !important;
+            font-weight: 600 !important;
+        }
+    }
+
+    .p-select {
+        .p-select-label {
+            display: flex !important;
+            align-items: center !important;
+            padding: 0.5rem 0.75rem !important;
+            min-height: 3.5rem !important;
+        }
+    }
+
+    .country-select-value {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        width: 100%;
+    }
+
+    .country-flag {
+        width: 28px !important;
+        height: 20px !important;
+        object-fit: cover !important;
+        border-radius: 3px !important;
+        flex-shrink: 0 !important;
+    }
+
+    .dial-code {
+        font-size: 1rem !important;
+        font-weight: 500 !important;
+        color: var(--text-color) !important;
+    }
+
+    .country-option {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.75rem !important;
+        padding: 0.875rem 1rem !important;
+        
+        &:hover {
+            background: var(--primary-50) !important;
+        }
+    }
+
+    .country-name {
+        flex: 1;
+    }
+
+    .dial-code-option {
+        color: var(--text-muted-color) !important;
+        font-size: 0.875rem !important;
+    }
+
+    .p-inputtext:focus,
+    .p-password input:focus {
+        box-shadow: 0 0 0 3px rgba(var(--primary-500), 0.1) !important;
+        border-color: var(--primary-500) !important;
+    }
+
+    // Empêcher le zoom iOS
+    input, select, textarea {
+        font-size: 16px !important;
+    }
+}
+
+// Safe area
+.pt-safe {
+    padding-top: max(env(safe-area-inset-top), 1rem);
+}
+
+.pb-safe {
+    padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+}
+
+// Transitions
+* {
+    -webkit-tap-highlight-color: transparent;
+}
