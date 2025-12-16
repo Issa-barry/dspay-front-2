@@ -1,131 +1,160 @@
 // dashboard.ts
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NotificationsWidget } from './components/notificationswidget';
-import { RecentSalesWidget } from './components/recentsaleswidget';
-import { RevenueStreamWidget } from './components/revenuestreamwidget';
+
 import { SendForm } from './components/send-form/send-form';
- import { SendForm2 } from './components/send-form2/send-form2';
+import { SendForm2 } from './components/send-form2/send-form2';
 import { WalletComponent } from './components/wallet/WalletComponent';
 import { BeneficiaryComponent } from './components/beneficiary-component/beneficiary-component';
 import { RecapitulatifComponent } from './components/recapitulatif/recapitulatif';
 import { PaymentCbComponent } from './components/payment-cb/payment-cb';
 import { HistorySendDashboardWidget } from './components/historique/widgets/history.send.dahsboard.widget';
+
 import { AuthService } from '../service/auth/auth/auth.service';
+ 
+// (Optionnel) si tu charges le taux depuis API
+// import { TauxEchangeService, TauxEchangeLite } from 'src/app/core/services/taux-echange.service';
+import { CreateTransferPayload, SendService } from '../service/send/send.service';
+import { TauxEchangeLite, TauxEchangeService } from '../service/taux-echange/taux-echange.service';
 
 @Component({
-    selector: 'app-dashboard',
-    imports: [
-      CommonModule,
-      SendForm,
-      SendForm2, 
-      HistorySendDashboardWidget, 
-      WalletComponent,
-      BeneficiaryComponent,
-      RecapitulatifComponent,
-      PaymentCbComponent,
-      RevenueStreamWidget, 
-      NotificationsWidget
-    ],
-    templateUrl: './dashboard.html',
+  selector: 'app-dashboard',
+  imports: [
+    CommonModule,
+    SendForm,
+    SendForm2,
+    HistorySendDashboardWidget,
+    WalletComponent,
+    BeneficiaryComponent,
+    RecapitulatifComponent,
+    PaymentCbComponent,
+  ],
+  templateUrl: './dashboard.html',
 })
-export class Dashboard {
-  currentStep: number = 1; // 1=montant, 2=wallet, 3=bénéficiaire, 4=récap, 5=paiement
-  transferData: { eurAmount: number, gnfAmount: number } | null = null;
+export class Dashboard implements OnInit {
+  currentStep: number = 1;
+
+  transferData: { eurAmount: number; gnfAmount: number; taux_echange_id: number } | null = null;
   selectedWallet: any = null;
   selectedBeneficiary: any = null;
 
+  // ✅ Taux courant (chargé depuis API)
+  currentRate: TauxEchangeLite | null = null;
+
+  // ✅ erreurs API 422
+  apiErrors: Record<string, string[]> = {};
+
+  // provisoir logout
+  loadingLogout = false;
+
   constructor(
     private authService: AuthService,
-  ) {
-    console.log('Dashboard initialized - currentStep:', this.currentStep);
-  }
+    private sendService: SendService,
+    private tauxService: TauxEchangeService
+  ) {}
 
-  onSendClicked(data: { eurAmount: number, gnfAmount: number }) {
-    console.log('onSendClicked called:', data);
+  ngOnInit(): void {
+  this.tauxService.getCurrent().subscribe({
+    next: (rate) => {
+      this.currentRate = rate;
+      console.log('✅ taux chargé', rate);
+    },
+    error: (e) => console.log('Erreur chargement taux', e),
+  });
+}
+
+
+  onSendClicked(data: { eurAmount: number; gnfAmount: number; taux_echange_id: number }) {
     this.transferData = data;
     this.currentStep = 2;
-    console.log('currentStep changed to:', this.currentStep);
   }
 
   onWalletSelected(wallet: any) {
     this.selectedWallet = wallet;
-    console.log('Wallet sélectionné:', wallet);
     this.currentStep = 3;
-    console.log('currentStep changed to:', this.currentStep);
   }
 
   onBeneficiarySelected(beneficiary: any) {
     this.selectedBeneficiary = beneficiary;
-    console.log('Bénéficiaire sélectionné:', beneficiary);
-    this.currentStep = 4; // Passer au récapitulatif
-    console.log('currentStep changed to:', this.currentStep);
+    this.currentStep = 4;
   }
 
+  /** ✅ Ici on crée vraiment le transfert côté back */
   onConfirmTransfer() {
-    console.log('=== PASSAGE AU PAIEMENT CB ===');
-    console.log('Montant:', this.transferData);
-    console.log('Mode de paiement:', this.selectedWallet?.name);
-    console.log('Bénéficiaire:', this.selectedBeneficiary?.name);
-    
-    this.currentStep = 5; // Passer au paiement CB
-    console.log('currentStep changed to:', this.currentStep);
+    this.apiErrors = {};
+
+    if (!this.transferData) return;
+    if (!this.selectedBeneficiary?.id) return;
+
+    const serviceId = this.selectedWallet?.serviceId ?? 'orange_money';
+
+    // ⚠️ Ton back impose: recipientTel OU accountId obligatoire
+    // Ici stratégie simple:
+    // - si bénéficiaire a telephone => recipientTel
+    // - sinon tu devras demander accountId dans UI (à ajouter dans l'étape wallet/recap)
+    const recipientTel = this.selectedBeneficiary?.telephone ?? this.selectedBeneficiary?.phone ?? null;
+
+    const payload: CreateTransferPayload = {
+      beneficiaire_id: this.selectedBeneficiary.id,
+      taux_echange_id: this.transferData.taux_echange_id,
+      montant_envoie: this.transferData.eurAmount,
+      serviceId,
+      recipientTel,
+      accountId: null,
+      customerPhoneNumber: null,
+    };
+
+    this.sendService.createTransfer(payload).subscribe({
+      next: (created) => {
+        console.log('✅ Transfert créé:', created);
+        // selon ton flow tu peux:
+        // - aller au step 5 (paiement CB)
+        // - ou afficher success direct
+        this.currentStep = 5;
+      },
+      error: (err) => {
+        console.log('❌ Erreur API:', err);
+        if (err?.status === 422) {
+          this.apiErrors = err.error?.data ?? err.error?.errors ?? {};
+        }
+      },
+    });
   }
 
   onCancelTransfer() {
-    console.log('Transfert annulé - Terminer plus tard');
-    // Réinitialiser ou sauvegarder le brouillon
     this.currentStep = 1;
     this.resetTransferData();
   }
 
   onModifyTransfer() {
-    console.log('Modification du transfert');
-    this.currentStep = 1; // Retour au début
+    this.currentStep = 1;
   }
 
   onPaymentSuccess(paymentData: any) {
-    console.log('=== PAIEMENT RÉUSSI ===');
-    console.log('Données du paiement:', paymentData);
-    console.log('Résumé complet du transfert:');
-    console.log('- Montant EUR:', this.transferData?.eurAmount);
-    console.log('- Montant GNF:', this.transferData?.gnfAmount);
-    console.log('- Bénéficiaire:', this.selectedBeneficiary?.name);
-    console.log('- Wallet:', this.selectedWallet?.name);
-    console.log('- Carte:', paymentData.cardNumber);
-    console.log('- Date:', paymentData.timestamp);
-    
     alert('✅ Transfert effectué avec succès !');
-    
-    // Réinitialiser le formulaire
     this.currentStep = 1;
     this.resetTransferData();
   }
 
   onPaymentCancel() {
-    console.log('=== PAIEMENT ANNULÉ ===');
-    this.currentStep = 4; // Retour au récapitulatif
+    this.currentStep = 4;
   }
 
   onBackToForm() {
-    console.log('Going back to form');
     this.currentStep = 1;
     this.resetTransferData();
   }
 
   onBackToWallet() {
-    console.log('Going back to wallet selection');
     this.currentStep = 2;
     this.selectedBeneficiary = null;
   }
 
   onBackToBeneficiary() {
-    console.log('Going back to beneficiary selection');
     this.currentStep = 3;
   }
 
   onBackToRecap() {
-    console.log('Going back to recapitulatif');
     this.currentStep = 4;
   }
 
@@ -133,29 +162,28 @@ export class Dashboard {
     this.transferData = null;
     this.selectedWallet = null;
     this.selectedBeneficiary = null;
+    this.apiErrors = {};
   }
 
-  // ... code existant ...
+  onAddBeneficiary() {
+  console.log('Ajout bénéficiaire demandé');
+  // Option 1: ouvrir un modal / passer à un step
+  // this.currentStep = X;
 
-onAddBeneficiary() {
-  console.log('Redirection vers la page de création de bénéficiaire');
-  // Vous pouvez naviguer vers une autre route ou afficher un modal
-  // this.router.navigate(['/beneficiaires/nouveau']);
-  // Ou afficher un nouveau step dans le dashboard pour créer un bénéficiaire
+  // Option 2: navigation vers une page
+  // this.router.navigate(['/app/beneficiary/new']);
+
   alert('Fonctionnalité de création de bénéficiaire - À implémenter');
 }
 
 
-// provisoir :
-loadingLogout: boolean = false;
- onLogout() {
-        if (this.loadingLogout) return;
+  onLogout() {
+    if (this.loadingLogout) return;
+    this.loadingLogout = true;
 
-        this.loadingLogout = true;
-
-        this.authService.logout().subscribe({
-            next: () => (this.loadingLogout = false),
-            error: () => (this.loadingLogout = false)
-        });
-    }
+    this.authService.logout().subscribe({
+      next: () => (this.loadingLogout = false),
+      error: () => (this.loadingLogout = false),
+    });
+  }
 }

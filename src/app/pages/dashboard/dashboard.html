@@ -5,9 +5,12 @@
   <ng-container *ngIf="currentStep === 1">
     <!-- Formulaire - Pleine largeur sur mobile et tablette, 50% sur desktop XL -->
     <div class="col-span-12 xl:col-span-6">
-      <app-send-form2 
-        (sendClicked)="onSendClicked($event)">
-      </app-send-form2>
+      <app-send-form2
+          *ngIf="currentStep === 1"
+          [exchangeRate]="currentRate?.taux ?? 0"
+          [tauxEchangeId]="currentRate?.id ?? 0"
+          (sendClicked)="onSendClicked($event)"
+        ></app-send-form2>
     </div>
     
     <!-- Historique - Complètement retiré du DOM sur mobile/tablette, visible uniquement sur XL -->

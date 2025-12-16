@@ -1,3 +1,4 @@
+// src/app/core/models/send.model.ts
 import { Beneficiary } from './beneficiary.model';
 
 export type ServiceId =
@@ -16,33 +17,38 @@ export class SendModel {
   code?: string;
   statut?: string;
 
-  serviceId?: ServiceId; // ✅ AJOUT
+  serviceId?: ServiceId;
 
-  montant_euro?: number;
-  montant_cible?: number;
-  total?: number;
-  total_gnf?: number;
+  montant_envoie?: number; // EUR saisi
+  frais?: number;          // EUR
+  total_ttc?: number;      // EUR
+  amount?: number;         // GNF principal
+  total_gnf?: number;      // GNF
+
   created_at?: string;
 
   beneficiaire?: Beneficiary | null;
 
+  // selon ton API
   deviseSource?: { code?: string } | null;
   deviseCible?: { code?: string } | null;
+
   devise_source?: { tag?: string; code?: string } | null;
   devise_cible?: { tag?: string; code?: string } | null;
 
-  // --- UI ---
+  // --- UI (calculé/affichage) ---
   beneficiaryName = '';
-  amount = 0;
-  total_ttc = 0;
+  amountEur = 0;
+  totalEur = 0;
   currency = 'EUR';
+
   amountReceived = 0;
   receivedCurrency = 'GNF';
+
   date = new Date();
   paymentMethod = '—';
   reference = '—';
 
-  // ✅ UI service label (facultatif mais pratique)
   serviceLabel = '—';
 
   constructor(data?: Partial<SendModel>) {
@@ -51,9 +57,8 @@ export class SendModel {
     this.reference = this.code ?? this.reference;
     this.beneficiaryName = this.buildBeneficiaryName() || this.beneficiaryName;
 
-    // Montant envoyé : tu as montant_envoie côté back => pense à le mapper si besoin
-    // Ici on garde ton mapping existant
-    this.amount = this.toNumber(this.montant_euro, this.amount);
+    this.amountEur = this.toNumber(this.montant_envoie, this.amountEur);
+    this.totalEur = this.toNumber(this.total_ttc, this.totalEur);
 
     this.currency =
       this.deviseSource?.code ??
@@ -61,9 +66,7 @@ export class SendModel {
       this.devise_source?.tag ??
       this.currency;
 
-    this.total_ttc = this.toNumber(this.total, this.montant_euro, this.total_ttc);
-
-    this.amountReceived = this.toNumber(this.montant_cible, this.total_gnf, this.amountReceived);
+    this.amountReceived = this.toNumber(this.amount, this.total_gnf, this.amountReceived);
 
     this.receivedCurrency =
       this.deviseCible?.code ??
@@ -73,7 +76,6 @@ export class SendModel {
 
     this.date = this.created_at ? new Date(this.created_at) : this.date;
 
-    // ✅ label service
     this.serviceLabel = this.getServiceLabel(this.serviceId);
   }
 

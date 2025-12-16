@@ -1,12 +1,13 @@
+// src/app/core/services/send.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environements/environment.dev';
-import { SendModel } from 'src/app/core/models/send.model';
+import { SendModel, ServiceId } from 'src/app/core/models/send.model';
 
 type ApiResponse<T> = { success: boolean; message: string; data: T };
 
-type PaginatedData<T> = {
+export type PaginatedData<T> = {
   items: T[];
   meta: {
     total: number;
@@ -16,22 +17,35 @@ type PaginatedData<T> = {
   };
 };
 
+export type CreateTransferPayload = {
+  beneficiaire_id: number;
+  taux_echange_id: number;
+  montant_envoie: number;
+
+  serviceId?: ServiceId;
+
+  // conditionnels (selon service)
+  recipientTel?: string | null;
+  accountId?: string | null;
+  customerPhoneNumber?: string | null;
+};
+
 @Injectable({ providedIn: 'root' })
 export class SendService {
   private readonly baseUrl = `${environment.apiUrl}/transferts`;
 
   constructor(private http: HttpClient) {}
 
-  /** GET /transferts/by-user?search=&page=&per_page= */
+  /** GET /transferts/by-user */
   getMyTransfers(params?: {
     search?: string;
     page?: number;
     per_page?: number;
     statut?: string | string[];
     beneficiaire_id?: number;
-    date_from?: string; // YYYY-MM-DD
-    date_to?: string;   // YYYY-MM-DD
-    sort_by?: 'created_at' | 'montant_euro' | 'total' | 'code';
+    date_from?: string;
+    date_to?: string;
+    sort_by?: 'created_at' | 'montant_envoie' | 'total_ttc' | 'code';
     sort_dir?: 'asc' | 'desc';
   }): Observable<PaginatedData<SendModel>> {
     let httpParams = new HttpParams();
@@ -47,7 +61,6 @@ export class SendService {
     if (params?.sort_by) httpParams = httpParams.set('sort_by', params.sort_by);
     if (params?.sort_dir) httpParams = httpParams.set('sort_dir', params.sort_dir);
 
-    // statut peut être string ou array
     if (params?.statut) {
       if (Array.isArray(params.statut)) {
         params.statut.forEach((s) => (httpParams = httpParams.append('statut[]', s)));
@@ -66,10 +79,17 @@ export class SendService {
       );
   }
 
-  /** (optionnel) GET /transferts/{id} */
+  /** GET /transferts/{id} */
   getById(id: number): Observable<SendModel> {
     return this.http
       .get<ApiResponse<any>>(`${this.baseUrl}/${id}`)
+      .pipe(map((res) => new SendModel(res.data)));
+  }
+
+  /** POST /transferts */
+  createTransfer(payload: CreateTransferPayload): Observable<SendModel> {
+    return this.http
+      .post<ApiResponse<any>>(`${this.baseUrl}/envoie`, payload)
       .pipe(map((res) => new SendModel(res.data)));
   }
 }
