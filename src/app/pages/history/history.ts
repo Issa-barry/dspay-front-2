@@ -1,379 +1,203 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
 
-export interface Transfer {
-  id: number;
-  beneficiaryName: string;
-  amount: number;
-  currency: string;
-  amountReceived: number;
-  receivedCurrency: string;
-  date: Date;
-  status: 'completed' | 'pending' | 'failed';
-  paymentMethod: string;
-  reference: string;
-}
+import { SendService } from '@/pages/service/send/send.service';
+import { SendModel } from 'src/app/core/models/send.model';
+
+import { Subject, Subscription, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, switchMap, tap, catchError, filter } from 'rxjs/operators';
+
+type Severity = 'success' | 'info' | 'warning' | 'danger';
 
 @Component({
   selector: 'app-history',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ButtonModule,
-    InputTextModule,
-    TagModule,
-    TooltipModule
-  ],
+  imports: [CommonModule, FormsModule, ButtonModule, InputTextModule, TagModule, TooltipModule],
   templateUrl: './history.html',
   styleUrl: './history.scss'
 })
-export class HistoryComponent implements OnInit {
-  allTransfers: Transfer[] = [];
-  transfers: Transfer[] = [];
-  filteredTransfers: Transfer[] = [];
-  displayedTransfers: Transfer[] = [];
-  searchQuery: string = '';
-  
-  // Pagination
-  itemsPerPage: number = 10;
-  currentPage: number = 1;
-  hasMore: boolean = true;
+export class HistoryComponent implements OnInit, OnDestroy {
+  displayedTransfers: SendModel[] = [];
+
+  searchQuery = '';
+  readonly itemsPerPage = 10;
+
+  private currentPage = 1;
+  hasMore = true;
+  loading = false;
+
+  private readonly search$ = new Subject<string>();
+  private readonly sub = new Subscription();
+
+  private static readonly STATUS_LABELS: Record<string, string> = {
+    envoye: 'Envoyé',
+    retire: 'Retiré',
+    annule: 'Annulé',
+    bloque: 'Bloqué'
+  };
+
+  private static readonly STATUS_SEVERITIES: Record<string, Severity> = {
+    envoye: 'info',
+    retire: 'success',
+    annule: 'danger',
+    bloque: 'danger'
+  };
 
   constructor(
-    private router: Router,
-    private location: Location
+    private readonly router: Router,
+    private readonly location: Location,
+    private readonly sendService: SendService
   ) {}
 
-  ngOnInit() {
-    this.loadTransfers();
+  ngOnInit(): void {
+    // ✅ flux recherche
+    this.sub.add(
+      this.search$.pipe(
+        map(v => (v ?? '').trim()),
+        debounceTime(350),
+        distinctUntilChanged(),
+
+        // ✅ si 1 seul caractère, on ne lance pas de requête (tu gardes la liste actuelle)
+        filter(q => q.length === 0 || q.length >= 2),
+
+        tap(q => {
+          this.searchQuery = q;
+          this.currentPage = 1;
+          this.hasMore = true;
+          this.loading = true;
+        }),
+
+        // ✅ annule la requête précédente si on retape
+        switchMap(q =>
+          this.sendService.getMyTransfers({
+            search: q.length ? q : undefined,
+            page: 1,
+            per_page: this.itemsPerPage,
+            sort_by: 'created_at',
+            sort_dir: 'desc'
+          }).pipe(
+            catchError(() => of({ items: [], meta: { current_page: 1, last_page: 1, per_page: this.itemsPerPage, total: 0 } }))
+          )
+        )
+      ).subscribe(res => {
+        this.displayedTransfers = res.items ?? [];
+        this.currentPage = res.meta?.current_page ?? 1;
+        this.hasMore = (res.meta?.current_page ?? 1) < (res.meta?.last_page ?? 1);
+        this.loading = false;
+      })
+    );
+
+    // ✅ chargement initial
+    this.reload();
   }
 
-  loadTransfers() {
-    // Données de démonstration (simuler plus de données)
-    this.allTransfers = [
-      {
-        id: 1,
-        beneficiaryName: 'Abdourahman DIALLO',
-        amount: 100,
-        currency: 'EUR',
-        amountReceived: 950000,
-        receivedCurrency: 'GNF',
-        date: new Date('2024-12-10T14:30:00'),
-        status: 'completed',
-        paymentMethod: 'Orange Money',
-        reference: 'TRF-2024-001'
-      },
-      {
-        id: 2,
-        beneficiaryName: 'Adama Camara',
-        amount: 75,
-        currency: 'EUR',
-        amountReceived: 712500,
-        receivedCurrency: 'GNF',
-        date: new Date('2024-12-08T10:15:00'),
-        status: 'completed',
-        paymentMethod: 'KS-PAY',
-        reference: 'TRF-2024-002'
-      },
-      {
-        id: 3,
-        beneficiaryName: 'Aissatou Diallo',
-        amount: 150,
-        currency: 'EUR',
-        amountReceived: 1425000,
-        receivedCurrency: 'GNF',
-        date: new Date('2024-12-05T16:45:00'),
-        status: 'completed',
-        paymentMethod: 'MTN',
-        reference: 'TRF-2024-003'
-      },
-      {
-        id: 4,
-        beneficiaryName: 'Alpha Ousmane Barry',
-        amount: 200,
-        currency: 'EUR',
-        amountReceived: 1900000,
-        receivedCurrency: 'GNF',
-        date: new Date('2024-12-03T09:20:00'),
-        status: 'pending',
-        paymentMethod: 'Soutrat Money',
-        reference: 'TRF-2024-004'
-      },
-      {
-        id: 5,
-        beneficiaryName: 'Aminata DIALLO',
-        amount: 50,
-        currency: 'EUR',
-        amountReceived: 475000,
-        receivedCurrency: 'GNF',
-        date: new Date('2024-12-01T11:30:00'),
-        status: 'completed',
-        paymentMethod: 'Orange Money',
-        reference: 'TRF-2024-005'
-      },
-      {
-        id: 6,
-        beneficiaryName: 'Bintou BARRY',
-        amount: 120,
-        currency: 'EUR',
-        amountReceived: 1140000,
-        receivedCurrency: 'GNF',
-        date: new Date('2024-11-28T15:10:00'),
-        status: 'failed',
-        paymentMethod: 'KS-PAY',
-        reference: 'TRF-2024-006'
-      },
-      {
-        id: 7,
-        beneficiaryName: 'Fatoumata Diaraye DIALLO',
-        amount: 300,
-        currency: 'EUR',
-        amountReceived: 2850000,
-        receivedCurrency: 'GNF',
-        date: new Date('2024-11-25T13:00:00'),
-        status: 'completed',
-        paymentMethod: 'MTN',
-        reference: 'TRF-2024-007'
-      },
-      {
-        id: 8,
-        beneficiaryName: 'Mamadou Bailo BALDÉ',
-        amount: 85,
-        currency: 'EUR',
-        amountReceived: 807500,
-        receivedCurrency: 'GNF',
-        date: new Date('2024-11-22T08:45:00'),
-        status: 'completed',
-        paymentMethod: 'Soutrat Money',
-        reference: 'TRF-2024-008'
-      },
-      {
-        id: 9,
-        beneficiaryName: 'Mariama SIDIBE',
-        amount: 180,
-        currency: 'EUR',
-        amountReceived: 1710000,
-        receivedCurrency: 'GNF',
-        date: new Date('2024-10-15T10:30:00'),
-        status: 'completed',
-        paymentMethod: 'Orange Money',
-        reference: 'TRF-2024-009'
-      },
-      {
-        id: 10,
-        beneficiaryName: 'Ibrahima SOW',
-        amount: 95,
-        currency: 'EUR',
-        amountReceived: 902500,
-        receivedCurrency: 'GNF',
-        date: new Date('2024-09-20T14:20:00'),
-        status: 'completed',
-        paymentMethod: 'KS-PAY',
-        reference: 'TRF-2024-010'
-      },
-      {
-        id: 11,
-        beneficiaryName: 'Mamadou CAMARA',
-        amount: 125,
-        currency: 'EUR',
-        amountReceived: 1187500,
-        receivedCurrency: 'GNF',
-        date: new Date('2024-09-15T09:15:00'),
-        status: 'completed',
-        paymentMethod: 'Orange Money',
-        reference: 'TRF-2024-011'
-      },
-      {
-        id: 12,
-        beneficiaryName: 'Aissata BAH',
-        amount: 80,
-        currency: 'EUR',
-        amountReceived: 760000,
-        receivedCurrency: 'GNF',
-        date: new Date('2024-09-10T16:30:00'),
-        status: 'completed',
-        paymentMethod: 'MTN',
-        reference: 'TRF-2024-012'
-      },
-      {
-        id: 13,
-        beneficiaryName: 'Mohamed SYLLA',
-        amount: 220,
-        currency: 'EUR',
-        amountReceived: 2090000,
-        receivedCurrency: 'GNF',
-        date: new Date('2024-09-05T11:45:00'),
-        status: 'completed',
-        paymentMethod: 'Soutrat Money',
-        reference: 'TRF-2024-013'
-      },
-      {
-        id: 14,
-        beneficiaryName: 'Kadiatou DIALLO',
-        amount: 60,
-        currency: 'EUR',
-        amountReceived: 570000,
-        receivedCurrency: 'GNF',
-        date: new Date('2024-08-28T14:20:00'),
-        status: 'completed',
-        paymentMethod: 'KS-PAY',
-        reference: 'TRF-2024-014'
-      },
-      {
-        id: 15,
-        beneficiaryName: 'Boubacar BARRY',
-        amount: 175,
-        currency: 'EUR',
-        amountReceived: 1662500,
-        receivedCurrency: 'GNF',
-        date: new Date('2024-08-20T10:10:00'),
-        status: 'completed',
-        paymentMethod: 'Orange Money',
-        reference: 'TRF-2024-015'
-      },
-      {
-        id: 16,
-        beneficiaryName: 'Hawa CONTE',
-        amount: 90,
-        currency: 'EUR',
-        amountReceived: 855000,
-        receivedCurrency: 'GNF',
-        date: new Date('2024-08-15T13:35:00'),
-        status: 'completed',
-        paymentMethod: 'MTN',
-        reference: 'TRF-2024-016'
-      },
-      {
-        id: 17,
-        beneficiaryName: 'Lansana KEITA',
-        amount: 130,
-        currency: 'EUR',
-        amountReceived: 1235000,
-        receivedCurrency: 'GNF',
-        date: new Date('2024-08-10T15:50:00'),
-        status: 'completed',
-        paymentMethod: 'Soutrat Money',
-        reference: 'TRF-2024-017'
-      },
-      {
-        id: 18,
-        beneficiaryName: 'Mariama TOURE',
-        amount: 110,
-        currency: 'EUR',
-        amountReceived: 1045000,
-        receivedCurrency: 'GNF',
-        date: new Date('2024-08-05T08:25:00'),
-        status: 'completed',
-        paymentMethod: 'KS-PAY',
-        reference: 'TRF-2024-018'
-      },
-      {
-        id: 19,
-        beneficiaryName: 'Sekou CISSE',
-        amount: 250,
-        currency: 'EUR',
-        amountReceived: 2375000,
-        receivedCurrency: 'GNF',
-        date: new Date('2024-07-30T12:40:00'),
-        status: 'completed',
-        paymentMethod: 'Orange Money',
-        reference: 'TRF-2024-019'
-      },
-      {
-        id: 20,
-        beneficiaryName: 'Fatou BANGOURA',
-        amount: 70,
-        currency: 'EUR',
-        amountReceived: 665000,
-        receivedCurrency: 'GNF',
-        date: new Date('2024-07-25T17:15:00'),
-        status: 'completed',
-        paymentMethod: 'MTN',
-        reference: 'TRF-2024-020'
-      }
-    ];
-
-    this.transfers = [...this.allTransfers];
-    this.applyFilter();
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 
-  applyFilter() {
-    if (!this.searchQuery.trim()) {
-      this.filteredTransfers = [...this.transfers];
-    } else {
-      const lowerQuery = this.searchQuery.toLowerCase();
-      this.filteredTransfers = this.transfers.filter(t =>
-        t.beneficiaryName.toLowerCase().includes(lowerQuery) ||
-        t.reference.toLowerCase().includes(lowerQuery) ||
-        t.amount.toString().includes(this.searchQuery)
-      );
-    }
-    
-    // Reset pagination when filtering
+  // appelé par (input)
+  onSearchInput(value: string): void {
+    this.search$.next(value);
+  }
+
+  reload(): void {
     this.currentPage = 1;
-    this.updateDisplayedTransfers();
+    this.hasMore = true;
+    this.loading = true;
+
+    this.sendService.getMyTransfers({
+      search: this.searchQuery.trim() || undefined,
+      page: 1,
+      per_page: this.itemsPerPage,
+      sort_by: 'created_at',
+      sort_dir: 'desc'
+    }).subscribe({
+      next: (res) => {
+        this.displayedTransfers = res.items ?? [];
+        this.currentPage = res.meta?.current_page ?? 1;
+        this.hasMore = (res.meta?.current_page ?? 1) < (res.meta?.last_page ?? 1);
+        this.loading = false;
+      },
+      error: () => {
+        this.displayedTransfers = [];
+        this.hasMore = false;
+        this.loading = false;
+      }
+    });
   }
 
-  updateDisplayedTransfers() {
-    const endIndex = this.currentPage * this.itemsPerPage;
-    this.displayedTransfers = this.filteredTransfers.slice(0, endIndex);
-    this.hasMore = endIndex < this.filteredTransfers.length;
+  loadMore(): void {
+    if (this.loading || !this.hasMore) return;
+    this.loading = true;
+
+    const nextPage = this.currentPage + 1;
+    this.sendService.getMyTransfers({
+      search: this.searchQuery.trim() || undefined,
+      page: nextPage,
+      per_page: this.itemsPerPage,
+      sort_by: 'created_at',
+      sort_dir: 'desc'
+    }).subscribe({
+      next: (res) => {
+        this.displayedTransfers = this.displayedTransfers.concat(res.items ?? []);
+        this.currentPage = res.meta?.current_page ?? nextPage;
+        this.hasMore = (res.meta?.current_page ?? nextPage) < (res.meta?.last_page ?? nextPage);
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+        this.hasMore = false;
+      }
+    });
   }
 
-  loadMore() {
-    this.currentPage++;
-    this.updateDisplayedTransfers();
-  }
-
-  goBack() {
+  goBack(): void {
     this.location.back();
   }
 
-  viewDetails(transfer: Transfer) {
-    console.log('View transfer details:', transfer);
+  viewDetails(transfer: SendModel): void {
+    if (!transfer?.id) return;
     this.router.navigate(['/app/detail', transfer.id]);
   }
 
-  getStatusLabel(status: string): string {
-    const labels: { [key: string]: string } = {
-      'completed': 'Terminé',
-      'pending': 'En cours',
-      'failed': 'Échoué'
-    };
-    return labels[status] || status;
+  trackByTransferId = (_: number, t: SendModel) => t.id ?? t.code ?? _;
+
+  getStatusLabel(statut?: string): string {
+    const s = this.normalizeStatut(statut);
+    return HistoryComponent.STATUS_LABELS[s] ?? (statut ?? '—');
   }
 
-  getStatusSeverity(status: string): 'success' | 'warning' | 'danger' {
-    const severities: { [key: string]: 'success' | 'warning' | 'danger' } = {
-      'completed': 'success',
-      'pending': 'warning',
-      'failed': 'danger'
-    };
-    return severities[status] || 'warning';
+  getStatusSeverity(statut?: string): Severity {
+    const s = this.normalizeStatut(statut);
+    return HistoryComponent.STATUS_SEVERITIES[s] ?? 'warning';
   }
 
-  formatAmount(amount: number): string {
-    return new Intl.NumberFormat('fr-FR', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount);
+  private normalizeStatut(value?: string): string {
+    return (value ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
   }
 
-  formatDate(date: Date): string {
+  formatAmount(amount?: number): string {
+    const n = Number(amount ?? 0);
+    return new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+      .format(Number.isFinite(n) ? n : 0);
+  }
+
+  formatDate(date?: Date): string {
+    const d = date instanceof Date ? date : new Date(date ?? Date.now());
     return new Intl.DateTimeFormat('fr-FR', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
-    }).format(date);
+    }).format(d);
   }
 }

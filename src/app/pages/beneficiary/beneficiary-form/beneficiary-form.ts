@@ -7,19 +7,16 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 
+import { BeneficiaryService } from 'src/app/pages/service/beneficiary/beneficiary.service'; // ✅ adapte si besoin
+import { Beneficiary } from '@/core/models/beneficiary.model';
+
 @Component({
   selector: 'app-beneficiary-form',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ButtonModule,
-    InputTextModule,
-    ToastModule
-  ],
+  imports: [CommonModule, FormsModule, ButtonModule, InputTextModule, ToastModule],
   providers: [MessageService],
   templateUrl: './beneficiary-form.html',
-  styleUrl: './beneficiary-form.scss'
+  styleUrl: './beneficiary-form.scss',
 })
 export class BeneficiaryForm implements OnInit {
   isEditMode: boolean = false;
@@ -31,126 +28,172 @@ export class BeneficiaryForm implements OnInit {
   lastName: string = '';
   phone: string = '';
 
+  loading = false;
+  beneficiary?: Beneficiary;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private beneficiaryService: BeneficiaryService
   ) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
+
     if (id && id !== 'new') {
       this.isEditMode = true;
-      this.beneficiaryId = parseInt(id);
+      this.beneficiaryId = Number(id);
       this.pageTitle = 'Modifier le bénéficiaire';
-      this.loadBeneficiary(this.beneficiaryId);
+
+      if (Number.isFinite(this.beneficiaryId)) {
+        this.loadBeneficiary(this.beneficiaryId!);
+      }
     }
   }
 
   loadBeneficiary(id: number) {
-    // Simuler le chargement des données
-    // En production, vous feriez un appel API ici
-    this.firstName = 'Abdourahman';
-    this.lastName = 'DIALLO';
-    this.phone = '+224 622 25 70 40';
-  }
+    this.loading = true;
 
-  getInitials(): string {
-    const first = this.firstName.trim();
-    const last = this.lastName.trim();
-    
-    if (first && last) {
-      return (first[0] + last[0]).toUpperCase();
-    } else if (first) {
-      return first.substring(0, 2).toUpperCase();
-    } else if (last) {
-      return last.substring(0, 2).toUpperCase();
-    }
-    return '';
-  }
-
-  getRandomColor(): string {
-    const colors = [
-      '#EC4899', '#3B82F6', '#F97316', '#10b981', 
-      '#8B5CF6', '#14B8A6', '#F59E0B', '#EF4444'
-    ];
-    return colors[Math.floor(Math.random() * colors.length)];
+    this.beneficiaryService.getById(id).subscribe({
+      next: (b) => {
+        this.beneficiary = b;
+        this.firstName = b.prenom ?? '';
+        this.lastName = b.nom ?? '';
+        this.phone = b.phone ?? '';
+        this.loading = false;
+      },
+      error: (err) => {
+        this.loading = false;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: err?.error?.message || "Impossible de charger le bénéficiaire",
+        });
+      },
+    });
   }
 
   onSubmit() {
+    if (this.loading) return;
+
     if (!this.validateForm()) {
       return;
     }
 
-    const beneficiaryData = {
-      name: `${this.firstName} ${this.lastName}`.trim(),
-      phone: this.phone,
-      initials: this.getInitials(),
-      color: this.getRandomColor()
+    const payload = {
+      nom: this.lastName.trim(),
+      prenom: this.firstName.trim(),
+      phone: this.phone.trim(),
     };
 
-    console.log('Enregistrement du bénéficiaire:', beneficiaryData);
+    this.loading = true;
 
-    const message = this.isEditMode 
-      ? 'Bénéficiaire modifié avec succès' 
-      : 'Bénéficiaire ajouté avec succès';
+    if (this.isEditMode && this.beneficiaryId) {
+      // ✅ UPDATE
+      this.beneficiaryService.updateById(this.beneficiaryId, payload).subscribe({
+        next: () => {
+          this.loading = false;
 
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Succès',
-      detail: message
-    });
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Succès',
+            detail: 'Bénéficiaire modifié avec succès',
+          });
 
-    // Rediriger vers la liste après 1 seconde
-    setTimeout(() => {
-      this.router.navigate(['/beneficiary']);
-    }, 1000);
+          setTimeout(() => {
+            this.router.navigate(['/app/beneficiary']);
+          }, 600);
+        },
+        error: (err) => {
+          this.loading = false;
+          this.handleApiError(err);
+        },
+      });
+    } else {
+      // ✅ CREATE
+      this.beneficiaryService.create(payload).subscribe({
+        next: () => {
+          this.loading = false;
+
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Succès',
+            detail: 'Bénéficiaire ajouté avec succès',
+          });
+
+          setTimeout(() => {
+            this.router.navigate(['/app/beneficiary']);
+          }, 600);
+        },
+        error: (err) => {
+          this.loading = false;
+          this.handleApiError(err);
+        },
+      });
+    }
   }
 
- validateForm(): boolean {
-  // Valider le téléphone EN PREMIER
-  if (!this.phone.trim()) {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Erreur',
-      detail: 'Le numéro de téléphone est requis'
-    });
-    return false;
+  // ✅ garde tes méthodes (même si plus utilisées, ça ne casse rien)
+  getInitials(): string {
+    const first = this.firstName.trim();
+    const last = this.lastName.trim();
+
+    if (first && last) return (first[0] + last[0]).toUpperCase();
+    if (first) return first.substring(0, 2).toUpperCase();
+    if (last) return last.substring(0, 2).toUpperCase();
+    return '';
   }
 
-  // Validation du format du téléphone
-  const phoneRegex = /^\+?[0-9\s\-()]+$/;
-  if (!phoneRegex.test(this.phone)) {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Erreur',
-      detail: 'Format de numéro de téléphone invalide'
-    });
-    return false;
+  getRandomColor(): string {
+    const colors = ['#EC4899', '#3B82F6', '#F97316', '#10b981', '#8B5CF6', '#14B8A6', '#F59E0B', '#EF4444'];
+    return colors[Math.floor(Math.random() * colors.length)];
   }
 
-  if (!this.firstName.trim()) {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Erreur',
-      detail: 'Le prénom est requis'
-    });
-    return false;
+  validateForm(): boolean {
+    // Téléphone en premier
+    if (!this.phone.trim()) {
+      this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Le numéro de téléphone est requis' });
+      return false;
+    }
+
+    const phoneRegex = /^\+?[0-9\s\-()]+$/;
+    if (!phoneRegex.test(this.phone)) {
+      this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Format de numéro de téléphone invalide' });
+      return false;
+    }
+
+    if (!this.firstName.trim()) {
+      this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Le prénom est requis' });
+      return false;
+    }
+
+    if (!this.lastName.trim()) {
+      this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Le nom est requis' });
+      return false;
+    }
+
+    return true;
   }
-  
-  if (!this.lastName.trim()) {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Erreur',
-      detail: 'Le nom est requis'
-    });
-    return false;
-  }
-  
-  return true;
-}
 
   cancel() {
     this.router.navigate(['/app/beneficiary']);
+  }
+
+  private handleApiError(err: any) {
+    // format: { success:false, message:'...', data:{ field:[msg] } }
+    const apiMsg = err?.error?.message;
+
+    const errors = err?.error?.data;
+    const firstFieldError =
+      errors && typeof errors === 'object'
+        ? (Object.values(errors)?.[0] as any)?.[0]
+        : null;
+
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Erreur',
+      detail: firstFieldError || apiMsg || "Une erreur est survenue",
+    });
   }
 }

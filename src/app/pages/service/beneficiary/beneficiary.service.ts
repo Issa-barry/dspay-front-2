@@ -1,133 +1,64 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { map, Observable } from 'rxjs';
+import { Beneficiary } from '@/core/models/beneficiary.model';
+import { environment } from 'src/environements/environment.dev';
+ 
+type ApiResponse<T> = { success: boolean; message: string; data: T };
 
-export interface Beneficiary {
-  id: number;
-  name: string;
-  relationship: string;
-  phone: string;
-  email?: string;
-  address?: string;
-  initials: string;
-  color: string;
-  createdAt: Date;
-}
+type PaginatedData<T> = {
+  items: T[];
+  meta: { total: number; per_page: number; current_page: number; last_page: number };
+};
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class BeneficiaryService {
-  private beneficiariesSubject = new BehaviorSubject<Beneficiary[]>(this.getInitialBeneficiaries());
-  public beneficiaries$ = this.beneficiariesSubject.asObservable();
+  // ✅ correspond au prefix Laravel: /beneficiaires/...
+private readonly baseUrl = `${environment.apiUrl}/beneficiaires`;
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  // Get all beneficiaries
-  getBeneficiaries(): Beneficiary[] {
-    return this.beneficiariesSubject.value;
+  /** GET /beneficiaires/all?search=&per_page= */
+  getAll(params?: { search?: string; per_page?: number }): Observable<PaginatedData<Beneficiary>> {
+    let httpParams = new HttpParams();
+    if (params?.search) httpParams = httpParams.set('search', params.search);
+    if (params?.per_page) httpParams = httpParams.set('per_page', String(params.per_page));
+
+    return this.http
+      .get<ApiResponse<PaginatedData<Beneficiary>>>(`${this.baseUrl}/all`, { params: httpParams })
+      .pipe(
+        map((res) => ({
+          items: (res.data.items ?? []).map((b) => new Beneficiary(b)), // ✅ classe utilisée
+          meta: res.data.meta,
+        }))
+      );
   }
 
-  // Get beneficiary by ID
-  getBeneficiaryById(id: number): Beneficiary | undefined {
-    return this.beneficiariesSubject.value.find(b => b.id === id);
+  /** GET /beneficiaires/getById/{id} */
+  getById(id: number): Observable<Beneficiary> {
+    return this.http
+      .get<ApiResponse<any>>(`${this.baseUrl}/getById/${id}`)
+      .pipe(map((res) => new Beneficiary(res.data)));
   }
 
-  // Add beneficiary
-  addBeneficiary(beneficiary: Omit<Beneficiary, 'id' | 'createdAt'>): void {
-    const beneficiaries = this.beneficiariesSubject.value;
-    const newId = Math.max(...beneficiaries.map(b => b.id), 0) + 1;
-    
-    const newBeneficiary: Beneficiary = {
-      ...beneficiary,
-      id: newId,
-      createdAt: new Date()
-    };
-    
-    this.beneficiariesSubject.next([...beneficiaries, newBeneficiary]);
-    console.log('Beneficiary added:', newBeneficiary);
+  /** POST /beneficiaires/create */
+  create(payload: { nom: string; prenom: string; phone: string }): Observable<Beneficiary> {
+    return this.http
+      .post<ApiResponse<any>>(`${this.baseUrl}/create`, payload)
+      .pipe(map((res) => new Beneficiary(res.data)));
+  }
+ 
+  /** PUT /beneficiaires/updateById/{id} */
+  updateById(id: number, payload: { nom?: string; prenom?: string; phone?: string }): Observable<Beneficiary> {
+    return this.http
+      .put<ApiResponse<any>>(`${this.baseUrl}/updateById/${id}`, payload)
+      .pipe(map((res) => new Beneficiary(res.data)));
   }
 
-  // Update beneficiary
-  updateBeneficiary(id: number, updates: Partial<Beneficiary>): void {
-    const beneficiaries = this.beneficiariesSubject.value;
-    const index = beneficiaries.findIndex(b => b.id === id);
-    
-    if (index !== -1) {
-      beneficiaries[index] = { ...beneficiaries[index], ...updates };
-      this.beneficiariesSubject.next([...beneficiaries]);
-      console.log('Beneficiary updated:', beneficiaries[index]);
-    }
-  }
-
-  // Delete beneficiary
-  deleteBeneficiary(id: number): void {
-    const beneficiaries = this.beneficiariesSubject.value.filter(b => b.id !== id);
-    this.beneficiariesSubject.next(beneficiaries);
-    console.log('Beneficiary deleted, ID:', id);
-  }
-
-  // Search beneficiaries
-  searchBeneficiaries(query: string): Beneficiary[] {
-    const lowerQuery = query.toLowerCase();
-    return this.beneficiariesSubject.value.filter(b =>
-      b.name.toLowerCase().includes(lowerQuery) ||
-      b.phone.includes(query) ||
-      b.relationship.toLowerCase().includes(lowerQuery)
-    );
-  }
-
-  // Initial data
-  private getInitialBeneficiaries(): Beneficiary[] {
-    return [
-      { 
-        id: 1, 
-        name: 'Abdourahman DIALLO', 
-        relationship: 'Brother',
-        phone: '+224 622 25 70 40',
-        email: 'abdourahman@example.com',
-        address: 'Conakry, Guinea',
-        initials: 'AD', 
-        color: '#EC4899',
-        createdAt: new Date('2024-01-15')
-      },
-      { 
-        id: 2, 
-        name: 'Adama Camara', 
-        relationship: '',
-        phone: '+224 611 21 43 50',
-        email: 'adama@example.com',
-        initials: 'AC', 
-        color: '#3B82F6',
-        createdAt: new Date('2024-02-20')
-      },
-      { 
-        id: 3, 
-        name: 'Aissatou Diallo', 
-        relationship: '',
-        phone: '+224 627 75 59 33',
-        initials: 'AD', 
-        color: '#EC4899',
-        createdAt: new Date('2024-03-10')
-      },
-      { 
-        id: 4, 
-        name: 'Alpha Ousmane Barry', 
-        relationship: 'Brother',
-        phone: '+224 622 22 21 98',
-        initials: 'AB', 
-        color: '#F97316',
-        createdAt: new Date('2024-01-25')
-      },
-      { 
-        id: 5, 
-        name: 'Aminata DIALLO', 
-        relationship: 'Sister',
-        phone: '+224 621 09 07 88',
-        email: 'aminata@example.com',
-        initials: 'AD', 
-        color: '#EC4899',
-        createdAt: new Date('2024-02-05')
-      }
-    ];
+  /** DELETE /beneficiaires/deleteById/{id} */
+  deleteById(id: number): Observable<void> {
+    return this.http
+      .delete<ApiResponse<any>>(`${this.baseUrl}/deleteById/${id}`)
+      .pipe(map(() => void 0));
   }
 }

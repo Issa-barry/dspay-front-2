@@ -1,10 +1,12 @@
 /* send-form2.component.css */
+
+/* ✅ Suppression de height: 100% qui force la hauteur */
 .send-form-card {
   background: white;
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  height: 100%;
+  /* Pas de height fixe - s'adapte au contenu */
 }
 
 .title {
@@ -129,57 +131,18 @@
   font-weight: 500;
 }
 
-/* Bouton déconnexion mobile */
-.exchange-rate .logout-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  padding: 0.75rem;
-  gap: 0.5rem;
-  border-radius: 8px;
-  transition: all 0.15s;
-  margin-top: 1rem;
-  background: transparent;
-  color: #6b7280;
-}
-
-.exchange-rate .logout-link:hover {
-  background: #f3f4f6;
-}
-
-.exchange-rate .logout-link.loading {
-  opacity: 0.5;
-  pointer-events: none;
-}
-
-.exchange-rate .logout-link i {
-  font-size: 1rem;
-}
-
-.exchange-rate .logout-link span {
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-/* Responsive Tablet (768px - 1279px) */
-@media (min-width: 768px) and (max-width: 1279px) {
+/* Responsive Tablet */
+@media (max-width: 1280px) {
   .send-form-card {
-    padding: 2rem;
-    max-width: 600px;
-    margin: 0 auto;
+    padding: 1.5rem;
   }
 }
 
-/* Responsive Mobile (< 768px) */
-@media (max-width: 767px) {
+/* Responsive Mobile */
+@media (max-width: 768px) {
   .send-form-card {
     padding: 1.25rem;
-    border-radius: 0;
-    box-shadow: none;
-    min-height: calc(100vh - 120px);
-    display: flex;
-    flex-direction: column;
+    /* ✅ Toujours pas de height fixe */
   }
 
   .title {
@@ -189,16 +152,15 @@
 
   .form-group {
     margin-bottom: 1.25rem;
-    flex: 1;
   }
   
   .currency-input {
-    padding: 0.875rem 1rem;
+    padding: 0.75rem 1rem;
     margin-bottom: 1rem;
   }
 
   .currency-input ::ng-deep .p-inputnumber-input {
-    font-size: 1.125rem;
+    font-size: 1.0625rem;
   }
 
   .flag-icon {
@@ -208,23 +170,20 @@
 
   .currency-code {
     font-size: 1rem;
-    min-width: 35px;
   }
 
   ::ng-deep .send-button {
-    margin-bottom: 1rem;
-    margin-top: auto;
+    margin-bottom: 1.25rem;
   }
 
   ::ng-deep .send-button .p-button {
     padding: 1rem 1.25rem;
-    min-height: 56px;
-    font-size: 1.0625rem;
+    min-height: 52px;
+    font-size: 1rem;
   }
 
   .exchange-rate {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding-top: 1.25rem;
   }
 
   .exchange-rate h3 {
@@ -234,14 +193,9 @@
   .exchange-rate p {
     font-size: 0.9375rem;
   }
-
-  .exchange-rate .logout-link {
-    padding: 0.875rem;
-    margin-top: 1.25rem;
-  }
 }
 
-/* Très petits écrans (< 375px) */
+/* Très petits écrans */
 @media (max-width: 374px) {
   .send-form-card {
     padding: 1rem;
@@ -252,7 +206,7 @@
   }
 
   .currency-input {
-    padding: 0.75rem 0.875rem;
+    padding: 0.625rem 0.875rem;
   }
 
   .currency-input ::ng-deep .p-inputnumber-input {
@@ -265,18 +219,6 @@
   }
 
   ::ng-deep .send-button .p-button {
-    min-height: 52px;
-    font-size: 1rem;
-  }
-}
-
-/* Desktop large (> 1280px) */
-@media (min-width: 1280px) {
-  .send-form-card {
-    padding: 2rem;
-  }
-
-  ::ng-deep .send-button .p-button {
-    min-height: 52px;
+    min-height: 48px;
   }
 }

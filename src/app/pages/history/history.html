@@ -1,12 +1,15 @@
 <div class="history-page card">
   <!-- Header -->
   <div class="page-header">
-    <button 
-      pButton 
-      icon="pi pi-arrow-left" 
+    <button
+      pButton
+      icon="pi pi-arrow-left"
       class="p-button-text back-button"
-      (click)="goBack()">
-    </button>
+      type="button"
+      (click)="goBack()"
+      aria-label="Retour"
+    ></button>
+
     <div class="header-content">
       <h1 class="page-title">Historique des transferts</h1>
       <p class="page-subtitle">Consultez tous vos transferts</p>
@@ -16,82 +19,108 @@
   <!-- Search bar -->
   <div class="search-bar">
     <span class="p-input-icon-left">
-      <i class="pi pi-search"></i>
-      <input 
-        type="text" 
-        pInputText 
-        [(ngModel)]="searchQuery"
-        (ngModelChange)="applyFilter()"
-        placeholder="Rechercher un transfert..."
-        class="search-input">
+      <i class="pi pi-search" aria-hidden="true"></i>
+      <input
+  type="text"
+  pInputText
+  [(ngModel)]="searchQuery"
+  (input)="onSearchInput(searchQuery)"
+  placeholder="Rechercher un transfert..."
+  class="search-input"
+  autocomplete="off"
+/>
+
+
     </span>
   </div>
 
-  <!-- Transfers list -->
-  <div class="transfers-list" *ngIf="displayedTransfers.length > 0">
-    <div 
-      *ngFor="let transfer of displayedTransfers" 
-      class="transfer-item"
-      (click)="viewDetails(transfer)">
-      
-      <div class="transfer-main">
-        <div class="transfer-info">
-          <h3 class="beneficiary-name">{{ transfer.beneficiaryName }}</h3>
-          <p class="transfer-date">
-            <i class="pi pi-calendar"></i>
-            {{ formatDate(transfer.date) }}
-          </p>
-          <p class="transfer-reference">
-            <i class="pi pi-tag"></i>
-            {{ transfer.reference }}
-          </p>
-        </div>
+  <!-- Content -->
+  <ng-container *ngIf="displayedTransfers?.length as count; else empty">
+    <!-- Transfers list -->
+    <div class="transfers-list" *ngIf="count > 0">
+      <div
+        *ngFor="let transfer of displayedTransfers; trackBy: trackByTransferId"
+        class="transfer-item"
+        role="button"
+        tabindex="0"
+        (click)="viewDetails(transfer)"
+        (keydown.enter)="viewDetails(transfer)"
+      >
+        <div class="transfer-main">
+          <div class="transfer-info">
+            <h3 class="beneficiary-name">
+              {{ transfer.beneficiaryName || '—' }}
+            </h3>
 
-        <div class="transfer-amount">
-          <div class="amount-sent">
-            <span class="amount">{{ transfer.amount }} {{ transfer.currency }}</span>
-            <span class="label">Envoyé</span>
+            <p class="transfer-date">
+              <i class="pi pi-calendar" aria-hidden="true"></i>
+              {{ formatDate(transfer.date) }}
+            </p>
+
+            <p class="transfer-reference">
+              <i class="pi pi-tag" aria-hidden="true"></i>
+              {{ transfer.reference || '—' }}
+            </p>
           </div>
-          <i class="pi pi-arrow-right arrow-icon"></i>
-          <div class="amount-received">
-            <span class="amount">{{ formatAmount(transfer.amountReceived) }} {{ transfer.receivedCurrency }}</span>
-            <span class="label">Reçu</span>
+
+          <div class="transfer-amount">
+            <div class="amount-sent">
+              <span class="amount">
+                {{ formatAmount(transfer.total_ttc) }} {{ transfer.currency || 'EUR' }}
+              </span>
+              <span class="label">Envoyé</span>
+            </div>
+
+            <i class="pi pi-arrow-right arrow-icon" aria-hidden="true"></i>
+
+            <div class="amount-received">
+              <span class="amount">
+                {{ formatAmount(transfer.amountReceived) }} {{ transfer.receivedCurrency || 'GNF' }}
+              </span>
+              <span class="label">Reçu</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="transfer-footer">
-        <div class="payment-method">
-          <i class="pi pi-mobile"></i>
-          {{ transfer.paymentMethod }}
+        <div class="transfer-footer">
+          <div class="payment-method">
+            <i class="pi pi-mobile" aria-hidden="true"></i>
+               {{ transfer.serviceLabel }}
+          </div>
+
+          <p-tag
+            [value]="getStatusLabel(transfer.statut)"
+            [severity]="getStatusSeverity(transfer.statut)"
+          ></p-tag>
         </div>
-        <p-tag 
-          [value]="getStatusLabel(transfer.status)" 
-          [severity]="getStatusSeverity(transfer.status)">
-        </p-tag>
-      </div>
 
-      <!-- Mobile chevron -->
-      <i class="pi pi-chevron-right mobile-chevron"></i>
+        <i class="pi pi-chevron-right mobile-chevron" aria-hidden="true"></i>
+      </div>
     </div>
-  </div>
 
-  <!-- Load More Button -->
-  <div class="load-more-container" *ngIf="hasMore && displayedTransfers.length > 0">
-    <button 
-      pButton 
-      label="Charger plus" 
-      icon="pi pi-angle-down"
-      class="p-button-outlined load-more-btn"
-      (click)="loadMore()">
-    </button>
-  </div>
+    <!-- Load More Button -->
+    <div class="load-more-container" *ngIf="hasMore && count > 0">
+      <button
+        pButton
+        type="button"
+        label="Charger plus"
+        icon="pi pi-angle-down"
+        class="p-button-outlined load-more-btn"
+        (click)="loadMore()"
+        [disabled]="loading"
+      ></button>
+    </div>
+  </ng-container>
 
   <!-- Empty state -->
-  <div class="empty-state" *ngIf="displayedTransfers.length === 0">
-    <i class="pi pi-history empty-icon"></i>
-    <h3>Aucun transfert trouvé</h3>
-    <p *ngIf="searchQuery">Aucun résultat pour "{{ searchQuery }}"</p>
-    <p *ngIf="!searchQuery">Vous n'avez pas encore effectué de transfert</p>
-  </div>
+  <ng-template #empty>
+    <div class="empty-state">
+      <i class="pi pi-history empty-icon" aria-hidden="true"></i>
+      <h3>Aucun transfert trouvé</h3>
+      <p *ngIf="searchQuery; else noSearch">Aucun résultat pour "{{ searchQuery }}"</p>
+      <ng-template #noSearch>
+        <p>Vous n'avez pas encore effectué de transfert</p>
+      </ng-template>
+    </div>
+  </ng-template>
 </div>

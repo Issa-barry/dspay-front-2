@@ -1,23 +1,25 @@
 <!-- dashboard.html -->
 <div class="grid grid-cols-12 gap-8">
 
-  <!-- Étape 1: Avec historique à droite -->
+  <!-- Étape 1: Formulaire seul sur mobile, avec historique sur desktop -->
   <ng-container *ngIf="currentStep === 1">
+    <!-- Formulaire - Pleine largeur sur mobile et tablette, 50% sur desktop XL -->
     <div class="col-span-12 xl:col-span-6">
       <app-send-form2 
         (sendClicked)="onSendClicked($event)">
-        
       </app-send-form2>
     </div>
     
-    <div class="col-span-12 xl:col-span-6 hidden md:block">
+    <!-- Historique - Complètement retiré du DOM sur mobile/tablette, visible uniquement sur XL -->
+    <div class="col-span-12 xl:col-span-6 hidden xl:block">
       <app-history-send-dashboard-widget />
     </div>
   </ng-container> 
   
-  <!-- Étapes 2, 3, 4: Centrées sans historique -->
+  <!-- Étapes 2, 3, 4, 5: Centrées sans historique -->
   <ng-container *ngIf="currentStep !== 1">
     <div class="col-span-12 xl:col-span-6 xl:col-start-4">
+      
       <!-- Étape 2: Choix du wallet -->
       <app-WalletComponent 
         *ngIf="currentStep === 2"
@@ -25,7 +27,6 @@
         (back)="onBackToForm()">
       </app-WalletComponent>
 
-      <!-- Étape 3: Choix du bénéficiaire -->
       <!-- Étape 3: Choix du bénéficiaire -->
       <app-beneficiary-component
         *ngIf="currentStep === 3"
@@ -47,13 +48,13 @@
       </app-recapitulatif>
 
       <!-- Étape 5: Paiement CB -->
-          <app-payment-cb
-            *ngIf="currentStep === 5"
-            [amount]="transferData ? (transferData.eurAmount + 2) : 0"
-            (paymentSuccess)="onPaymentSuccess($event)"
-            (paymentCancel)="onPaymentCancel()"
-            (back)="onBackToRecap()">
-          </app-payment-cb>
+      <app-payment-cb
+        *ngIf="currentStep === 5"
+        [amount]="transferData ? (transferData.eurAmount + 2) : 0"
+        (paymentSuccess)="onPaymentSuccess($event)"
+        (paymentCancel)="onPaymentCancel()"
+        (back)="onBackToRecap()">
+      </app-payment-cb>
     </div>
   </ng-container>
 

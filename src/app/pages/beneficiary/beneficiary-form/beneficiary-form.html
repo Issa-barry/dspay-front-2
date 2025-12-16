@@ -1,76 +1,95 @@
 <div class="beneficiary-form-page">
   <div class="page-header">
-    <button 
-      pButton 
-      icon="pi pi-arrow-left" 
+    <button
+      pButton
+      icon="pi pi-arrow-left"
       class="p-button-text back-button"
+      type="button"
       (click)="cancel()">
     </button>
+
     <h1 class="page-title">{{ pageTitle }}</h1>
   </div>
 
   <div class="form-container">
-    <form (ngSubmit)="onSubmit()" class="beneficiary-form">
+    <form
+      class="beneficiary-form"
+      (ngSubmit)="onSubmit()"
+      #form="ngForm"
+      novalidate
+    >
 
       <!-- Téléphone EN PREMIER -->
       <div class="form-field">
         <label for="phone">Numéro de téléphone *</label>
-        <input 
+        <input
           id="phone"
-          type="tel" 
-          pInputText 
+          type="tel"
+          pInputText
           [(ngModel)]="phone"
           name="phone"
+          required
           placeholder="+224 XXX XX XX XX"
           class="form-input"
-          autofocus>
+          autofocus
+        />
         <small class="field-hint">Format: +224 XXX XX XX XX</small>
       </div>
 
       <!-- Prénom -->
       <div class="form-field">
         <label for="firstName">Prénom *</label>
-        <input 
+        <input
           id="firstName"
-          type="text" 
-          pInputText 
+          type="text"
+          pInputText
           [(ngModel)]="firstName"
           name="firstName"
+          required
           placeholder="Entrez le prénom"
-          class="form-input">
+          class="form-input"
+        />
       </div>
 
       <!-- Nom -->
       <div class="form-field">
         <label for="lastName">Nom *</label>
-        <input 
+        <input
           id="lastName"
-          type="text" 
-          pInputText 
+          type="text"
+          pInputText
           [(ngModel)]="lastName"
           name="lastName"
+          required
           placeholder="Entrez le nom"
-          class="form-input">
+          class="form-input"
+        />
       </div>
 
       <!-- Actions -->
       <div class="form-actions">
-        <button 
+        <button
           type="submit"
-          pButton 
-          [label]="isEditMode ? 'Modifier' : 'Ajouter'" 
+          pButton
+          [label]="isEditMode ? 'Modifier' : 'Ajouter'"
           icon="pi pi-check"
-          class="btn-submit">
+          class="btn-submit"
+          [disabled]="loading || form.invalid"
+        >
         </button>
-        <button 
+
+        <button
           type="button"
-          pButton 
-          label="Annuler" 
+          pButton
+          label="Annuler"
           icon="pi pi-times"
           class="p-button-secondary btn-cancel"
-          (click)="cancel()">
+          (click)="cancel()"
+          [disabled]="loading"
+        >
         </button>
       </div>
+
     </form>
   </div>
 
