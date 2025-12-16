@@ -21,14 +21,12 @@ export type CreateTransferPayload = {
   beneficiaire_id: number;
   taux_echange_id: number;
   montant_envoie: number;
-
-  serviceId?: ServiceId;
-
-  // conditionnels (selon service)
+  serviceId: string;
   recipientTel?: string | null;
   accountId?: string | null;
   customerPhoneNumber?: string | null;
 };
+
 
 @Injectable({ providedIn: 'root' })
 export class SendService {

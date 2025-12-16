@@ -92,7 +92,12 @@ export class Dashboard implements OnInit {
     // Ici stratégie simple:
     // - si bénéficiaire a telephone => recipientTel
     // - sinon tu devras demander accountId dans UI (à ajouter dans l'étape wallet/recap)
-    const recipientTel = this.selectedBeneficiary?.telephone ?? this.selectedBeneficiary?.phone ?? null;
+const recipientTel =
+  this.selectedBeneficiary?.raw?.phone ??
+  (this.selectedBeneficiary as any)?.raw?.telephone ??
+  this.selectedBeneficiary?.phone ??
+  null;
+
 
     const payload: CreateTransferPayload = {
       beneficiaire_id: this.selectedBeneficiary.id,
