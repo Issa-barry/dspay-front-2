@@ -3,7 +3,7 @@
 
   <form (ngSubmit)="onSubmit()" #f="ngForm">
     <div class="form-group">
-      <label class="form-label" for="eurAmount">Montant à envoyer ?</label>
+      <label class="form-label" for="montant_envoie">Montant à envoyer ?</label>
 
       <!-- Montant en EUR -->
       <div class="currency-input">
@@ -15,21 +15,21 @@
         />
 
         <p-inputNumber
-          inputId="eurAmount"
-          [(ngModel)]="eurAmount"
-          name="eurAmount"
+          inputId="montant_envoie"
+          [(ngModel)]="montant_envoie"
+          name="montant_envoie"
           [min]="1"
           [minFractionDigits]="0"
           [maxFractionDigits]="2"
           [useGrouping]="false"
           placeholder="100"
-          (onInput)="calculateGNF()"
+          (onInput)="calculateAmount()"
         ></p-inputNumber>
 
         <span class="currency-code">€</span>
       </div>
 
-      <label class="form-label" for="gnfAmount">Montant reçu</label>
+      <label class="form-label" for="amount">Montant reçu</label>
 
       <!-- Montant en GNF -->
       <div class="currency-input">
@@ -41,18 +41,18 @@
         />
 
         <p-inputNumber
-      [(ngModel)]="gnfAmount"
-      name="gnfAmount"
-      mode="decimal"
-      [minFractionDigits]="0"
-      [maxFractionDigits]="0"
-      thousandSeparator=" "
-      decimalSeparator=""
-      [useGrouping]="true"
-      placeholder="950000"
-      (onInput)="calculateEUR()"
-    ></p-inputNumber>
-
+          inputId="amount"
+          [(ngModel)]="amount"
+          name="amount"
+          mode="decimal"
+          [minFractionDigits]="0"
+          [maxFractionDigits]="0"
+          thousandSeparator=" "
+          decimalSeparator=""
+          [useGrouping]="true"
+          placeholder="950000"
+          (onInput)="calculateMontantEnvoie()"
+        ></p-inputNumber>
 
         <span class="currency-code">GNF</span>
       </div>
@@ -65,7 +65,7 @@
       icon="pi pi-arrow-right"
       iconPos="right"
       styleClass="send-button"
-      [disabled]="exchangeRate <= 0 || !tauxEchangeId || eurAmount <= 0"
+      [disabled]="exchangeRate <= 0 || !taux_echange_id || montant_envoie <= 0"
     ></p-button>
 
     <div class="exchange-rate">

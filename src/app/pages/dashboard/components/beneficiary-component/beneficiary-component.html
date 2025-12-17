@@ -1,4 +1,3 @@
-<!-- src/app/pages/dashboard/components/beneficiary-component/beneficiary-component.html -->
 <div class="beneficiary-card">
   <div class="step-header">
     <button type="button" (click)="goBack()" class="back-button">
@@ -7,13 +6,11 @@
     <h2 class="title">Choisir un bénéficiaire</h2>
   </div>
 
-  <!-- Bouton pour ajouter un nouveau bénéficiaire -->
   <button type="button" class="add-beneficiary-btn" (click)="addNewBeneficiary()">
     <i class="pi pi-plus"></i>
     <span>Ajouter un bénéficiaire</span>
   </button>
 
-  <!-- Loading / Error -->
   <div *ngIf="loading" style="padding: 1rem;">
     Chargement des bénéficiaires...
   </div>
@@ -34,8 +31,9 @@
       </div>
 
       <div class="beneficiary-info">
-        <span class="beneficiary-name">{{ beneficiary.name }}</span>
-        <span class="beneficiary-relation" *ngIf="beneficiary.relation">{{ beneficiary.relation }}</span>
+        <span class="beneficiary-name">
+          {{ beneficiary.nom_complet || (beneficiary.prenom + ' ' + beneficiary.nom) }}
+        </span>
         <span class="beneficiary-phone">{{ beneficiary.phone }}</span>
       </div>
 

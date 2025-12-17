@@ -1,36 +1,33 @@
-<!-- dashboard.html -->
 <div class="grid grid-cols-12 gap-8">
 
-  <!-- Étape 1: Formulaire seul sur mobile, avec historique sur desktop -->
+  <!-- ÉTAPE 1 : Formulaire -->
   <ng-container *ngIf="currentStep === 1">
-    <!-- Formulaire - Pleine largeur sur mobile et tablette, 50% sur desktop XL -->
     <div class="col-span-12 xl:col-span-6">
       <app-send-form2
-          *ngIf="currentStep === 1"
-          [exchangeRate]="currentRate?.taux ?? 0"
-          [tauxEchangeId]="currentRate?.id ?? 0"
-          (sendClicked)="onSendClicked($event)"
-        ></app-send-form2>
+        [exchangeRate]="currentRate?.taux ?? 0"
+        [taux_echange_id]="currentRate?.id ?? 0"
+        (sendClicked)="onSendClicked($event)">
+      </app-send-form2>
     </div>
-    
-    <!-- Historique - Complètement retiré du DOM sur mobile/tablette, visible uniquement sur XL -->
+
+    <!-- Historique visible uniquement sur desktop XL -->
     <div class="col-span-12 xl:col-span-6 hidden xl:block">
       <app-history-send-dashboard-widget />
     </div>
-  </ng-container> 
-  
-  <!-- Étapes 2, 3, 4, 5: Centrées sans historique -->
+  </ng-container>
+
+  <!-- ÉTAPES 2 → 5 -->
   <ng-container *ngIf="currentStep !== 1">
     <div class="col-span-12 xl:col-span-6 xl:col-start-4">
-      
-      <!-- Étape 2: Choix du wallet -->
-      <app-WalletComponent 
+
+      <!-- ÉTAPE 2 : Choix du wallet -->
+      <app-WalletComponent
         *ngIf="currentStep === 2"
         (walletSelected)="onWalletSelected($event)"
         (back)="onBackToForm()">
       </app-WalletComponent>
 
-      <!-- Étape 3: Choix du bénéficiaire -->
+      <!-- ÉTAPE 3 : Choix du bénéficiaire -->
       <app-beneficiary-component
         *ngIf="currentStep === 3"
         (beneficiarySelected)="onBeneficiarySelected($event)"
@@ -38,26 +35,30 @@
         (back)="onBackToWallet()">
       </app-beneficiary-component>
 
-      <!-- Étape 4: Récapitulatif -->
-      <app-recapitulatif
-        *ngIf="currentStep === 4"
-        [eurAmount]="transferData?.eurAmount || 0"
-        [gnfAmount]="transferData?.gnfAmount || 0"
-        [beneficiaryName]="selectedBeneficiary?.name || ''"
-        [walletName]="selectedWallet?.name || ''"
-        (confirm)="onConfirmTransfer()"
-        (cancel)="onCancelTransfer()"
-        (modify)="onModifyTransfer()">
-      </app-recapitulatif>
+      <!-- ÉTAPE 4 : Récapitulatif (100% aligné back) -->
+    <app-recapitulatif
+      *ngIf="currentStep === 4"
+      [montant_envoie]="transferData?.montant_envoie || 0"
+      [amount]="transferData?.amount || 0"
+      [frais]="transferData?.frais || 0"
+      [total_ttc]="transferData?.total_ttc || 0"
+      [beneficiaire_nom]="selectedBeneficiary?.nom_complet || ''"
+      [service_libelle]="selectedWallet?.walletName || ''"
+      (confirm)="onConfirmTransfer()"
+      (cancel)="onCancelTransfer()"
+      (modify)="onModifyTransfer()">
+    </app-recapitulatif>
 
-      <!-- Étape 5: Paiement CB -->
+
+      <!-- ÉTAPE 5 : Paiement -->
       <app-payment-cb
         *ngIf="currentStep === 5"
-        [amount]="transferData ? (transferData.eurAmount + 2) : 0"
+        [amount]="transferData?.total_ttc || 0"
         (paymentSuccess)="onPaymentSuccess($event)"
         (paymentCancel)="onPaymentCancel()"
         (back)="onBackToRecap()">
       </app-payment-cb>
+
     </div>
   </ng-container>
 

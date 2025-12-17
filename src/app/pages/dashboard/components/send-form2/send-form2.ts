@@ -13,16 +13,19 @@ import { InputNumberModule } from 'primeng/inputnumber';
 })
 export class SendForm2 implements OnInit, OnChanges {
   @Input() exchangeRate: number = 0;
-  @Input() tauxEchangeId!: number;
+  @Input() taux_echange_id!: number;
 
+  // ✅ NOMS BACK
   @Output() sendClicked = new EventEmitter<{
-    eurAmount: number;
-    gnfAmount: number;
-    taux_echange_id: number;
-  }>();
+  montant_envoie: number;
+  amount: number;
+  taux_echange_id: number;
+}>();
 
-  eurAmount: number = 100;
-  gnfAmount: number = 0;
+
+  // ✅ champs de saisie (noms back)
+  montant_envoie: number = 100;
+  amount: number = 0;
 
   euFlag: string = 'demo/flags/1x1/eu.svg';
   gnFlag: string = 'demo/flags/1x1/gn.svg';
@@ -32,46 +35,46 @@ export class SendForm2 implements OnInit, OnChanges {
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    // ✅ 1er calcul si le taux est déjà présent
-    this.calculateGNF();
+    this.calculateAmount();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // ✅ recalcul dès que le taux arrive (ou change)
     if (changes['exchangeRate']) {
       const prev = Number(changes['exchangeRate'].previousValue ?? 0);
       const curr = Number(changes['exchangeRate'].currentValue ?? 0);
 
-      // si on passe de 0 -> 9600 (ou taux modifié)
       if (curr > 0 && curr !== prev) {
-        this.calculateGNF();
+        this.calculateAmount();
       }
     }
   }
 
-  calculateGNF() {
+  // EUR -> GNF
+  calculateAmount() {
     const rate = Number(this.exchangeRate || 0);
-    const eur = Number(this.eurAmount || 0);
-    this.gnfAmount = rate > 0 ? Math.round(eur * rate) : 0;
+    const eur = Number(this.montant_envoie || 0);
+    this.amount = rate > 0 ? Math.round(eur * rate) : 0;
   }
 
-  calculateEUR() {
+  // GNF -> EUR
+  calculateMontantEnvoie() {
     const rate = Number(this.exchangeRate || 0);
-    const gnf = Number(this.gnfAmount || 0);
-    this.eurAmount = rate > 0 ? Math.round((gnf / rate) * 100) / 100 : 0;
+    const gnf = Number(this.amount || 0);
+    this.montant_envoie = rate > 0 ? Math.round((gnf / rate) * 100) / 100 : 0;
   }
 
   onSubmit() {
-    if (!this.tauxEchangeId || this.tauxEchangeId <= 0) {
-      console.error('tauxEchangeId manquant');
+    if (!this.taux_echange_id || this.taux_echange_id <= 0) {
+      console.error('taux_echange_id manquant');
       return;
     }
 
     this.sendClicked.emit({
-      eurAmount: this.eurAmount,
-      gnfAmount: this.gnfAmount,
-      taux_echange_id: this.tauxEchangeId,
-    });
+  montant_envoie: this.montant_envoie,
+  amount: this.amount,
+  taux_echange_id: this.taux_echange_id, // ⚠️ pas taux_exchange_id
+});
+
   }
 
   onLogout() {
