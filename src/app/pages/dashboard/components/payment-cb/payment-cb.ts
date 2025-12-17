@@ -73,7 +73,7 @@ export class PaymentCbComponent {
           expiryDate: this.expiryDate,
           amount: this.amount,
           timestamp: new Date().toISOString()
-        };
+        }; 
         
         this.paymentSuccess.emit(paymentData);
       }, 2000);

@@ -11,9 +11,6 @@ import { PaymentCbComponent } from './components/payment-cb/payment-cb';
 import { HistorySendDashboardWidget } from './components/historique/widgets/history.send.dahsboard.widget';
 
 import { AuthService } from '../service/auth/auth/auth.service';
- 
-// (Optionnel) si tu charges le taux depuis API
-// import { TauxEchangeService, TauxEchangeLite } from 'src/app/core/services/taux-echange.service';
 import { CreateTransferPayload, SendService } from '../service/send/send.service';
 import { TauxEchangeLite, TauxEchangeService } from '../service/taux-echange/taux-echange.service';
 
@@ -32,19 +29,15 @@ import { TauxEchangeLite, TauxEchangeService } from '../service/taux-echange/tau
   templateUrl: './dashboard.html',
 })
 export class Dashboard implements OnInit {
-  currentStep: number = 1;
+  currentStep = 1;
 
   transferData: { eurAmount: number; gnfAmount: number; taux_echange_id: number } | null = null;
-  selectedWallet: any = null;
+  selectedWallet: any = null; // { serviceId: 'ks_pay', walletName: 'KS-PAY', ... }
   selectedBeneficiary: any = null;
 
-  // ✅ Taux courant (chargé depuis API)
   currentRate: TauxEchangeLite | null = null;
 
-  // ✅ erreurs API 422
   apiErrors: Record<string, string[]> = {};
-
-  // provisoir logout
   loadingLogout = false;
 
   constructor(
@@ -54,15 +47,14 @@ export class Dashboard implements OnInit {
   ) {}
 
   ngOnInit(): void {
-  this.tauxService.getCurrent().subscribe({
-    next: (rate) => {
-      this.currentRate = rate;
-      console.log('✅ taux chargé', rate);
-    },
-    error: (e) => console.log('Erreur chargement taux', e),
-  });
-}
-
+    this.tauxService.getCurrent().subscribe({
+      next: (rate) => {
+        this.currentRate = rate;
+        console.log('✅ taux chargé', rate);
+      },
+      error: (e) => console.log('Erreur chargement taux', e),
+    });
+  }
 
   onSendClicked(data: { eurAmount: number; gnfAmount: number; taux_echange_id: number }) {
     this.transferData = data;
@@ -70,7 +62,16 @@ export class Dashboard implements OnInit {
   }
 
   onWalletSelected(wallet: any) {
-    this.selectedWallet = wallet;
+    // Normalisation simple
+    this.selectedWallet = {
+      ...wallet,
+      serviceId: wallet?.serviceId ?? wallet?.id ?? null,
+      walletName: wallet?.walletName ?? wallet?.name ?? '',
+      accountId: wallet?.accountId ?? null,
+      customerPhoneNumber: wallet?.customerPhoneNumber ?? null,
+    };
+
+    console.log('Wallet normalisé:', this.selectedWallet);
     this.currentStep = 3;
   }
 
@@ -79,51 +80,93 @@ export class Dashboard implements OnInit {
     this.currentStep = 4;
   }
 
-  /** ✅ Ici on crée vraiment le transfert côté back */
+  /** ✅ CONFIRMER = aller au paiement (ne crée rien en base) */
   onConfirmTransfer() {
     this.apiErrors = {};
 
     if (!this.transferData) return;
     if (!this.selectedBeneficiary?.id) return;
 
-    const serviceId = this.selectedWallet?.serviceId ?? 'orange_money';
+    const serviceId = this.selectedWallet?.serviceId;
+    if (!serviceId) {
+      this.apiErrors = { serviceId: ['Veuillez choisir un mode de paiement.'] };
+      this.currentStep = 2;
+      return;
+    }
 
-    // ⚠️ Ton back impose: recipientTel OU accountId obligatoire
-    // Ici stratégie simple:
-    // - si bénéficiaire a telephone => recipientTel
-    // - sinon tu devras demander accountId dans UI (à ajouter dans l'étape wallet/recap)
-const recipientTel =
-  this.selectedBeneficiary?.raw?.phone ??
-  (this.selectedBeneficiary as any)?.raw?.telephone ??
-  this.selectedBeneficiary?.phone ??
-  null;
+    this.currentStep = 5;
+  }
 
+  /** ✅ PAYER = créer le transfert (ici seulement) */
+  onPaymentSuccess(paymentData: any) {
+    this.apiErrors = {};
+
+    if (!this.transferData) return;
+    if (!this.selectedBeneficiary?.id) return;
+
+    const serviceId = this.selectedWallet?.serviceId;
+    if (!serviceId) {
+      this.apiErrors = { serviceId: ['Veuillez choisir un mode de paiement.'] };
+      this.currentStep = 2;
+      return;
+    }
+
+    const recipientTel =
+      this.selectedBeneficiary?.raw?.phone ??
+      (this.selectedBeneficiary as any)?.raw?.telephone ??
+      this.selectedBeneficiary?.phone ??
+      null;
+
+    const accountId = this.selectedWallet?.accountId ?? null;
+    const customerPhoneNumber =
+      this.selectedWallet?.customerPhoneNumber ?? recipientTel ?? null;
+
+    const isTelService = serviceId === 'orange_money' || serviceId === 'momo';
+
+    // ✅ Si service "account" => accountId obligatoire
+    if (!isTelService && !accountId) {
+      this.apiErrors = { accountId: ['Le numéro de compte est requis pour ce mode de paiement.'] };
+      this.currentStep = 4; // ou 5 si tu préfères demander sur la page paiement
+      return;
+    }
+
+    // ✅ Si ton back exige customerPhoneNumber
+    if (!customerPhoneNumber) {
+      this.apiErrors = { customerPhoneNumber: ['Le numéro de téléphone client est requis.'] };
+      this.currentStep = 4;
+      return;
+    }
 
     const payload: CreateTransferPayload = {
       beneficiaire_id: this.selectedBeneficiary.id,
       taux_echange_id: this.transferData.taux_echange_id,
       montant_envoie: this.transferData.eurAmount,
       serviceId,
-      recipientTel,
-      accountId: null,
-      customerPhoneNumber: null,
+
+      recipientTel: isTelService ? (recipientTel ?? undefined) : undefined,
+      accountId: !isTelService ? accountId : undefined,
+      customerPhoneNumber,
     };
 
     this.sendService.createTransfer(payload).subscribe({
       next: (created) => {
-        console.log('✅ Transfert créé:', created);
-        // selon ton flow tu peux:
-        // - aller au step 5 (paiement CB)
-        // - ou afficher success direct
-        this.currentStep = 5;
+        console.log('✅ Transfert créé après paiement:', created);
+        alert('✅ Transfert effectué avec succès !');
+        this.currentStep = 1;
+        this.resetTransferData();
       },
       error: (err) => {
         console.log('❌ Erreur API:', err);
         if (err?.status === 422) {
           this.apiErrors = err.error?.data ?? err.error?.errors ?? {};
         }
+        this.currentStep = 5;
       },
     });
+  }
+
+  onPaymentCancel() {
+    this.currentStep = 4;
   }
 
   onCancelTransfer() {
@@ -133,16 +176,6 @@ const recipientTel =
 
   onModifyTransfer() {
     this.currentStep = 1;
-  }
-
-  onPaymentSuccess(paymentData: any) {
-    alert('✅ Transfert effectué avec succès !');
-    this.currentStep = 1;
-    this.resetTransferData();
-  }
-
-  onPaymentCancel() {
-    this.currentStep = 4;
   }
 
   onBackToForm() {
@@ -171,16 +204,8 @@ const recipientTel =
   }
 
   onAddBeneficiary() {
-  console.log('Ajout bénéficiaire demandé');
-  // Option 1: ouvrir un modal / passer à un step
-  // this.currentStep = X;
-
-  // Option 2: navigation vers une page
-  // this.router.navigate(['/app/beneficiary/new']);
-
-  alert('Fonctionnalité de création de bénéficiaire - À implémenter');
-}
-
+    alert('Fonctionnalité de création de bénéficiaire - À implémenter');
+  }
 
   onLogout() {
     if (this.loadingLogout) return;
