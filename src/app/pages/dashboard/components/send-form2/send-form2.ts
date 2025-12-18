@@ -1,12 +1,21 @@
 import { AuthService } from '@/pages/service/auth/auth/auth.service';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, OnChanges, SimpleChanges, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputNumberModule } from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-send-form2',
+  standalone: true,
   imports: [CommonModule, FormsModule, InputNumberModule, ButtonModule],
   templateUrl: './send-form2.html',
   styleUrl: './send-form2.scss',
@@ -17,11 +26,10 @@ export class SendForm2 implements OnInit, OnChanges {
 
   // ✅ NOMS BACK
   @Output() sendClicked = new EventEmitter<{
-  montant_envoie: number;
-  amount: number;
-  taux_echange_id: number;
-}>();
-
+    montant_envoie: number;
+    amount: number;
+    taux_echange_id: number;
+  }>();
 
   // ✅ champs de saisie (noms back)
   montant_envoie: number = 100;
@@ -69,12 +77,14 @@ export class SendForm2 implements OnInit, OnChanges {
       return;
     }
 
-    this.sendClicked.emit({
-  montant_envoie: this.montant_envoie,
-  amount: this.amount,
-  taux_echange_id: this.taux_echange_id, // ⚠️ pas taux_exchange_id
-});
+    const payload = {
+      montant_envoie: Number(this.montant_envoie || 0),
+      amount: Number(this.amount || 0),
+      taux_echange_id: Number(this.taux_echange_id || 0),
+    };
 
+    console.log('✅ SEND-FORM2 payload (back aligned) =>', payload);
+    this.sendClicked.emit(payload);
   }
 
   onLogout() {
@@ -89,8 +99,18 @@ export class SendForm2 implements OnInit, OnChanges {
 
   onImageError(event: any, flag: string) {
     const alternativePaths: { [key: string]: string[] } = {
-      eu: ['assets/demo/flags/1x1/eu.svg', 'demo/flags/eu.svg', 'assets/demo/flags/eu.svg', '/demo/flags/1x1/eu.svg'],
-      gn: ['assets/demo/flags/1x1/gn.svg', 'demo/flags/gn.svg', 'assets/demo/flags/gn.svg', '/demo/flags/1x1/gn.svg'],
+      eu: [
+        'assets/demo/flags/1x1/eu.svg',
+        'demo/flags/eu.svg',
+        'assets/demo/flags/eu.svg',
+        '/demo/flags/1x1/eu.svg',
+      ],
+      gn: [
+        'assets/demo/flags/1x1/gn.svg',
+        'demo/flags/gn.svg',
+        'assets/demo/flags/gn.svg',
+        '/demo/flags/1x1/gn.svg',
+      ],
     };
 
     const paths = alternativePaths[flag];
