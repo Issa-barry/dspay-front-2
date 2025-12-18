@@ -6,30 +6,42 @@
     <h2 class="title">Choisir un bénéficiaire</h2>
   </div>
 
-  <!-- Bouton pour ajouter un nouveau bénéficiaire -->
   <button type="button" class="add-beneficiary-btn" (click)="addNewBeneficiary()">
     <i class="pi pi-plus"></i>
-    <span>Ajouter un  bénéficiaire</span>
+    <span>Ajouter un bénéficiaire</span>
   </button>
 
-  <div class="beneficiary-list">
-    <div 
-      *ngFor="let beneficiary of beneficiaries" 
+  <div *ngIf="loading" style="padding: 1rem;">
+    Chargement des bénéficiaires...
+  </div>
+
+  <div *ngIf="!loading && errorMsg" style="padding: 1rem; color: #ef4444;">
+    {{ errorMsg }}
+  </div>
+
+  <div class="beneficiary-list" *ngIf="!loading && !errorMsg">
+    <div
+      *ngFor="let beneficiary of beneficiaries"
       class="beneficiary-item"
       (click)="selectBeneficiary(beneficiary)"
-      [class.selected]="selectedBeneficiary?.id === beneficiary.id">
-      
+      [class.selected]="selectedBeneficiary?.id === beneficiary.id"
+    >
       <div class="beneficiary-avatar" [style.background-color]="beneficiary.color">
         <span>{{ beneficiary.initials }}</span>
       </div>
-      
+
       <div class="beneficiary-info">
-        <span class="beneficiary-name">{{ beneficiary.name }}</span>
-        <span class="beneficiary-relation" *ngIf="beneficiary.relation">{{ beneficiary.relation }}</span>
+        <span class="beneficiary-name">
+          {{ beneficiary.nom_complet || (beneficiary.prenom + ' ' + beneficiary.nom) }}
+        </span>
         <span class="beneficiary-phone">{{ beneficiary.phone }}</span>
       </div>
-      
+
       <i class="pi pi-chevron-right beneficiary-arrow"></i>
+    </div>
+
+    <div *ngIf="beneficiaries.length === 0" style="padding: 1rem;">
+      Aucun bénéficiaire trouvé.
     </div>
   </div>
 </div>

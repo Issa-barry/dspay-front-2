@@ -21,16 +21,14 @@
     <span class="p-input-icon-left">
       <i class="pi pi-search" aria-hidden="true"></i>
       <input
-  type="text"
-  pInputText
-  [(ngModel)]="searchQuery"
-  (input)="onSearchInput(searchQuery)"
-  placeholder="Rechercher un transfert..."
-  class="search-input"
-  autocomplete="off"
-/>
-
-
+        type="text"
+        pInputText
+        [(ngModel)]="searchQuery"
+        (input)="onSearchInput(searchQuery)"
+        placeholder="Rechercher un transfert..."
+        class="search-input"
+        autocomplete="off"
+      />
     </span>
   </div>
 
@@ -49,24 +47,25 @@
         <div class="transfer-main">
           <div class="transfer-info">
             <h3 class="beneficiary-name">
-              {{ transfer.beneficiaryName || '—' }}
+              {{ transfer.beneficiaire?.nom_complet || (transfer.beneficiaire?.prenom + ' ' + transfer.beneficiaire?.nom) || '—' }}
             </h3>
 
             <p class="transfer-date">
               <i class="pi pi-calendar" aria-hidden="true"></i>
-              {{ formatDate(transfer.date) }}
+              {{ formatDate(transfer.created_at) }}
             </p>
 
             <p class="transfer-reference">
               <i class="pi pi-tag" aria-hidden="true"></i>
-              {{ transfer.reference || '—' }}
+              {{ transfer.code || '—' }}
             </p>
           </div>
 
           <div class="transfer-amount">
             <div class="amount-sent">
               <span class="amount">
-                {{ formatAmount(transfer.total_ttc) }} {{ transfer.currency || 'EUR' }}
+                {{ formatAmount(transfer.total_ttc) }}
+                {{ transfer.devise_source?.tag || 'EUR' }}
               </span>
               <span class="label">Envoyé</span>
             </div>
@@ -75,7 +74,8 @@
 
             <div class="amount-received">
               <span class="amount">
-                {{ formatAmount(transfer.amountReceived) }} {{ transfer.receivedCurrency || 'GNF' }}
+                {{ formatAmount(transfer.total_gnf || transfer.amount) }}
+                {{ transfer.devise_cible?.tag || 'GNF' }}
               </span>
               <span class="label">Reçu</span>
             </div>
@@ -85,7 +85,7 @@
         <div class="transfer-footer">
           <div class="payment-method">
             <i class="pi pi-mobile" aria-hidden="true"></i>
-               {{ transfer.serviceLabel }}
+            {{ transfer.serviceId || '—' }}
           </div>
 
           <p-tag

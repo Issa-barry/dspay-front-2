@@ -4,18 +4,20 @@ import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { InputMaskModule } from 'primeng/inputmask';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 type PaymentMethod = 'card' | 'paypal' | 'applepay';
 
 @Component({
-  selector: 'app-payment-cb',
+  selector: 'app-payment-cb', 
   standalone: true,
   imports: [
     CommonModule,
     FormsModule,
     InputTextModule,
     ButtonModule,
-    InputMaskModule
+    InputMaskModule,
+    ProgressBarModule
   ],
   templateUrl: './payment-cb.html',
   styleUrls: ['./payment-cb.scss']
@@ -73,7 +75,7 @@ export class PaymentCbComponent {
           expiryDate: this.expiryDate,
           amount: this.amount,
           timestamp: new Date().toISOString()
-        };
+        }; 
         
         this.paymentSuccess.emit(paymentData);
       }, 2000);
