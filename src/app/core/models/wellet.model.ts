@@ -12,6 +12,7 @@ export class Wallet {
   serviceId!: ServiceId; // valeur BACK (OBLIGATOIRE)
   icon!: string;         // icône PrimeIcons
   color!: string;        // couleur UI
+  
 
   // champs optionnels (pour KS-PAY, PayCard, etc.)
   accountId?: string = "1234";
