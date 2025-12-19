@@ -6,7 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputMaskModule } from 'primeng/inputmask';
 import { ProgressBarModule } from 'primeng/progressbar';
 
-type PaymentMethod = 'card' | 'paypal' | 'applepay';
+type PaymentMethod = 'card' | 'paypal';
 
 @Component({
   selector: 'app-payment-cb', 
@@ -50,8 +50,6 @@ export class PaymentCbComponent {
       this.processCardPayment();
     } else if (this.selectedMethod === 'paypal') {
       this.processPayPalPayment();
-    } else if (this.selectedMethod === 'applepay') {
-      this.processApplePayPayment();
     }
   }
 
@@ -102,28 +100,6 @@ export class PaymentCbComponent {
       
       this.paymentSuccess.emit(paymentData);
     }, 2000);
-  }
-
-  processApplePayPayment() {
-    this.isProcessing = true;
-    
-    console.log('=== PAIEMENT PAR APPLE PAY ===');
-    console.log('Montant:', this.amount, '€');
-    console.log('Ouverture d\'Apple Pay...');
-    
-    // Simuler Apple Pay
-    setTimeout(() => {
-      this.isProcessing = false;
-      const paymentData = {
-        method: 'applepay',
-        deviceType: 'iPhone',
-        amount: this.amount,
-        transactionId: 'AP-' + Math.random().toString(36).substr(2, 9).toUpperCase(),
-        timestamp: new Date().toISOString()
-      };
-      
-      this.paymentSuccess.emit(paymentData);
-    }, 1500);
   }
 
   validateForm(): boolean {

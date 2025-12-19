@@ -58,14 +58,18 @@ export class Dashboard implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.tauxService.getCurrent().subscribe({
+     this.loadRate();
+  }
+
+  loadRate(): void {
+            this.tauxService.getCurrent().subscribe({
       next: (rate) => {
         this.currentRate = rate;
         console.log('[DASH] ✅ taux chargé:', rate);
       },
       error: (e) => console.log('[DASH] ❌ Erreur chargement taux', e),
-    });
-  }
+     });
+   }
 
   // ✅ reçoit exactement le modèle back
   onSendClicked(data: { montant_envoie: number; amount: number; taux_echange_id: number }) {

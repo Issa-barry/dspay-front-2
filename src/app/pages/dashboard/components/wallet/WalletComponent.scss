@@ -107,7 +107,7 @@
 }
 
 /* ==========================================
-   MOBILE FULLSCREEN - Expérience native
+   MOBILE FULLSCREEN - FLAT DESIGN BLANC
    ========================================== */
 @media (max-width: 768px) {
   /* Host prend tout l'écran */
@@ -123,19 +123,19 @@
     overflow: hidden;
   }
 
-  /* Container fullscreen avec fond blanc */
+  /* Container fullscreen */
   .wallet-card {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    height: 100dvh; /* Dynamic viewport height */
+    height: 100dvh;
     background: white; /* ← FOND BLANC */
     border-radius: 0;
     padding: 0;
     box-shadow: none;
   }
 
-  /* Header fixe en haut */
+  /* Header fixe - Flat */
   .step-header {
     position: fixed;
     top: 0;
@@ -143,7 +143,7 @@
     right: 0;
     height: 56px;
     background: white;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e5e7eb;
     padding: 0 16px;
     margin-bottom: 0;
     z-index: 100;
@@ -162,43 +162,46 @@
     }
 
     &:hover {
-      background-color: #f1f5f9;
+      background-color: transparent;
     }
   }
 
   .title {
     font-size: 18px;
     text-align: center;
-    padding-right: 40px; /* Compense le bouton back */
+    padding-right: 40px;
   }
 
-  /* Liste scrollable avec fond blanc */
+  /* Liste scrollable - Fond blanc */
   .wallet-list {
     flex: 1;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     padding: calc(56px + env(safe-area-inset-top) + 16px) 16px calc(24px + env(safe-area-inset-bottom));
     gap: 12px;
-    background: white; /* ← FOND BLANC pour la liste */
+    background: white; /* ← FOND BLANC */
   }
 
+  /* Items FLAT - Sans ombre, bordure légère */
   .wallet-item {
     background: white;
-    border: 1px solid #e5e7eb; /* Border plus légère sur mobile */
-    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
     padding: 16px;
     gap: 16px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); /* Shadow plus légère */
+    box-shadow: none; /* ← PAS D'OMBRE */
     -webkit-tap-highlight-color: transparent;
+    transition: all 0.15s ease;
 
     &:active {
       transform: scale(0.98);
+      background-color: #f9fafb;
     }
 
     &.selected {
       border-color: #10b981;
-      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.2);
+      background: #ecfdf5;
+      box-shadow: none; /* ← PAS D'OMBRE même sélectionné */
 
       .wallet-arrow {
         color: #10b981;
@@ -207,17 +210,19 @@
     }
   }
 
+  /* Icônes FLAT - Sans ombre */
   .wallet-icon {
-    width: 56px;
-    height: 56px;
-    border-radius: 16px;
-    font-size: 28px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    font-size: 26px;
+    box-shadow: none; /* ← PAS D'OMBRE sur l'icône */
   }
 
   .wallet-name {
     font-size: 16px;
     font-weight: 600;
+    color: #1e293b;
   }
 
   .wallet-arrow {
@@ -226,13 +231,13 @@
     transition: all 0.2s;
   }
 
-  /* Animation d'entrée */
+  /* Animation d'entrée simple */
   .wallet-item {
     animation: slideUpMobile 0.3s ease-out backwards;
 
     @for $i from 1 through 10 {
       &:nth-child(#{$i}) {
-        animation-delay: #{$i * 0.05}s;
+        animation-delay: #{$i * 0.04}s;
       }
     }
   }
@@ -240,7 +245,7 @@
   @keyframes slideUpMobile {
     from {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(15px);
     }
     to {
       opacity: 1;
@@ -273,8 +278,8 @@
   }
 
   .wallet-icon {
-    width: 44px !important;
-    height: 44px !important;
-    font-size: 22px !important;
+    width: 48px !important;
+    height: 48px !important;
+    font-size: 24px !important;
   }
 }
