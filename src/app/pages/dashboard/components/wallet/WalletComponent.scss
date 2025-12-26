@@ -1,4 +1,6 @@
-/* WalletComponent.scss */
+/* ==========================================
+   DESIGN DESKTOP (par défaut - ne change pas)
+   ========================================== */
 .wallet-card {
   background: white;
   border-radius: 12px;
@@ -95,29 +97,189 @@
   font-size: 1rem;
 }
 
-/* Responsive */
+/* ==========================================
+   TABLET - Ajustements légers
+   ========================================== */
 @media (max-width: 1280px) {
   .wallet-card {
     padding: 1.5rem;
   }
 }
 
+/* ==========================================
+   MOBILE FULLSCREEN - FLAT DESIGN BLANC
+   ========================================== */
 @media (max-width: 768px) {
+  /* Host prend tout l'écran */
+  :host {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white; /* ← FOND BLANC */
+    z-index: 9999;
+    overflow: hidden;
+  }
+
+  /* Container fullscreen */
   .wallet-card {
-    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    background: white; /* ← FOND BLANC */
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  /* Header fixe - Flat */
+  .step-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0 16px;
+    margin-bottom: 0;
+    z-index: 100;
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .back-button {
+    font-size: 24px;
+    padding: 8px;
+    color: #64748b;
+    -webkit-tap-highlight-color: transparent;
+
+    &:active {
+      transform: scale(0.95);
+      background-color: #f1f5f9;
+    }
+
+    &:hover {
+      background-color: transparent;
+    }
   }
 
   .title {
-    font-size: 1.125rem;
+    font-size: 18px;
+    text-align: center;
+    padding-right: 40px;
   }
 
+  /* Liste scrollable - Fond blanc */
+  .wallet-list {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: calc(56px + env(safe-area-inset-top) + 16px) 16px calc(24px + env(safe-area-inset-bottom));
+    gap: 12px;
+    background: white; /* ← FOND BLANC */
+  }
+
+  /* Items FLAT - Sans ombre, bordure légère */
+  .wallet-item {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 16px;
+    gap: 16px;
+    box-shadow: none; /* ← PAS D'OMBRE */
+    -webkit-tap-highlight-color: transparent;
+    transition: all 0.15s ease;
+
+    &:active {
+      transform: scale(0.98);
+      background-color: #f9fafb;
+    }
+
+    &.selected {
+      border-color: #10b981;
+      background: #ecfdf5;
+      box-shadow: none; /* ← PAS D'OMBRE même sélectionné */
+
+      .wallet-arrow {
+        color: #10b981;
+        transform: translateX(4px);
+      }
+    }
+  }
+
+  /* Icônes FLAT - Sans ombre */
   .wallet-icon {
-    width: 40px;
-    height: 40px;
-    font-size: 1.25rem;
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    font-size: 26px;
+    box-shadow: none; /* ← PAS D'OMBRE sur l'icône */
+  }
+
+  .wallet-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e293b;
+  }
+
+  .wallet-arrow {
+    font-size: 20px;
+    color: #cbd5e1;
+    transition: all 0.2s;
+  }
+
+  /* Animation d'entrée simple */
+  .wallet-item {
+    animation: slideUpMobile 0.3s ease-out backwards;
+
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{$i * 0.04}s;
+      }
+    }
+  }
+
+  @keyframes slideUpMobile {
+    from {
+      opacity: 0;
+      transform: translateY(15px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* Très petits écrans */
+@media (max-width: 360px) {
+  .wallet-icon {
+    width: 48px !important;
+    height: 48px !important;
+    font-size: 24px !important;
+  }
+
+  .wallet-name {
+    font-size: 15px !important;
   }
 
   .wallet-item {
-    padding: 0.875rem;
+    padding: 14px !important;
+  }
+}
+
+/* Mode paysage mobile */
+@media (max-height: 600px) and (orientation: landscape) and (max-width: 768px) {
+  .wallet-item {
+    padding: 12px !important;
+  }
+
+  .wallet-icon {
+    width: 48px !important;
+    height: 48px !important;
+    font-size: 24px !important;
   }
 }

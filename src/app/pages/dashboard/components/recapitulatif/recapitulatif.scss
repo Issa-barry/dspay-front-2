@@ -1,3 +1,6 @@
+/* ==========================================
+   DESIGN DESKTOP (par défaut - ne change pas)
+   ========================================== */
 .recap-card {
   background: white;
   border-radius: 12px;
@@ -136,46 +139,264 @@
   color: #374151;
 }
 
-/* Responsive */
+/* ==========================================
+   TABLET - Ajustements légers
+   ========================================== */
 @media (max-width: 1280px) {
   .recap-card {
     padding: 1.5rem;
   }
 }
 
+/* ==========================================
+   MOBILE FULLSCREEN - Expérience native
+   ========================================== */
 @media (max-width: 768px) {
+  /* Host prend tout l'écran */
+  :host {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    z-index: 9999;
+    overflow: hidden;
+  }
+
+  /* Container fullscreen */
   .recap-card {
-    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    background: white;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    overflow: hidden;
+  }
+
+  /* Header avec titre et bouton modifier */
+  .recap-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 16px;
+    margin: 0;
+    z-index: 100;
+    padding-top: calc(env(safe-area-inset-top) + 16px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .title {
-    font-size: 1.25rem;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .modify-button {
+    font-size: 14px;
+    padding: 6px 12px;
+    color: #10b981;
+    text-decoration: underline;
+    -webkit-tap-highlight-color: transparent;
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  /* Contenu scrollable */
+  .recap-content {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: calc(56px + env(safe-area-inset-top) + 24px) 16px 24px;
+    gap: 0;
+    margin: 0;
+    background: white;
   }
 
   .recap-row {
-    gap: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 16px 0;
+    border-bottom: 1px solid #f3f4f6;
+    gap: 16px;
+
+    &.total {
+      border-top: 2px solid #e5e7eb;
+      border-bottom: none;
+      margin-top: 8px;
+      padding-top: 20px;
+      padding-bottom: 0;
+    }
   }
 
-  .recap-label,
+  .recap-label {
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 400;
+    flex: 1;
+  }
+
   .recap-value {
-    font-size: 0.875rem;
+    font-size: 15px;
+    color: #1e293b;
+    font-weight: 600;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .recap-label-total {
+    font-size: 15px;
+    color: #1e293b;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .recap-value-total {
+    font-size: 18px;
+    color: #1e293b;
+    font-weight: 700;
+  }
+
+  /* Actions fixes en bas */
+  .recap-actions {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 1px solid #e2e8f0;
+    padding: 16px;
+    padding-bottom: calc(env(safe-area-inset-bottom) + 16px);
+    gap: 12px;
+    margin: 0;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .btn-confirm {
+    background: #111827;
+    color: white;
+    border: none;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 12px;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    &:hover {
+      transform: none;
+    }
+
+    i {
+      font-size: 18px;
+    }
+  }
+
+  .btn-cancel {
+    background: transparent;
+    color: #64748b;
+    border: 2px solid #e2e8f0;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 12px;
+    -webkit-tap-highlight-color: transparent;
+
+    &:active {
+      transform: scale(0.98);
+      background-color: #f8fafc;
+    }
+
+    &:hover {
+      transform: none;
+    }
+  }
+
+  /* Animation d'entrée */
+  .recap-row {
+    animation: slideUpMobile 0.3s ease-out backwards;
+
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{$i * 0.05}s;
+      }
+    }
+  }
+
+  @keyframes slideUpMobile {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* Très petits écrans */
+@media (max-width: 360px) {
+  .title {
+    font-size: 18px !important;
+  }
+
+  .recap-label {
+    font-size: 13px !important;
+  }
+
+  .recap-value {
+    font-size: 14px !important;
+  }
+
+  .recap-label-total {
+    font-size: 14px !important;
+  }
+
+  .recap-value-total {
+    font-size: 16px !important;
   }
 
   .btn-confirm,
   .btn-cancel {
-    padding: 0.875rem 1.25rem;
-    font-size: 0.9375rem;
+    padding: 14px !important;
+    font-size: 15px !important;
   }
 }
 
-@media (max-width: 640px) {
-  .recap-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
+/* Mode paysage mobile */
+@media (max-height: 600px) and (orientation: landscape) and (max-width: 768px) {
+  .recap-content {
+    padding-top: calc(56px + 16px) !important;
   }
 
-  .modify-button {
-    align-self: flex-end;
+  .recap-row {
+    padding: 12px 0 !important;
+  }
+
+  .recap-actions {
+    padding: 12px !important;
+    padding-bottom: calc(env(safe-area-inset-bottom) + 12px) !important;
+  }
+
+  .btn-confirm,
+  .btn-cancel {
+    padding: 12px !important;
   }
 }

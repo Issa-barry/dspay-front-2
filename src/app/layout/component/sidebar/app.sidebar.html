@@ -8,8 +8,9 @@
     <div class="sidebar-footer py-2 border-t border-primary-400 dark:border-primary-300">
         <!-- Menu déroulant (caché par défaut) -->
         <ul class="list-none p-2 m-0 hidden animate-duration-150 overflow-hidden">
-            <li>
+           <li>
                 <a
+                    (click)="goToProfile()"
                     class="flex items-center cursor-pointer p-3 gap-2 rounded-lg transition-colors duration-150 hover:bg-surface-100 dark:hover:bg-surface-800"
                 >
                     <i class="pi pi-user text-base! leading-none!"></i>
@@ -31,7 +32,7 @@
                         aria-hidden="true"
                     ></i>
                     <span class="font-medium text-base leading-tight">
-                        {{ loadingLogout ? 'Déconnexion...' : 'Deconnexion' }}
+                        {{ loadingLogout ? 'Déconnexion...' : 'Déconnexion' }}
                     </span>
                 </a>
             </li>
@@ -51,7 +52,7 @@
                 class="w-8 h-8 rounded-full shrink-0"
                 alt="Photo de profil"
             />
-            <span class="font-medium text-base leading-tight flex-1 truncate">Nom complet</span>
+            <span class="font-medium text-base leading-tight flex-1 truncate">{{ userFullName }}</span>
             <i class="pi pi-angle-up text-base! leading-none! shrink-0" style="color: black;"></i>
         </a>
     </div>

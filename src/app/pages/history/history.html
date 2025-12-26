@@ -16,21 +16,21 @@
     </div>
   </div>
 
-  <!-- Search bar -->
+  <!-- Search bar avec indicateur -->
   <div class="search-bar">
-    <span class="p-input-icon-left">
+    <span class="p-input-icon-left" [class.p-input-icon-right]="loading">
       <i class="pi pi-search" aria-hidden="true"></i>
       <input
-  type="text"
-  pInputText
-  [(ngModel)]="searchQuery"
-  (input)="onSearchInput(searchQuery)"
-  placeholder="Rechercher un transfert..."
-  class="search-input"
-  autocomplete="off"
-/>
-
-
+        type="text"
+        pInputText
+        [(ngModel)]="searchQuery"
+        (input)="onSearchInput(searchQuery)"
+        placeholder="Rechercher un transfert..."
+        class="search-input"
+        autocomplete="off"
+      />
+      <!-- ✅ Spinner dans l'input -->
+      <i class="pi pi-spin pi-spinner" *ngIf="loading" aria-hidden="true" style="color: #10b981;"></i>
     </span>
   </div>
 
@@ -49,24 +49,25 @@
         <div class="transfer-main">
           <div class="transfer-info">
             <h3 class="beneficiary-name">
-              {{ transfer.beneficiaryName || '—' }}
+              {{ transfer.beneficiaire?.nom_complet || (transfer.beneficiaire?.prenom + ' ' + transfer.beneficiaire?.nom) || '—' }}
             </h3>
 
             <p class="transfer-date">
               <i class="pi pi-calendar" aria-hidden="true"></i>
-              {{ formatDate(transfer.date) }}
+              {{ formatDate(transfer.created_at) }}
             </p>
 
             <p class="transfer-reference">
               <i class="pi pi-tag" aria-hidden="true"></i>
-              {{ transfer.reference || '—' }}
+              {{ transfer.code || '—' }}
             </p>
           </div>
 
           <div class="transfer-amount">
             <div class="amount-sent">
               <span class="amount">
-                {{ formatAmount(transfer.total_ttc) }} {{ transfer.currency || 'EUR' }}
+                {{ formatAmount(transfer.total_ttc) }}
+                {{ transfer.devise_source?.tag || 'EUR' }}
               </span>
               <span class="label">Envoyé</span>
             </div>
@@ -75,7 +76,8 @@
 
             <div class="amount-received">
               <span class="amount">
-                {{ formatAmount(transfer.amountReceived) }} {{ transfer.receivedCurrency || 'GNF' }}
+                {{ formatAmount(transfer.total_gnf || transfer.amount) }}
+                {{ transfer.devise_cible?.tag || 'GNF' }}
               </span>
               <span class="label">Reçu</span>
             </div>
@@ -85,7 +87,7 @@
         <div class="transfer-footer">
           <div class="payment-method">
             <i class="pi pi-mobile" aria-hidden="true"></i>
-               {{ transfer.serviceLabel }}
+            {{ transfer.serviceId || '—' }}
           </div>
 
           <p-tag
@@ -106,6 +108,7 @@
         label="Charger plus"
         icon="pi pi-angle-down"
         class="p-button-outlined load-more-btn"
+        [loading]="loading"
         (click)="loadMore()"
         [disabled]="loading"
       ></button>
@@ -114,13 +117,19 @@
 
   <!-- Empty state -->
   <ng-template #empty>
-    <div class="empty-state">
+    <div class="empty-state" *ngIf="!loading">
       <i class="pi pi-history empty-icon" aria-hidden="true"></i>
       <h3>Aucun transfert trouvé</h3>
       <p *ngIf="searchQuery; else noSearch">Aucun résultat pour "{{ searchQuery }}"</p>
       <ng-template #noSearch>
         <p>Vous n'avez pas encore effectué de transfert</p>
       </ng-template>
+    </div>
+
+    <!-- ✅ Loading simple au centre -->
+    <div class="empty-state" *ngIf="loading" style="padding: 3rem 1rem;">
+      <i class="pi pi-spin pi-spinner" style="font-size: 2.5rem; color: #10b981;" aria-hidden="true"></i>
+      <p style="margin-top: 1rem; color: #64748b; font-weight: 500;">Chargement...</p>
     </div>
   </ng-template>
 </div>

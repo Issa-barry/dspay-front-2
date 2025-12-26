@@ -5,14 +5,25 @@
       icon="pi pi-arrow-left"
       class="p-button-text back-button"
       type="button"
-      (click)="cancel()">
+      (click)="cancel()"
+      [disabled]="loading">
     </button>
 
     <h1 class="page-title">{{ pageTitle }}</h1>
   </div>
 
   <div class="form-container">
+    <!-- ✅ LOADING CERCLE PRIMENG PUR -->
+    <div *ngIf="loading && isEditMode" class="flex flex-column align-items-center justify-content-center" style="padding: 4rem 2rem; gap: 1.5rem;">
+      <p-skeleton shape="circle" size="5rem"></p-skeleton>
+      <p style="font-size: 1rem; font-weight: 500; color: #64748b; margin: 0; text-align: center;">
+        Chargement des données...
+      </p>
+    </div>
+
+    <!-- ✅ FORMULAIRE RÉEL -->
     <form
+      *ngIf="!loading || !isEditMode"
       class="beneficiary-form"
       (ngSubmit)="onSubmit()"
       #form="ngForm"
@@ -31,6 +42,7 @@
           required
           placeholder="+224 XXX XX XX XX"
           class="form-input"
+          [disabled]="loading"
           autofocus
         />
         <small class="field-hint">Format: +224 XXX XX XX XX</small>
@@ -48,6 +60,7 @@
           required
           placeholder="Entrez le prénom"
           class="form-input"
+          [disabled]="loading"
         />
       </div>
 
@@ -63,6 +76,7 @@
           required
           placeholder="Entrez le nom"
           class="form-input"
+          [disabled]="loading"
         />
       </div>
 
@@ -73,6 +87,7 @@
           pButton
           [label]="isEditMode ? 'Modifier' : 'Ajouter'"
           icon="pi pi-check"
+          [loading]="loading"
           class="btn-submit"
           [disabled]="loading || form.invalid"
         >

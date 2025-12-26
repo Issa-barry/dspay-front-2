@@ -1,3 +1,636 @@
-h1{
-    color: white;
+/* ==========================================
+   HELPERS
+   ========================================== */
+.mobile-status {
+  display: none;
+}
+
+.desktop-status {
+  display: inline-block;
+}
+
+/* ==========================================
+   DESKTOP (par défaut)
+   ========================================== */
+.send-detail-page {
+  max-width: 768px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.page-header {
+  margin-bottom: 1.5rem;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #f3f4f6;
+    color: #111827;
+  }
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+.page-title {
+  display: none;
+}
+
+.page-content {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+.transfer-header {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  padding: 2rem 1.5rem;
+  color: white;
+}
+
+.header-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.reference-label {
+  font-size: 0.875rem;
+  opacity: 0.8;
+  margin: 0 0 0.25rem 0;
+}
+
+.reference-value {
+  font-size: 0.875rem;
+  font-family: monospace;
+  margin: 0;
+}
+
+.status-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.amount-section {
+  margin-top: 1.5rem;
+}
+
+.amount-label {
+  font-size: 0.875rem;
+  opacity: 0.8;
+  margin: 0 0 0.5rem 0;
+}
+
+.amount-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.detail-body {
+  padding: 1.5rem;
+}
+
+/* ==========================================
+   SECTION CONVERSION - ALIGNÉE
+   ========================================== */
+.conversion-card {
+  background: #f9fafb;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.conversion-header {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.conversion-rate-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.rate-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.rate-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111827;
+  text-align: right;
+}
+
+.conversion-result {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.result-amount {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.25rem 0;
+}
+
+.result-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* ==========================================
+   SECTIONS INFO
+   ========================================== */
+.section {
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 1rem 0;
+
+  .icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #10b981;
+  }
+}
+
+.info-card {
+  background: #f9fafb;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &.total-row {
+    background: #ecfdf5;
+    padding: 1rem;
+  }
+}
+
+.info-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.info-value {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #111827;
+  text-align: right;
+
+  &.total-value {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #10b981;
+  }
+}
+
+/* ==========================================
+   ACTIONS
+   ========================================== */
+.actions-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+.btn-primary,
+.btn-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+.btn-primary {
+  background: #10b981;
+  color: white;
+
+  &:hover {
+    background: #059669;
+  }
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+  border: 2px solid #e5e7eb;
+
+  &:hover {
+    background: #e5e7eb;
+  }
+}
+
+/* ==========================================
+   AIDE
+   ========================================== */
+.help-note {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: #ecfdf5;
+  border: 1px solid #d1fae5;
+  border-radius: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.help-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #10b981;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.help-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #065f46;
+  margin: 0 0 0.25rem 0;
+}
+
+.help-text {
+  font-size: 0.875rem;
+  color: #047857;
+  margin: 0;
+}
+
+/* ==========================================
+   MOBILE FULLSCREEN
+   ========================================== */
+@media (max-width: 768px) {
+  /* Helpers mobile */
+  .mobile-status {
+    display: inline-block;
+  }
+
+  .desktop-status {
+    display: none;
+  }
+
+  /* Host fullscreen */
+  :host {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    z-index: 9999;
+    overflow: hidden;
+  }
+
+  .send-detail-page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    padding: 0;
+    margin: 0;
+    max-width: none;
+  }
+
+  /* Header fixe avec statut */
+  .page-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0 16px;
+    margin: 0;
+    z-index: 100;
+    padding-top: env(safe-area-inset-top);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .back-button {
+    padding: 8px;
+    margin-left: -8px;
+    -webkit-tap-highlight-color: transparent;
+    flex-shrink: 0;
+
+    &:active {
+      transform: scale(0.95);
+      background-color: #f1f5f9;
+    }
+
+    &:hover {
+      background-color: transparent;
+    }
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+
+  .page-title {
+    display: block;
+    flex: 1;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+    padding: 0 8px;
+  }
+
+  /* Statut dans le header mobile */
+  .mobile-status {
+    padding: 4px 10px;
+    font-size: 11px;
+    border-radius: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Contenu scrollable */
+  .page-content {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-top: calc(56px + env(safe-area-inset-top));
+    padding-bottom: calc(24px + env(safe-area-inset-bottom));
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .transfer-header {
+    padding: 24px 16px;
+    border-radius: 0;
+  }
+
+  .header-info {
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 16px;
+  }
+
+  .reference-label {
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  .reference-value {
+    font-size: 13px;
+  }
+
+  .amount-section {
+    margin-top: 20px;
+  }
+
+  .amount-label {
+    font-size: 13px;
+  }
+
+  .amount-value {
+    font-size: 32px;
+  }
+
+  .detail-body {
+    padding: 16px;
+  }
+
+  /* Conversion mobile - ALIGNÉE */
+  .conversion-card {
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .conversion-header {
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+  }
+
+  .conversion-rate-row {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .rate-label {
+    font-size: 13px;
+  }
+
+  .rate-value {
+    font-size: 13px;
+  }
+
+  .conversion-result {
+    padding: 16px 0;
+  }
+
+  .result-amount {
+    font-size: 28px;
+  }
+
+  .result-label {
+    font-size: 13px;
+  }
+
+  /* Sections info mobile */
+  .section {
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-size: 14px;
+    margin-bottom: 12px;
+
+    .icon {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .info-card {
+    border-radius: 16px;
+    padding: 0;
+  }
+
+  .info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 12px 16px;
+
+    &.total-row {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .info-label {
+    font-size: 13px;
+  }
+
+  .info-value {
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+
+    &.total-value {
+      font-size: 16px;
+      text-align: right;
+    }
+  }
+
+  /* Actions mobile */
+  .actions-section {
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 16px;
+    font-size: 16px;
+    border-radius: 12px;
+    -webkit-tap-highlight-color: transparent;
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    &:hover {
+      transform: none;
+    }
+  }
+
+  /* Aide mobile */
+  .help-note {
+    padding: 16px;
+    border-radius: 12px;
+    gap: 12px;
+  }
+
+  .help-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .help-title,
+  .help-text {
+    font-size: 13px;
+  }
+}
+
+/* ==========================================
+   TRÈS PETITS ÉCRANS
+   ========================================== */
+@media (max-width: 360px) {
+  .page-title {
+    font-size: 16px !important;
+  }
+
+  .mobile-status {
+    font-size: 10px !important;
+    padding: 3px 8px !important;
+  }
+
+  .amount-value {
+    font-size: 28px !important;
+  }
+
+  .result-amount {
+    font-size: 24px !important;
+  }
+}
+
+/* ==========================================
+   MODE PAYSAGE MOBILE
+   ========================================== */
+@media (max-height: 600px) and (orientation: landscape) and (max-width: 768px) {
+  .transfer-header {
+    padding: 16px !important;
+  }
+
+  .amount-section {
+    margin-top: 12px !important;
+  }
+
+  .amount-value {
+    font-size: 24px !important;
+  }
+
+  .detail-body {
+    padding: 12px !important;
+  }
+
+  .conversion-card,
+  .info-card {
+    margin-bottom: 12px !important;
+  }
+
+  .actions-section {
+    margin: 16px 0 !important;
+  }
 }

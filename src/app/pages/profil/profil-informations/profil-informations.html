@@ -1,0 +1,117 @@
+ <!-- Wrapper avec padding pour le bouton fixe -->
+    <div class="content-wrapper">
+      <div class="flex flex-col gap-8">
+        <div class="text-surface-900 dark:text-surface-0 font-semibold text-lg leading-tight">
+          Profile
+        </div>
+
+        <div class="flex gap-12 flex-col-reverse md:flex-row">
+          <div class="flex-auto flex flex-col gap-6">
+            <div class="flex flex-col gap-2">
+              <label for="name" class="text-surface-900 dark:text-surface-0">
+                Nom complet
+              </label>
+              <input 
+                id="name" 
+                type="text" 
+                pInputText 
+                class="w-full"
+                [(ngModel)]="user.fullName"
+                [disabled]="true" />
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label for="phone" class="text-surface-900 dark:text-surface-0">
+                Téléphone
+              </label>
+              <input 
+                id="phone" 
+                type="text" 
+                pInputText 
+                class="w-full"
+                [(ngModel)]="user.phone"
+                [disabled]="true" />
+            </div> 
+
+            <div class="flex flex-col gap-2">
+              <label for="email" class="text-surface-900 dark:text-surface-0">
+                Email
+              </label>
+              <input 
+                id="email" 
+                type="email" 
+                pInputText 
+                class="w-full"
+                [(ngModel)]="user.email" />
+            </div> 
+
+            
+
+            <div class="flex flex-col gap-2">
+              <label for="pays" class="text-surface-900 dark:text-surface-0">
+                Pays de residence
+              </label>
+              <input 
+                id="pays" 
+                type="text" 
+                pInputText 
+                class="w-full"
+                [(ngModel)]="user.country" />
+            </div> 
+
+            <div class="flex flex-col gap-2">
+              <label for="adresse" class="text-surface-900 dark:text-surface-0">
+                Adresse
+              </label>
+              <input 
+                id="adresse" 
+                type="text" 
+                pInputText 
+                class="w-full"
+                [(ngModel)]="user.address" />
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label for="code" class="text-surface-900 dark:text-surface-0">
+                Code postal
+              </label>
+              <input 
+                id="code" 
+                type="text" 
+                pInputText 
+                class="w-full"
+                [(ngModel)]="user.postalCode" />
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label for="ville" class="text-surface-900 dark:text-surface-0">
+                Ville
+              </label>
+              <input 
+                id="ville" 
+                type="text" 
+                pInputText 
+                class="w-full"
+                [(ngModel)]="user.city" />
+            </div>
+          </div>
+
+          <!-- <div class="flex flex-col gap-2">
+            <label class="text-surface-900 dark:text-surface-0">Avatar</label>
+            <div class="flex flex-col lg:items-center gap-4">
+          
+              <div 
+                class="avatar-initials"
+                [style.background-color]="getAvatarColor(user.fullName)">
+                {{ getInitials(user.fullName) }}
+              </div>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Bouton fixe en bas sur mobile -->
+    <div class="button-fixed-wrapper">
+      <p-button label="Enregistrer"></p-button>
+    </div>

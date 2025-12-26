@@ -1,9 +1,36 @@
+/* ==========================================
+   DESIGN DESKTOP (par défaut - ne change pas)
+   ========================================== */
 .payment-card {
   background: white;
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   height: 100%;
+  position: relative;
+}
+
+/* Overlay de chargement */
+.payment-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  border-radius: 12px;
+}
+
+.payment-loading-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 2rem;
 }
 
 .payment-header {
@@ -43,6 +70,42 @@
   color: #111827;
 }
 
+/* Bouton Annuler desktop */
+.cancel-button {
+  background: none;
+  border: 2px solid #e5e7eb;
+  color: #6b7280;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  font-weight: 500;
+}
+
+.cancel-button:hover:enabled {
+  background-color: #fee2e2;
+  border-color: #fecaca;
+  color: #dc2626;
+}
+
+.cancel-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cancel-icon {
+  display: none;
+}
+
+.cancel-text {
+  display: inline;
+}
+
 .amount-display {
   background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   padding: 1.5rem;
@@ -69,7 +132,7 @@
 /* Sélection de la méthode de paiement */
 .payment-methods {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   margin-bottom: 2rem;
 }
@@ -111,7 +174,9 @@
   cursor: not-allowed;
 }
 
-.payment-form {
+/* Formulaire et contenu */
+.payment-form-content,
+.alternative-payment-content {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -148,31 +213,7 @@
   font-size: 1rem;
 }
 
-.security-info {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 1rem;
-  background: #f0fdf4;
-  border: 1px solid #86efac;
-  border-radius: 8px;
-  color: #166534;
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.security-info i {
-  font-size: 1.25rem;
-  color: #10b981;
-}
-
 /* Paiements alternatifs */
-.alternative-payment {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
 .payment-info {
   display: flex;
   flex-direction: column;
@@ -191,10 +232,6 @@
 
 .paypal-icon {
   color: #0070ba;
-}
-
-.apple-icon {
-  color: #000000;
 }
 
 .payment-info h3 {
@@ -218,6 +255,7 @@
   margin-top: 1rem;
 }
 
+/* Styles PrimeNG */
 ::ng-deep .btn-pay .p-button {
   width: 100%;
   background-color: #10b981 !important;
@@ -246,37 +284,6 @@
   border-color: #005a93 !important;
 }
 
-::ng-deep .btn-apple .p-button {
-  width: 100%;
-  background-color: #000000 !important;
-  border-color: #000000 !important;
-  padding: 1rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-::ng-deep .btn-apple .p-button:hover:enabled {
-  background-color: #1a1a1a !important;
-  border-color: #1a1a1a !important;
-}
-
-::ng-deep .btn-cancel .p-button {
-  width: 100%;
-  background-color: transparent !important;
-  color: #6b7280 !important;
-  border: 2px solid #e5e7eb !important;
-  padding: 1rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-::ng-deep .btn-cancel .p-button:hover:enabled {
-  background-color: #f9fafb !important;
-  border-color: #d1d5db !important;
-  color: #374151 !important;
-}
-
-/* Input styles */
 ::ng-deep .p-inputtext,
 ::ng-deep .p-inputmask {
   width: 100%;
@@ -299,43 +306,303 @@
   cursor: not-allowed;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+/* ==========================================
+   TABLET - Design desktop conservé
+   ========================================== */
+@media (max-width: 1024px) and (min-width: 769px) {
   .payment-card {
     padding: 1.5rem;
-  }
-
-  .title {
-    font-size: 1.125rem;
-  }
-
-  .amount-value {
-    font-size: 1.75rem;
-  }
-
-  .payment-methods {
-    grid-template-columns: 1fr;
-  }
-
-  .form-row {
-    flex-direction: column;
-  }
-
-  .payment-icon {
-    font-size: 3rem;
   }
 }
 
-@media (max-width: 640px) {
+/* ==========================================
+   MOBILE FULLSCREEN - Expérience native
+   ========================================== */
+@media (max-width: 768px) {
+  /* Host prend tout l'écran */
+  :host {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    z-index: 9999;
+    overflow: hidden;
+  }
+
+  /* Container fullscreen */
   .payment-card {
-    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    background: white;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    overflow: hidden;
+  }
+
+  /* Overlay de chargement */
+  .payment-loading {
+    border-radius: 0;
+  }
+
+  /* ✅ Header fixe */
+  .payment-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: white;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 0 16px;
+    margin: 0;
+    z-index: 100;
+    padding-top: env(safe-area-inset-top);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .back-button {
+    font-size: 24px;
+    padding: 8px;
+    color: #64748b;
+    -webkit-tap-highlight-color: transparent;
+    flex-shrink: 0;
+
+    &:active {
+      transform: scale(0.95);
+      background-color: #f1f5f9;
+    }
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
+  .title {
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    flex: 1;
+    padding: 0;
+  }
+
+  /* Bouton Annuler mobile - Juste la X */
+  .cancel-button {
+    font-size: 24px;
+    padding: 8px;
+    color: #64748b;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    -webkit-tap-highlight-color: transparent;
+    flex-shrink: 0;
+
+    &:active {
+      transform: scale(0.95);
+      background-color: #fee2e2;
+    }
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
+  .cancel-icon {
+    display: block;
+    font-size: 20px;
+  }
+
+  .cancel-text {
+    display: none;
+  }
+
+  /* ✅ Wrapper scrollable avec padding suffisant */
+  .payment-content-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-top: calc(56px + env(safe-area-inset-top));
+    padding-bottom: calc(140px + env(safe-area-inset-bottom));
+    background: white;
+  }
+
+  /* ✅ Affichage du montant */
+  .amount-display {
+    margin: 0;
+    padding: 24px 16px;
+    border-radius: 0;
+    box-shadow: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .amount-label {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .amount-value {
+    font-size: 36px;
+    font-weight: 800;
+  }
+
+  /* ✅ Méthodes de paiement */
+  .payment-methods {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 16px;
+    margin: 0;
+  }
+
+  .payment-method-btn {
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 16px;
+    gap: 16px;
+    border-radius: 16px;
+    font-size: 16px;
+    -webkit-tap-highlight-color: transparent;
+
+    i {
+      font-size: 28px;
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+  }
+
+  /* ✅ Contenu du formulaire avec padding suffisant */
+  .payment-form-content,
+  .alternative-payment-content {
+    padding: 0 16px 32px;
+    gap: 20px;
+  }
+
+  .form-group {
+    gap: 8px;
+  }
+
+  .form-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+  }
+
+  .form-row {
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .card-brands {
+    font-size: 12px;
+    margin-top: 4px;
+  }
+
+  /* ✅ Paiements alternatifs */
+  .payment-info {
+    padding: 24px 16px;
+    background: #f8fafc;
+    border-radius: 16px;
+    gap: 12px;
+  }
+
+  .payment-icon {
+    font-size: 56px;
+  }
+
+  .payment-info h3 {
+    font-size: 20px;
+  }
+
+  .payment-info p {
+    font-size: 14px;
+  }
+
+  /* ✅ Actions FIXES en bas (un seul bouton) */
+  .form-actions {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 1px solid #e2e8f0;
+    padding: 16px;
+    padding-bottom: calc(env(safe-area-inset-bottom) + 16px);
+    margin: 0;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+    z-index: 99;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Boutons mobile */
+  ::ng-deep .btn-pay .p-button,
+  ::ng-deep .btn-paypal .p-button {
+    padding: 16px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    border-radius: 12px !important;
+  }
+
+  /* Inputs mobile */
+  ::ng-deep .p-inputtext,
+  ::ng-deep .p-inputmask {
+    padding: 14px 16px !important;
+    font-size: 16px !important;
+    border-radius: 12px !important;
+  }
+}
+
+/* Très petits écrans */
+@media (max-width: 360px) {
+  .amount-value {
+    font-size: 32px !important;
+  }
+
+  .payment-method-btn {
+    padding: 14px !important;
+    font-size: 15px !important;
+
+    i {
+      font-size: 24px !important;
+    }
+  }
+}
+
+/* Mode paysage mobile */
+@media (max-height: 600px) and (orientation: landscape) and (max-width: 768px) {
+  .payment-content-wrapper {
+    padding-bottom: calc(120px + env(safe-area-inset-bottom)) !important;
   }
 
   .amount-display {
-    padding: 1.25rem;
+    padding: 16px !important;
   }
 
-  .payment-info {
-    padding: 1.5rem;
+  .amount-value {
+    font-size: 28px !important;
+  }
+
+  .payment-methods {
+    gap: 8px !important;
+  }
+
+  .payment-method-btn {
+    padding: 12px !important;
+  }
+
+  .payment-form-content,
+  .alternative-payment-content {
+    padding: 0 16px 24px !important;
+    gap: 16px !important;
   }
 }

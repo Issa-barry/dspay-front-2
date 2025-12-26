@@ -1,0 +1,26 @@
+<section
+  class="rounded-2xl border border-amber-200 bg-amber-50 dark:bg-surface-900/60 dark:border-amber-400/40 px-4 py-3 flex items-start gap-3 shadow-sm cursor-pointer hover:bg-amber-100 dark:hover:bg-surface-800 transition-colors"
+  (click)="goToProfile()"
+>
+  <!-- Icône profil -->
+  <span
+    class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-amber-100 text-amber-600 dark:bg-amber-500/10 dark:text-amber-300"
+  >
+    <i class="pi pi-user-edit text-base"></i>
+  </span>
+
+  <div class="flex-1">
+    <p class="font-semibold text-sm text-amber-900 dark:text-amber-50">
+      Profil incomplet
+    </p>
+    <p class="text-xs text-amber-800/90 dark:text-amber-200/80">
+      Certaines informations manquent.
+      Complétez-les pour valider vos transferts.
+    </p>
+  </div>
+
+  <!-- Flèche -->
+  <span class="text-amber-600 dark:text-amber-300 flex items-center">
+    <i class="pi pi-angle-right text-lg"></i>
+  </span>
+</section>

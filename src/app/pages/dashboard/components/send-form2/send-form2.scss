@@ -1,20 +1,28 @@
-/* send-form2.component.css */
+/* send-form2.component.scss - Dark Mode Optimized */
 
-/* ✅ Suppression de height: 100% qui force la hauteur */
 .send-form-card {
-  background: white;
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  /* Pas de height fixe - s'adapte au contenu */
+  background: var(--surface-card);
+  border-radius: 16px;
+  padding: 1.90rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  
+  :host-context(.dark) & {
+  background: var(--surface-900);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.15);
+}
 }
 
 .title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #111827;
-  margin: 0 0 1.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--surface-900);
+  margin: 0 0 2rem 0;
   text-align: center;
+
+  :host-context(.dark) & {
+    color: var(--surface-0);
+  }
 }
 
 .form-group {
@@ -24,32 +32,53 @@
 .form-label {
   display: block;
   font-size: 0.875rem;
-  color: #6b7280;
-  margin-bottom: 0.75rem;
-  font-weight: 400;
+  font-weight: 600;
+  color: var(--surface-900);
+  margin-bottom: 0.5rem;
+
+  :host-context(.dark) & {
+    color: var(--surface-0);
+  }
 }
 
 .currency-input {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  margin-bottom: 1.25rem;
-  background: white;
-  transition: all 0.2s;
-}
+  gap: 0.74rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  background: var(--surface-0);
+  transition: all 0.2s ease;
 
-.currency-input:focus-within {
-  border-color: #10b981;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+  :host-context(.dark) & {
+    background: var(--surface-900);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  &:focus-within {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+    
+    :host-context(.dark) & {
+      box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.15);
+    }
+  }
+
+  &:hover {
+    border-color: var(--primary-color);
+    
+    :host-context(.dark) & {
+      border-color: var(--primary-color);
+    }
+  }
 }
 
 .flag-icon {
-  width: 24px;
-  height: 24px;
-  border-radius: 4px;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
   object-fit: cover;
   flex-shrink: 0;
   display: block;
@@ -62,28 +91,34 @@
 .currency-input ::ng-deep .p-inputnumber-input {
   border: none;
   padding: 0;
-  font-size: 1rem;
-  color: #111827;
+  font-size: 1.0625rem;
+  font-weight: 500;
+  color: var(--surface-900);
   width: 100%;
   box-shadow: none !important;
   background: transparent;
-  font-weight: 400;
-}
 
-.currency-input ::ng-deep .p-inputnumber-input:focus {
-  outline: none;
-  box-shadow: none;
-}
+  :host-context(.dark) & {
+    color: var(--surface-0);
+  }
 
-.currency-input ::ng-deep .p-inputnumber-input::placeholder {
-  color: #9ca3af;
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  &::placeholder {
+    color: var(--text-color-secondary);
+    opacity: 0.5;
+    font-weight: 400;
+  }
 }
 
 .currency-code {
-  font-size: 0.875rem;
-  color: #9ca3af;
-  font-weight: 400;
-  min-width: 40px;
+  font-size: 0.9375rem;
+  color: var(--text-color-secondary);
+  font-weight: 500;
+  min-width: 45px;
   text-align: right;
   flex-shrink: 0;
 }
@@ -91,76 +126,106 @@
 ::ng-deep .send-button {
   width: 100%;
   margin-bottom: 1.5rem;
-}
 
-::ng-deep .send-button .p-button {
-  width: 100%;
-  padding: 1.125rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 500;
-  border-radius: 8px;
-  height: auto;
-  min-height: 52px;
-}
+  .p-button {
+    width: 100%;
+    padding: 0.885rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    height: 65px;
+    transition: all 0.2s ease;
 
-::ng-deep .send-button .p-button-label {
-  font-weight: 500;
-}
+    &-label {
+      font-weight: 600;
+    }
 
-::ng-deep .send-button .p-button-icon-right {
-  margin-left: 0.5rem;
+    &-icon-right {
+      margin-left: 0.5rem;
+      font-size: 1rem;
+    }
+
+    &:not(:disabled):hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+  }
 }
 
 .exchange-rate {
   text-align: center;
   padding-top: 1.5rem;
-  border-top: 1px solid #e5e7eb;
-}
+  border-top: 1px solid var(--surface-border);
 
-.exchange-rate h3 {
-  font-size: 0.875rem;
-  color: #6b7280;
-  margin: 0 0 0.5rem 0;
-  font-weight: 400;
-}
+  :host-context(.dark) & {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
 
-.exchange-rate p {
-  font-size: 0.875rem;
-  color: #111827;
-  margin: 0;
-  font-weight: 500;
+  h3 {
+    font-size: 0.875rem;
+    color: var(--text-color-secondary);
+    margin: 0 0 0.5rem 0;
+    font-weight: 500;
+  }
+
+  p {
+    font-size: 0.9375rem;
+    color: var(--surface-900);
+    margin: 0;
+    font-weight: 600;
+
+    :host-context(.dark) & {
+      color: var(--surface-0);
+    }
+  }
+
+  .p-error {
+    color: var(--red-500);
+    font-weight: 500;
+  }
 }
 
 /* Responsive Tablet */
 @media (max-width: 1280px) {
   .send-form-card {
-    padding: 1.5rem;
+    padding: 1.75rem;
+  }
+
+  .title {
+    font-size: 1.375rem;
+    margin-bottom: 1.75rem;
   }
 }
 
 /* Responsive Mobile */
 @media (max-width: 768px) {
   .send-form-card {
-    padding: 1.25rem;
-    /* ✅ Toujours pas de height fixe */
+    padding: 1.5rem;
+    border-radius: 16px;
   }
 
   .title {
-    font-size: 1.125rem;
-    margin-bottom: 1.25rem;
+    font-size: 1.375rem;
+    margin-bottom: 1.5rem;
   }
 
   .form-group {
     margin-bottom: 1.25rem;
   }
+
+  .form-label {
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+  }
   
   .currency-input {
-    padding: 0.75rem 1rem;
-    margin-bottom: 1rem;
-  }
+    padding: 0.875rem 1rem;
+    margin-bottom: 1.25rem;
+    border-radius: 12px;
 
-  .currency-input ::ng-deep .p-inputnumber-input {
-    font-size: 1.0625rem;
+    ::ng-deep .p-inputnumber-input {
+      font-size: 1.0625rem;
+    }
   }
 
   .flag-icon {
@@ -169,48 +234,56 @@
   }
 
   .currency-code {
-    font-size: 1rem;
+    font-size: 0.9375rem;
   }
 
   ::ng-deep .send-button {
     margin-bottom: 1.25rem;
-  }
 
-  ::ng-deep .send-button .p-button {
-    padding: 1rem 1.25rem;
-    min-height: 52px;
-    font-size: 1rem;
+    .p-button {
+      padding: 0.875rem 1.25rem;
+      height: 56px;
+      font-size: 1rem;
+      border-radius: 12px;
+    }
   }
 
   .exchange-rate {
     padding-top: 1.25rem;
-  }
 
-  .exchange-rate h3 {
-    font-size: 0.8125rem;
-  }
+    h3 {
+      font-size: 0.8125rem;
+    }
 
-  .exchange-rate p {
-    font-size: 0.9375rem;
+    p {
+      font-size: 0.9375rem;
+    }
   }
 }
 
 /* Très petits écrans */
 @media (max-width: 374px) {
   .send-form-card {
-    padding: 1rem;
+    padding: 1.25rem;
+    border-radius: 12px;
   }
 
   .title {
-    font-size: 1rem;
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .form-label {
+    font-size: 0.8125rem;
   }
 
   .currency-input {
-    padding: 0.625rem 0.875rem;
-  }
+    padding: 0.75rem 0.875rem;
+    border-radius: 10px;
 
-  .currency-input ::ng-deep .p-inputnumber-input {
-    font-size: 1rem;
+    ::ng-deep .p-inputnumber-input {
+      font-size: 1rem;
+    }
   }
 
   .flag-icon {
@@ -218,7 +291,25 @@
     height: 24px;
   }
 
+  .currency-code {
+    font-size: 0.875rem;
+  }
+
   ::ng-deep .send-button .p-button {
-    min-height: 48px;
+    height: 52px;
+    font-size: 0.9375rem;
+    border-radius: 10px;
+  }
+
+  .exchange-rate {
+    padding-top: 1rem;
+
+    h3 {
+      font-size: 0.75rem;
+    }
+
+    p {
+      font-size: 0.875rem;
+    }
   }
 }

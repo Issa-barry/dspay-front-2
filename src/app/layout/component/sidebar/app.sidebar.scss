@@ -1,1 +1,61 @@
- 
+/* Mobile fullscreen uniquement */
+@media (max-width: 768px) {
+  /* Container prend tout l'écran */
+  .layout-sidebar,
+  .sidebar-root {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    background: white;
+    height: 100vh;
+    height: 100dvh;
+    display: flex !important;
+    flex-direction: column;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    overflow: hidden;
+  }
+
+  /* Menu scrollable */
+  .sidebar-menu {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 1rem;
+  }
+
+  /* Footer fixe en bas */
+  .sidebar-footer {
+    position: sticky;
+    bottom: 0;
+    flex-shrink: 0;
+    padding: 1rem;
+    border-top: 1px solid #e5e7eb;
+    background: white;
+    z-index: 10;
+  }
+
+  /* Afficher le nom complet sur mobile */
+  .sidebar-footer .flex-1.truncate {
+    display: block !important;
+  }
+
+  /* Style du bouton profil mobile */
+  .sidebar-footer > a {
+    padding: 0.75rem !important;
+    border-radius: 12px;
+  }
+
+  .sidebar-footer > a img {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .sidebar-footer > a span {
+    font-size: 16px !important;
+  }
+}
+
