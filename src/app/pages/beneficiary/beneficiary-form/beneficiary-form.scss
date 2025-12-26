@@ -1,3 +1,6 @@
+/* ==========================================
+   DESIGN DESKTOP (par défaut)
+   ========================================== */
 .beneficiary-form-page {
   padding: 2rem;
   max-width: 600px;
@@ -166,46 +169,154 @@
   font-weight: 600;
 }
 
-/* Responsive */
+/* ==========================================
+   MOBILE FULLSCREEN - Flat design
+   ========================================== */
 @media (max-width: 768px) {
+  /* Host prend tout l'écran */
+  :host {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    z-index: 9999;
+    overflow: hidden;
+  }
+
   .beneficiary-form-page {
-    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    padding: 0;
+    margin: 0;
+    max-width: none;
+    background: white;
+  }
+
+  /* Header fixe */
+  .page-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0 16px;
+    margin: 0;
+    z-index: 100;
+    padding-top: env(safe-area-inset-top);
+  }
+
+  ::ng-deep .back-button .p-button {
+    font-size: 24px;
+    padding: 8px;
+    color: #64748b;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  ::ng-deep .back-button .p-button:active {
+    transform: scale(0.95);
+    background-color: #f1f5f9;
   }
 
   .page-title {
-    font-size: 1.5rem;
+    font-size: 18px;
+    text-align: center;
+    padding-right: 40px;
   }
 
+  /* Container scrollable */
   .form-container {
-    padding: 1.5rem;
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: calc(56px + env(safe-area-inset-top) + 24px) 16px calc(180px + env(safe-area-inset-bottom));
+    background: white;
+    border: none;
+    border-radius: 0;
   }
 
-  .avatar-preview {
-    width: 70px;
-    height: 70px;
-    font-size: 1.5rem;
+  /* Formulaire */
+  .beneficiary-form {
+    gap: 20px;
   }
 
+  .form-field {
+    gap: 8px;
+  }
+
+  .form-field label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+  }
+
+  .form-input {
+    padding: 14px 16px;
+    font-size: 16px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+  }
+
+  .field-hint {
+    font-size: 13px;
+  }
+
+  /* Actions fixes en bas */
   .form-actions {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 1px solid #e5e7eb;
+    padding: 16px;
+    padding-bottom: calc(env(safe-area-inset-bottom) + 16px);
+    gap: 12px;
+    margin: 0;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+    z-index: 99;
     flex-direction: column;
   }
 
-  .color-picker {
-    gap: 0.75rem;
+  ::ng-deep .btn-submit .p-button,
+  ::ng-deep .btn-cancel .p-button {
+    padding: 16px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    border-radius: 12px !important;
   }
 
-  .color-option {
-    width: 42px;
-    height: 42px;
+  ::ng-deep .btn-cancel .p-button {
+    padding: 14px !important;
   }
 }
 
-@media (max-width: 640px) {
+/* Très petits écrans */
+@media (max-width: 360px) {
+  .page-title {
+    font-size: 16px !important;
+  }
+
+  .form-input {
+    padding: 12px 14px !important;
+    font-size: 15px !important;
+  }
+}
+
+/* Mode paysage mobile */
+@media (max-height: 600px) and (orientation: landscape) and (max-width: 768px) {
   .form-container {
-    padding: 1.25rem;
+    padding-bottom: calc(160px + env(safe-area-inset-bottom)) !important;
   }
 
   .beneficiary-form {
-    gap: 1.25rem;
+    gap: 16px !important;
   }
 }
+

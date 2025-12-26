@@ -8,13 +8,18 @@
     </div>
   </div>
 
-  <!-- ✅ HEADER FIXE -->
-  <div class="payment-header">
-    <button type="button" (click)="goBack()" class="back-button" [disabled]="isProcessing">
-      <i class="pi pi-arrow-left"></i>
-    </button>
-    <h2 class="title">Paiement</h2>
-  </div>
+ <!-- ✅ HEADER FIXE avec bouton Annuler/X -->
+<div class="payment-header">
+  <button type="button" (click)="goBack()" class="back-button" [disabled]="isProcessing">
+    <i class="pi pi-arrow-left"></i>
+  </button>
+  <h2 class="title">Paiement</h2>
+  <!-- ✅ Bouton Annuler (texte desktop, X mobile) -->
+  <button type="button" (click)="onCancel()" class="cancel-button" [disabled]="isProcessing">
+    <i class="pi pi-times cancel-icon"></i>
+    <span class="cancel-text">Annuler</span>
+  </button>
+</div>
 
   <!-- ✅ CONTENU SCROLLABLE -->
   <div class="payment-content-wrapper">
@@ -118,7 +123,7 @@
     </div>
   </div>
 
-  <!-- ✅ ACTIONS FIXES EN BAS -->
+  <!-- ✅ ACTIONS FIXES EN BAS (Sans bouton annuler) -->
   <div class="form-actions">
     <!-- Carte bancaire -->
     <ng-container *ngIf="selectedMethod === 'card'">
@@ -147,16 +152,5 @@
         (click)="onSubmit()">
       </button>
     </ng-container>
-
-    <!-- Bouton Annuler (toujours visible) -->
-    <button
-      type="button"
-      pButton
-      label="Annuler"
-      class="btn-cancel"
-      severity="secondary"
-      [disabled]="isProcessing"
-      (click)="onCancel()">
-    </button>
   </div>
 </div>

@@ -1,61 +1,50 @@
 <div class="card">
-        <div class="flex justify-between items-center mb-8">
-            <div class="font-semibold text-xl">Historique de Transferts</div>
-            <div>
-                <a href="#" pButton type="button" icon="pi" class="p-button-text p-button-plain" style="text-decoration: underline;">Afficher +</a>
-            </div>
-        </div>
-        <ul class="list-none p-0 m-0">
-            <li class="flex flex-col md:flex-row md:items-center md:justify-between mb-7">
-                <div>
-                    <span class="text-surface-900 dark:text-surface-0 text-base  font-medium mr-2 mb-2 md:mb-0">Fatoumata SOW</span>
-                    <div class="mt-2 text-xs text-muted-color">Le 18/05/2025 à 18:30</div>
-                </div>
-                <div class="mt-0 md:mt-0 flex items-center">
-                    <span class="text-orange-500 text-xs ml-4 font-medium">Orange</span>
-                    <span class="text-teal-500 ml-4 font-medium">120 €</span>
-                </div>
-            </li>
-
-            <hr/>
-
-            <li class="flex flex-col md:flex-row md:items-center md:justify-between mb-7">
-                <div>
-                    <span class="text-surface-900 dark:text-surface-0 text-base font-medium mr-2 mb-1 md:mb-0">Alpha Ousmane Koben BARRY</span>
-                    <div class="mt-1 text-muted-color text-xs">Le  21/05/2025 à 09:55</div>
-                </div>
-                <div class="mt-0 md:mt-0 ml-0 md:ml-20 flex items-center">   
-                     <span class="text-cyan-500 text-xs ml-4 font-medium">KS-PAY</span>                  
-                    <span class="text-teal-500 ml-4 font-medium">75 €</span>
-                </div>
-            </li>
-
-             <hr/>
-
-            <li class="flex flex-col md:flex-row md:items-center md:justify-between mb-7">
-                <div>
-                    <span class="text-surface-900 dark:text-surface-0 text-base font-medium mr-2 mb-1 md:mb-0">Aly CAMARA</span>
-                    <div class="mt-1 text-muted-color text-xs">Le  21/05/2025 à 02:23</div>
-                </div>
-                <div class="mt-0 md:mt-0 ml-0 md:ml-20 flex items-center">
-                      <span class="text-pink-500 text-xs ml-4 font-medium">SOUTRAT-MONEY</span>
-                    <span class="text-teal-500  ml-4 font-medium">50 €</span>
-
-                </div>
-            </li>
-
-             <hr/>
-             
-            <li class="flex flex-col md:flex-row md:items-center md:justify-between mb-7">
-                <div>
-                    <span class="text-surface-900 dark:text-surface-0 text-base font-medium mr-2 mb-1 md:mb-0">Fatoumata SOW</span>
-                    <div class="mt-1 text-muted-color text-xs">Le 18/05/2025 à 18:30</div>
-                </div>
-                <div class="mt-0 md:mt-0 flex items-center">
-                    <span class="text-orange-500 text-xs ml-2 font-medium">Orange</span>
-                    <span class="text-teal-500 ml-2 font-medium">925 €</span>
-
-                </div>
-            </li>
-        </ul>
+  <div class="flex justify-between items-center mb-8">
+    <div class="font-semibold text-xl">Historique de Transferts</div>
+    <div>
+      <button
+        pButton
+        type="button"
+        class="p-button-text p-button-plain text-sm underline"
+      >
+        Afficher +
+      </button>
     </div>
+  </div>
+
+  <ul class="list-none p-0 m-0">
+    <ng-container *ngFor="let t of transfers; let last = last">
+      <li
+        class="flex flex-col md:flex-row md:items-center md:justify-between py-2"
+      >
+        <div>
+          <span
+            class="text-surface-900 dark:text-surface-0 text-base font-medium mr-2 mb-0 md:mb-0"
+          >
+            {{ t.name }}
+          </span>
+          <div class="mt-1 text-muted-color text-xs">
+            {{ t.dateLabel }}
+          </div>
+        </div>
+
+        <div
+          class="mt-2 md:mt-0 flex items-center md:justify-end md:min-w-[140px]"
+        >
+          <span class="{{ t.providerClass }} text-xs font-medium">
+            {{ t.provider }}
+          </span>
+          <span class="text-teal-500 ml-4 font-medium">
+            {{ t.amount }}
+          </span>
+        </div>
+      </li>
+
+      <!-- Séparateur entre les lignes, sauf après la dernière -->
+      <hr
+        *ngIf="!last"
+        class="my-2 border border-surface-100 dark:border-surface-800"
+      />
+    </ng-container>
+  </ul>
+</div>

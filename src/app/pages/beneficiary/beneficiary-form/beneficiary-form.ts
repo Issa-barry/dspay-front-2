@@ -9,11 +9,12 @@ import { ToastModule } from 'primeng/toast';
 
 import { BeneficiaryService } from 'src/app/pages/service/beneficiary/beneficiary.service'; // ✅ adapte si besoin
 import { Beneficiary } from '@/core/models/beneficiary.model';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @Component({
   selector: 'app-beneficiary-form',
   standalone: true,
-  imports: [CommonModule, FormsModule, ButtonModule, InputTextModule, ToastModule],
+  imports: [CommonModule, FormsModule, ButtonModule, InputTextModule, ToastModule,   SkeletonModule],
   providers: [MessageService],
   templateUrl: './beneficiary-form.html',
   styleUrl: './beneficiary-form.scss',

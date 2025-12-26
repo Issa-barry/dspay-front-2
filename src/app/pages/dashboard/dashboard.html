@@ -1,8 +1,15 @@
-<div class="grid grid-cols-12 gap-8">
+<div class="grid grid-cols-12 gap-8"> 
 
   <!-- ÉTAPE 1 : Formulaire -->
   <ng-container *ngIf="currentStep === 1">
-    <div class="col-span-12 xl:col-span-6">
+
+    <!-- Widget profil — visible sur mobile/tablette -->
+    <div class="col-span-12 block xl:hidden mb-3">
+      <app-profil-incomplet-widget></app-profil-incomplet-widget>
+    </div>
+
+    <!-- Colonne gauche - formulaire -->
+    <div class="col-span-12 xl:col-span-6 space-y-5">
       <app-send-form2
         [exchangeRate]="currentRate?.taux ?? 0"
         [taux_echange_id]="currentRate?.id ?? 0"
@@ -10,9 +17,12 @@
       </app-send-form2>
     </div>
 
-    <!-- Historique visible uniquement sur desktop XL -->
-    <div class="col-span-12 xl:col-span-6 hidden xl:block">
-      <app-history-send-dashboard-widget />
+    <!-- Colonne droite desktop : widget + historique -->
+    <div class="col-span-12 xl:col-span-6 hidden xl:flex flex-col gap-4">
+      <app-profil-incomplet-widget></app-profil-incomplet-widget>
+
+      <!-- Historique -->
+      <app-history-send-dashboard-widget></app-history-send-dashboard-widget>
     </div>
   </ng-container>
 
@@ -35,20 +45,19 @@
         (back)="onBackToWallet()">
       </app-beneficiary-component>
 
-      <!-- ÉTAPE 4 : Récapitulatif (100% aligné back) -->
-    <app-recapitulatif
-      *ngIf="currentStep === 4"
-      [montant_envoie]="transferData?.montant_envoie || 0"
-      [amount]="transferData?.amount || 0"
-      [frais]="transferData?.frais || 0"
-      [total_ttc]="transferData?.total_ttc || 0"
-      [beneficiaire_nom]="selectedBeneficiary?.nom_complet || ''"
-      [service_libelle]="selectedWallet?.walletName || ''"
-      (confirm)="onConfirmTransfer()"
-      (cancel)="onCancelTransfer()"
-      (modify)="onModifyTransfer()">
-    </app-recapitulatif>
-
+      <!-- ÉTAPE 4 : Récapitulatif -->
+      <app-recapitulatif
+        *ngIf="currentStep === 4"
+        [montant_envoie]="transferData?.montant_envoie || 0"
+        [amount]="transferData?.amount || 0"
+        [frais]="transferData?.frais || 0"
+        [total_ttc]="transferData?.total_ttc || 0"
+        [beneficiaire_nom]="selectedBeneficiary?.nom_complet || ''"
+        [service_libelle]="selectedWallet?.walletName || ''"
+        (confirm)="onConfirmTransfer()"
+        (cancel)="onCancelTransfer()"
+        (modify)="onModifyTransfer()">
+      </app-recapitulatif>
 
       <!-- ÉTAPE 5 : Paiement -->
       <app-payment-cb

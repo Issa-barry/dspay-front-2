@@ -13,13 +13,14 @@ import { SendService } from '@/pages/service/send/send.service';
 import { SendModel } from 'src/app/core/models/send.model';
 
 import { Subscription } from 'rxjs';
+import { SkeletonModule } from 'primeng/skeleton';
 
 type Severity = 'success' | 'info' | 'warning' | 'danger';
 
 @Component({
   selector: 'app-history',
   standalone: true,
-  imports: [CommonModule, FormsModule, ButtonModule, InputTextModule, TagModule, TooltipModule],
+  imports: [CommonModule, FormsModule, ButtonModule, InputTextModule, TagModule, TooltipModule, SkeletonModule],
   templateUrl: './history.html',
   styleUrl: './history.scss',
 })
@@ -120,7 +121,7 @@ export class HistoryComponent implements OnInit, OnDestroy {
   }
 
   goBack(): void {
-    this.location.back();
+     this.router.navigate(['/app']);
   }
 
   viewDetails(transfer: SendModel): void {

@@ -1,0 +1,91 @@
+<div class="flex flex-col flex-auto">
+    <div class="rounded-t-3xl bg-surface-0 dark:bg-surface-900 flex-auto py-6 lg:py-8 px-8 lg:px-20">
+        
+        <!-- Header desktop -->
+        <div class="flex flex-col w-full pb-8 gap-2 hidden lg:flex">
+            <h2 class="mt-0 text-surface-900 dark:text-surface-0 font-medium text-2xl leading-tight">
+                Paramètres
+            </h2>
+            <p class="mt-0 text-surface-500 dark:text-surface-300 leading-tight">
+                Gérez vos informations personnelles
+            </p>
+        </div>
+
+        <!-- Header mobile avec flèche retour -->
+        <div class="mobile-header lg:hidden">
+            <button 
+                type="button" 
+                class="back-button"
+                (click)="goBack()">
+                <i class="pi pi-arrow-left"></i>
+            </button>
+            <h2 class="page-title">Mon profil</h2>
+        </div>
+
+        <p-divider></p-divider>
+
+        <div class="grid grid-cols-12 gap-4 py-6 lg:py-8">
+            
+            <!-- Sidebar navigation -->
+            <div class="col-span-12 lg:col-span-2">
+                
+                <!-- Desktop menu -->
+                <ul class="list-none m-0 p-0 hidden lg:flex flex-col justify-start">
+                    <li 
+                        *ngFor="let item of items"
+                        [ngClass]="{
+                            'border-l-2 -ml-[2px]': true,
+                            'border-primary': isActive(item.route),
+                            'border-surface-200 dark:border-surface-700 hover:border-primary hover:text-primary transition-colors': !isActive(item.route)
+                        }">
+                        <a 
+                            class="flex items-center cursor-pointer py-3 px-4 font-medium"
+                            [ngClass]="{
+                                'text-primary': isActive(item.route),
+                                'text-surface-700 dark:text-surface-200': !isActive(item.route)
+                            }"
+                            (click)="navigateTo(item.route)">
+                            <i [ngClass]="[item.icon, 'mr-2', 'text-base!', 'leading-normal!']"></i>
+                            <span>{{ item.label }}</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Mobile tabs -->
+                <div class="lg:hidden">
+                    <div class="border-b border-surface-200 dark:border-surface-700 overflow-x-auto">
+                        <ul class="list-none m-0 p-0 flex flex-row justify-start whitespace-nowrap">
+                            <li
+                                *ngFor="let item of items"
+                                class="relative py-3 px-4 transition-colors cursor-pointer"
+                                [ngClass]="{
+                                    'text-primary': isActive(item.route),
+                                    'text-surface-700 dark:text-surface-200 hover:text-primary': !isActive(item.route)
+                                }"
+                                (click)="navigateTo(item.route)">
+                                <a class="flex items-center font-medium">
+                                    <i [ngClass]="[item.icon, 'mr-2', 'text-base!', 'leading-normal!']"></i>
+                                    <span>{{ item.label }}</span>
+                                </a>
+                                <div
+                                    class="absolute bottom-0 left-0 right-0 h-[2px] transition-colors"
+                                    [ngClass]="{
+                                        'bg-primary': isActive(item.route),
+                                        'bg-surface-200 dark:bg-surface-700': !isActive(item.route)
+                                    }">
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content area with router-outlet -->
+            <div class="col-span-12 lg:col-span-10 xl:col-span-10 bg-surface-0 dark:bg-surface-900 p-8 rounded-2xl flex-auto">
+                <!-- Le contenu des différentes pages s'affichera ici -->
+                <router-outlet></router-outlet>
+            </div>
+
+        </div>
+    </div>
+</div>

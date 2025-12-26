@@ -1,0 +1,243 @@
+/* Styles hérités du parent pour le composant profil-informations */
+
+/* Content wrapper et bouton fixe */
+.content-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0;
+  padding-bottom: calc(100px + env(safe-area-inset-bottom));
+}
+
+.button-fixed-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid #e5e7eb;
+  padding: 16px;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
+  margin: 0;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+  z-index: 99;
+}
+
+.flex.flex-col.gap-8 {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Section title */
+.text-lg.font-semibold {
+  font-size: 1.125rem;
+}
+
+/* Form layout mobile */
+.flex.gap-12.flex-col-reverse {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 1.5rem;
+}
+
+/* Form fields */
+.flex-auto.flex.flex-col.gap-6 {
+  gap: 1.25rem;
+}
+
+.flex.flex-col.gap-2 {
+  gap: 0.5rem;
+  
+  label {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+}
+
+/* Avatar section */
+.flex.flex-col.lg\\:items-center.gap-4 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+/* Avatar avec initiales */
+.avatar-initials {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  user-select: none;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* PrimeNG overrides mobile */
+::ng-deep {
+  .p-inputtext {
+    font-size: 16px !important;
+    padding: 14px 16px !important;
+    border-radius: 12px !important;
+  }
+  
+  .p-inputtext:disabled {
+    background-color: #f3f4f6 !important;
+    color: #6b7280 !important;
+    cursor: not-allowed !important;
+    opacity: 1 !important;
+  }
+  
+  .button-fixed-wrapper .p-button {
+    width: 100%;
+    padding: 16px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    border-radius: 12px !important;
+  }
+}
+
+/* ==========================================
+   TABLET (768px+)
+   ========================================== */
+@media (min-width: 768px) {
+  /* Form layout tablet */
+  .flex.gap-12.flex-col-reverse {
+    flex-direction: row;
+    gap: 2rem;
+  }
+  
+  .flex.flex-col.lg\\:items-center.gap-4 {
+    align-items: center;
+  }
+  
+  .content-wrapper {
+    padding-bottom: 0;
+  }
+  
+  ::ng-deep {
+    .button-fixed-wrapper .p-button {
+      width: auto;
+      min-width: 200px;
+    }
+  }
+}
+
+/* ==========================================
+   DESKTOP (1024px+)
+   ========================================== */
+@media (min-width: 1024px) {
+  .content-wrapper {
+    padding: 0;
+    padding-bottom: 0;
+    overflow-y: visible;
+  }
+  
+  .button-fixed-wrapper {
+    position: static;
+    background: transparent;
+    border-top: none;
+    padding: 0;
+    margin-top: 2rem;
+    box-shadow: none;
+  }
+  
+  .flex.flex-col.gap-8 {
+    gap: 2rem;
+  }
+  
+  .text-lg.font-semibold {
+    font-size: 1.125rem;
+  }
+  
+  /* Form layout desktop */
+  .flex.gap-12.flex-col-reverse {
+    gap: 3rem;
+  }
+  
+  .flex-auto.flex.flex-col.gap-6 {
+    gap: 1.5rem;
+  }
+  
+  ::ng-deep {
+    .p-inputtext {
+      padding: 0.75rem 1rem !important;
+      border-radius: 0.5rem !important;
+    }
+    
+    .button-fixed-wrapper .p-button {
+      padding: 0.875rem 1.5rem !important;
+      border-radius: 0.5rem !important;
+    }
+  }
+}
+
+/* ==========================================
+   MOBILE FULLSCREEN MODE
+   ========================================== */
+@media (max-width: 768px) {
+  :host {
+    display: block;
+    width: 100%;
+  }
+}
+
+/* ==========================================
+   TRÈS PETITS ÉCRANS
+   ========================================== */
+@media (max-width: 360px) {
+  .text-lg.font-semibold {
+    font-size: 1rem !important;
+  }
+  
+  .content-wrapper {
+    padding: 0.75rem !important;
+    padding-bottom: calc(100px + env(safe-area-inset-bottom)) !important;
+  }
+  
+  .avatar-initials {
+    width: 5rem !important;
+    height: 5rem !important;
+    font-size: 1.75rem !important;
+  }
+}
+
+/* ==========================================
+   MODE PAYSAGE MOBILE
+   ========================================== */
+@media (max-height: 600px) and (orientation: landscape) and (max-width: 768px) {
+  .content-wrapper {
+    padding-bottom: calc(80px + env(safe-area-inset-bottom)) !important;
+  }
+  
+  .button-fixed-wrapper {
+    padding: 12px !important;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom)) !important;
+  }
+  
+  .flex.flex-col.gap-8 {
+    gap: 1rem !important;
+  }
+  
+  .flex-auto.flex.flex-col.gap-6 {
+    gap: 1rem !important;
+  }
+  
+  .avatar-initials {
+    width: 4rem !important;
+    height: 4rem !important;
+    font-size: 1.5rem !important;
+  }
+  
+  ::ng-deep {
+    .button-fixed-wrapper .p-button {
+      padding: 12px !important;
+    }
+  }
+}

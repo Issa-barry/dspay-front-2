@@ -222,7 +222,7 @@
 }
 
 /* ==========================================
-   MOBILE FULLSCREEN - Expérience native
+   MOBILE FULLSCREEN - FLAT DESIGN
    ========================================== */
 @media (max-width: 768px) {
   /* Host prend tout l'écran */
@@ -233,7 +233,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: white;
+    background: #f8fafc;
     z-index: 9999;
     overflow: hidden;
   }
@@ -244,7 +244,7 @@
     flex-direction: column;
     height: 100vh;
     height: 100dvh;
-    background: white;
+    background: #f8fafc;
     border-radius: 0;
     padding: 0;
     box-shadow: none;
@@ -252,7 +252,7 @@
     overflow: hidden;
   }
 
-  /* Header fixe en haut */
+  /* Header fixe en haut - FLAT */
   .step-header {
     position: fixed;
     top: 0;
@@ -265,6 +265,7 @@
     margin: 0;
     z-index: 100;
     padding-top: env(safe-area-inset-top);
+    box-shadow: none;
   }
 
   .back-button {
@@ -272,6 +273,7 @@
     padding: 8px;
     color: #64748b;
     -webkit-tap-highlight-color: transparent;
+    background: transparent;
 
     &:active {
       transform: scale(0.95);
@@ -279,17 +281,18 @@
     }
 
     &:hover {
-      background-color: #f1f5f9;
+      background-color: transparent;
     }
   }
 
   .title {
     font-size: 18px;
+    font-weight: 600;
     text-align: center;
     padding-right: 40px;
   }
 
-  /* Bouton ajouter sous le header */
+  /* Bouton ajouter sous le header - GARDE LE STYLE */
   .add-beneficiary-btn {
     position: fixed;
     top: calc(56px + env(safe-area-inset-top) + 16px);
@@ -299,9 +302,11 @@
     margin: 0;
     z-index: 99;
     font-size: 15px;
+    font-weight: 600;
     padding: 14px;
     border-radius: 16px;
     -webkit-tap-highlight-color: transparent;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     box-shadow: 0 2px 12px rgba(16, 185, 129, 0.25);
 
     &:active {
@@ -309,82 +314,90 @@
     }
   }
 
-  /* Liste scrollable */
+  /* Liste scrollable - FLAT DESIGN */
   .beneficiary-list {
     flex: 1;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     padding: calc(56px + env(safe-area-inset-top) + 14px + 48px + 16px) 16px calc(24px + env(safe-area-inset-bottom));
     gap: 12px;
-    background: white;
+    background: #f8fafc;
   }
 
+  /* Items bénéficiaires - FLAT STYLE */
   .beneficiary-item {
     background: white;
-    border: 1px solid #e5e7eb;
+    border: none;
     border-radius: 16px;
     padding: 16px;
     gap: 16px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    box-shadow: none;
     -webkit-tap-highlight-color: transparent;
+    transition: all 0.2s ease;
 
     &:active {
       transform: scale(0.98);
+      background: #f8fafc;
     }
 
     &:hover {
       transform: none;
+      background: white;
     }
 
     &.selected {
-      border-color: #10b981;
-      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.2);
+      border: none;
+      background: #ecfdf5;
+      box-shadow: none;
 
       .beneficiary-arrow {
         color: #10b981;
-        transform: translateX(4px);
+        transform: translateX(0);
       }
     }
   }
 
+  /* Avatar - FLAT avec ombre subtile */
   .beneficiary-avatar {
     width: 56px;
     height: 56px;
     font-size: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-weight: 600;
+    box-shadow: none;
   }
 
   .beneficiary-name {
     font-size: 16px;
     font-weight: 600;
+    color: #0f172a;
   }
 
   .beneficiary-phone {
     font-size: 14px;
+    color: #64748b;
   }
 
   .beneficiary-arrow {
     font-size: 20px;
     color: #cbd5e1;
-    transition: all 0.2s;
+    transition: color 0.2s;
   }
 
-  /* Animation d'entrée */
+  /* Animation d'entrée simple */
   .beneficiary-item {
-    animation: slideUpMobile 0.3s ease-out backwards;
+    animation: fadeInUp 0.3s ease-out backwards;
 
     @for $i from 1 through 20 {
       &:nth-child(#{$i}) {
-        animation-delay: #{$i * 0.04}s;
+        animation-delay: #{$i * 0.03}s;
       }
     }
   }
 
-  @keyframes slideUpMobile {
+  @keyframes fadeInUp {
     from {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(10px);
     }
     to {
       opacity: 1;
@@ -396,6 +409,8 @@
   div[style*="padding: 1rem"] {
     padding: 16px !important;
     margin-top: calc(56px + env(safe-area-inset-top) + 64px);
+    color: #64748b;
+    font-size: 15px;
   }
 }
 

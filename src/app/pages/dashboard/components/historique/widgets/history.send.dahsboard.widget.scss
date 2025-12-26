@@ -1,1 +1,9 @@
- 
+ .card {
+  border-radius: 1.3rem;
+}
+
+/* pour adoucir le hr */
+hr {
+  border-width: 0;
+  border-bottom-width: 1px;
+}

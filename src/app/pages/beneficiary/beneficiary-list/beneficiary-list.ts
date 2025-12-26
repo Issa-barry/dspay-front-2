@@ -13,6 +13,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { Beneficiary } from 'src/app/core/models/beneficiary.model';
 import { BeneficiaryService } from '@/pages/service/beneficiary/beneficiary.service';
+import { SkeletonModule } from 'primeng/skeleton';
  
 
 @Component({
@@ -25,7 +26,8 @@ import { BeneficiaryService } from '@/pages/service/beneficiary/beneficiary.serv
     InputTextModule,
     ConfirmDialogModule,
     TooltipModule,
-    ToastModule
+    ToastModule,
+    SkeletonModule
   ],
   providers: [ConfirmationService, MessageService],
   templateUrl: './beneficiary-list.html',
@@ -158,6 +160,6 @@ deleteBeneficiary(beneficiary: Beneficiary, event?: Event): void {
   }
 
   goBack(): void {
-    this.location.back();
+     this.router.navigate(['/app']);
   }
 }

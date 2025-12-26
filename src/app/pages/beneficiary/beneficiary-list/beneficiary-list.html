@@ -26,31 +26,40 @@
   <div class="search-bar">
     <span class="p-input-icon-left">
       <i class="pi pi-search"></i>
-      <!--  -->
       <input
         type="text"
         pInputText
         [(ngModel)]="searchQuery"
         (ngModelChange)="applyFilter()"
         placeholder="Rechercher..."
-        class="search-input">
+        class="search-input"
+        [disabled]="loading">
     </span>
-
-    <!-- filtrage appel back -->
-     <!-- <span class="p-input-icon-left">
-      <i class="pi pi-search"></i>
-         <input
-        type="text"
-        pInputText
-        [(ngModel)]="searchQuery"
-        (ngModelChange)="onSearchChange()"
-        placeholder="Rechercher..."
-        class="search-input">
-    </span> -->
   </div>
 
-  <!-- Beneficiaries list -->
-  <div class="beneficiaries-list" *ngIf="filteredBeneficiaries.length > 0">
+  <!-- ✅ SKELETON LOADING -->
+  <div class="beneficiaries-list" *ngIf="loading">
+    <div *ngFor="let item of [1,2,3,4,5]" class="beneficiary-item" style="cursor: default;">
+      <p-skeleton shape="circle" size="3.5rem"></p-skeleton>
+      
+      <div class="beneficiary-info" style="flex: 1;">
+        <p-skeleton width="60%" height="1.25rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="40%" height="1rem"></p-skeleton>
+      </div>
+
+      <!-- Desktop actions skeleton -->
+      <div class="beneficiary-actions desktop-only" style="gap: 0.5rem; display: flex;">
+        <p-skeleton shape="circle" size="2.5rem"></p-skeleton>
+        <p-skeleton shape="circle" size="2.5rem"></p-skeleton>
+      </div>
+
+      <!-- Mobile chevron skeleton -->
+      <p-skeleton width="1rem" height="1rem" styleClass="mobile-chevron"></p-skeleton>
+    </div>
+  </div>
+
+  <!-- ✅ Beneficiaries list -->
+  <div class="beneficiaries-list" *ngIf="!loading && filteredBeneficiaries.length > 0">
     <div
       *ngFor="let beneficiary of filteredBeneficiaries"
       class="beneficiary-item"
@@ -61,7 +70,6 @@
       </div>
 
       <div class="beneficiary-info">
-        <!-- ✅ back renvoie nom_complet -->
         <h3 class="beneficiary-name">{{ beneficiary.nom_complet }}</h3>
         <p class="beneficiary-phone">
           <i class="pi pi-phone"></i>
@@ -95,8 +103,8 @@
     </div>
   </div>
 
-  <!-- Empty state -->
-  <div class="empty-state" *ngIf="filteredBeneficiaries.length === 0">
+  <!-- ✅ Empty state -->
+  <div class="empty-state" *ngIf="!loading && filteredBeneficiaries.length === 0">
     <i class="pi pi-users empty-icon"></i>
     <h3>Aucun bénéficiaire</h3>
     <p *ngIf="searchQuery">Aucun résultat pour "{{ searchQuery }}"</p>

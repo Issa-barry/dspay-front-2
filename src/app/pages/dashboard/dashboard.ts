@@ -14,6 +14,7 @@ import { AuthService } from '../service/auth/auth/auth.service';
 import { CreateTransferPayload, SendService } from '../service/send/send.service';
 import { TauxEchangeLite, TauxEchangeService } from '../service/taux-echange/taux-echange.service';
 import { Wallet } from '@/core/models/wellet.model';
+import { ProfilIncompletWidget } from './components/profil-incomplet-widget/profil-incomplet-widget';
 
 type TransfertDraft = {
   montant_envoie: number;   // back
@@ -34,6 +35,7 @@ type TransfertDraft = {
     BeneficiaryComponent,
     RecapitulatifComponent,
     PaymentCbComponent,
+    ProfilIncompletWidget
   ],
   templateUrl: './dashboard.html',
 })
